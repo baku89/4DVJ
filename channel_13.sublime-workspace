@@ -465,10 +465,15 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/mugi/Works/2015/25_chanel/0b"
+		"/Users/mugi/Works/2015/25_chanel/0b",
+		"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test"
 	],
 	"file_history":
 	[
+		"/Users/mugi/Works/2015/25_chanel/0b/.gitignore",
+		"/Users/mugi/Works/2015/25_chanel/0b/readme.md",
+		"/Users/mugi/Library/Application Support/Sublime Text 3/Packages/User/Markdown.sublime-settings",
+		"/Users/mugi/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test/src/main.js",
 		"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test/src/01/index.jade",
 		"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test/src/index.jade",
@@ -488,7 +493,6 @@
 		"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test/.eslintrc",
 		"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test/.babelrc",
 		"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test/.eslintignore",
-		"/Users/mugi/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test/.jshintrc",
 		"/Users/mugi/Works/2015/25_chanel/0b/.jshintignore",
 		"/Users/mugi/Works/2015/25_chanel/0b/.jshintrc",
@@ -593,10 +597,7 @@
 		"/Volumes/MugiRAID1/Works/2015/09_eye/0b/src/js/lib/sisyphus/package.json",
 		"/Users/mugi/Downloads/sisyphus-master/sisyphus.js",
 		"/Volumes/MugiRAID1/Works/2015/09_eye/gsv-dev/test/_pano-data.json",
-		"/Volumes/MugiRAID1/Works/2015/09_eye/0b/src/coffee/write-tag.coffee",
-		"/Volumes/MugiRAID1/Works/2015/09_eye/0b/src/js/lib/encoding.min.js",
-		"/Volumes/MugiRAID1/Works/2015/09_eye/0b/parser/decode-tag.coffee",
-		"/Volumes/MugiRAID1/Works/2015/09_eye/0b/public/js/replace-proxy.js"
+		"/Volumes/MugiRAID1/Works/2015/09_eye/0b/src/coffee/write-tag.coffee"
 	],
 	"find":
 	{
