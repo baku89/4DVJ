@@ -15,7 +15,7 @@ gulp.task('webpack', () => {
     watch: true,
     entry: {
       electron: './src/electron.js',
-      main: './src/main.js'
+      main: ['./src/main.js']
     },
     output: {
       filename: '[name].js'
@@ -34,6 +34,9 @@ gulp.task('webpack', () => {
     plugins: [
       new webpack.IgnorePlugin(/vertx/)
     ],
+    resolve: {
+      moduleDirectories: ["web_modues", "node_modules"]
+    },
     target: 'atom',
     "node": {
       __dirname: true
@@ -45,7 +48,7 @@ gulp.task('webpack', () => {
     }
   }
 
-  return gulp.src('')
+  return gulp.src('./src/main.js')
     .pipe($.plumber())
     .pipe($.webpack(config))
     .pipe(gulp.dest('build'))

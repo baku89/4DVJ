@@ -1,9 +1,10 @@
-const _ = require('lodash')
+import EventEmitter from 'eventemitter3'
 
-
-class Kontrol {
+class Kontrol extends EventEmitter{
 
 	constructor() {
+		super()
+
 		this.midi = null
 		this.inputs = []
 
@@ -19,18 +20,30 @@ class Kontrol {
 		}
 
 		this.inputs.forEach((input, i) => {
-			input.onmidimessage = this.onMidiEvent
+			input.onmidimessage = this.onMidiEvent.bind(this)
 		})
 	}
 
 	onMidiFailure() {
-		console.error('could not init midi devices')
+		console.error('Could not init midi devices')
 	}
 
 	onMidiEvent(evt) {
-		
-	}
+		// console.log(evt.data.toString('hex'))
+		let type = evt.data[0]
+		let name = evt.data[1]
+		let value = evt.data[2] / 128.0
 
+		if (type == 0x80) {
+			// console.log('Note on', name, value)
+			this.emit(`up.${name}`, value)
+		} else if (type == 0x90) {
+			// console.log('Note off', name, value)
+			this.emit(`down.${name}`, value)
+		} else if (type == 0xb0) {
+			// console.log('Contorl')
+		}
+	}
 }
 
 

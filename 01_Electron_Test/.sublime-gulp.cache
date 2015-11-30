@@ -1,1 +1,0 @@
-{"/Users/mugi/Works/2015/25_chanel/0b/01_Electron_Test/gulpfile.babel.js":{"sha1":"4a8bdb15509c1fa8430ff1d0957cd602894bc11e","tasks":{"jade":{"name":"jade","dependencies":""},"stylus":{"name":"stylus","dependencies":""},"babel":{"name":"babel","dependencies":""},"lint":{"name":"lint","dependencies":""},"default":{"name":"default","dependencies":"jade stylus lint babel"}}}}
