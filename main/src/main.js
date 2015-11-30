@@ -5,7 +5,7 @@ import dat from 'dat-gui'
 import radians from 'degrees-radians'
 import degrees from 'radians-degrees'
 import Kontrol from './kontrol'
-import Polychoron from './polychoron'
+import Polytope from './polytope'
 import Projector4D from './projector4d'
 import Ticker from './ticker'
 
@@ -16,6 +16,8 @@ export default class App {
 	constructor() {
 		this.initScene()
 		this.initObject()
+
+		this.changeRotate(.20)
 		
 		Ticker.on('update', this.animate.bind(this))
 		Ticker.start()
@@ -33,13 +35,16 @@ export default class App {
 		// this.camera.position.set(4, 3, 5)
 		// this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 		// this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
-		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, 1000)
-		this.camera.position.set(0, 0, 5)
+		this.camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, .1, 1000)
+		this.camera.position.set(0, 0, 3)
 		this.cameraRig = new THREE.Object3D()
 		this.cameraRig.add(this.camera)
 		this.scene.add(this.cameraRig)
-		
-		
+
+		this.rotateViewVelocity = new THREE.Quaternion()
+		this.rotate4dVelocity = new THREE.Quaternion()
+
+		Kontrol.on('down.36', this.changeRotate.bind(this))
 
 		window.addEventListener('resize', this.onResize.bind(this))
 		window.addEventListener('click', this.onClick.bind(this))
@@ -48,27 +53,22 @@ export default class App {
 	initObject() {
 		this.projector4d = new Projector4D()
 
-		let diffEuler = new THREE.Euler(radians(1), 0, 0)
-		this.rotate4dVelocity = new THREE.Quaternion()
-		this.rotate4dVelocity.setFromEuler(diffEuler)
-
-		Kontrol.on('down.36', this.changeRotate4d.bind(this))
-
-		let polychoron = new Polychoron(
-			'16-cell',
+		let polychoron = new Polytope(
+			'solid-20-hedra',
 			{
 				projector4d: this.projector4d
 			})
 		this.scene.add(polychoron)
 
-		{
-			// generate helper
-			this.scene.add(new THREE.GridHelper(100, 2))
-			this.scene.add(new THREE.AxisHelper(20))
-		}
+		// {
+		// 	// generate helper
+		// 	this.scene.add(new THREE.GridHelper(100, 2))
+		// 	this.scene.add(new THREE.AxisHelper(20))
+		// }
 	}
 
-	changeRotate4d(value) {
+	changeRotate(value) {
+		// 4d
 		let axis = new THREE.Vector3(
 			Math.random() * 2 - 1,
 			Math.random() * 2 - 1,
@@ -76,6 +76,13 @@ export default class App {
 		axis.normalize()
 		// TODO: make infection point clearer
 		this.rotate4dVelocity.setFromAxisAngle(axis, value * radians(1))
+
+		// view
+		axis.set(
+			Math.random() *2 - 1,
+			Math.random() *2 - 1,
+			Math.random() *2 - 1)
+		this.rotateViewVelocity.setFromAxisAngle(axis, value * radians(1))
 	}
 
 	animate(elapsed) {
@@ -83,6 +90,8 @@ export default class App {
 		// TODO: make rotation ease-out
 		this.projector4d.quaternion.multiply(this.rotate4dVelocity)
 		this.projector4d.updateMatrix()
+
+		this.cameraRig.quaternion.multiply(this.rotateViewVelocity)
 
 		this.renderer.render(this.scene, this.camera)
 	}
