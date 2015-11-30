@@ -22,6 +22,7 @@
     "gulp-plumber": "^1.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylus": "^2.1.0",
+    "gulp-util": "^3.0.7",
     "jquery": "^2.1.4",
     "marked": "^0.3.5",
     "nib": "^1.1.0",

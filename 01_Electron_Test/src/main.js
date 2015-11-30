@@ -52,6 +52,11 @@ function installMenu() {
           accelerator: 'Alt+Command+I',
           click: function() { mainWindow.toggleDevTools(); }
         },
+        {
+          label: 'Close',
+          accelerator: 'Command+W',
+          click: () => {mainWindow.close()}
+        }
       ]
     }
   ]);

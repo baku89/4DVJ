@@ -1,8 +1,16 @@
-require('./common')
+import './common'
+import _ from 'lodash'
+import './lib/OrbitControls'
+import glslify from 'glslify'
 
 class App {
 
 	constructor() {
+
+		let frag = glslify(__dirname + '/../src/shaders/basic.frag')
+
+		console.log("Unco", frag)
+
 		this.initScene()
 		this.initObject()
 		this.animate()
@@ -17,18 +25,30 @@ class App {
 		})
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 
+		this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
+
 		window.addEventListener('resize', this.onResize.bind(this))
 		window.addEventListener('click', this.onClick.bind(this))
 	}
 
 	initObject() {
 		let geometry = new THREE.BoxGeometry(100, 100, 100)
-		let material = new THREE.MeshBasicMaterial({color:0x00ff00})
+		let material = new THREE.ShaderMaterial({
+			uniforms: {},
+			vertexShader: glslify('./shaders/basic.vert'),
+			fragmentShader: glslify('./shaders/basic.frag')
+		})
 
 		let cube = new THREE.Mesh(geometry, material)
 		this.scene.add(cube)
-	}
 
+		{
+			// generate helper
+			this.scene.add(new THREE.GridHelper(1000, 20))
+			this.scene.add(new THREE.AxisHelper(200))
+
+		}
+	}
 
 	animate() {
 		requestAnimationFrame(this.animate.bind(this))
@@ -36,7 +56,9 @@ class App {
 	}
 
 	onResize() {
-
+		this.camera.aspect = window.innerWidth / window.innerHeight
+		this.camera.updateProjectionMatrix()
+		this.renderer.setSize(window.innerWidth, window.innerHeight)
 	}
 
 	onClick() {
@@ -44,6 +66,5 @@ class App {
 	}
 
 }
-
 
 window.app = new App()
