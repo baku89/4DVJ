@@ -2,8 +2,14 @@ uniform mat4 matrix4d;
 uniform float distance4d;
 
 attribute float positionW;
+attribute vec3 color;
+
+varying vec3 vColor;
 
 void main() {
+	// color
+	vColor = color;
+
 	// transform in 4d
 	vec4 pos4d = matrix4d * vec4(position, positionW);
 

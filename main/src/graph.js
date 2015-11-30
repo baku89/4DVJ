@@ -9,6 +9,7 @@ export default class Graph {
 		this.faces = []
 
 		// subdivide n-gon to face 3 or 4
+		// this.subdivideNgon(data.faces[0])
 		data.faces.forEach(this.subdivideNgon.bind(this))
 
 		// data.faces.forEach((face, i) => {
@@ -34,7 +35,7 @@ export default class Graph {
 		// })
 	}
 
-	subdivideNgon(face, log) {
+	subdivideNgon(face) {
 		
 		if (face.length < 3) {
 			return
@@ -47,7 +48,7 @@ export default class Graph {
 		let i = 0
 		let length = face.length
 		while (i <= length - 2) {
-			this.faces.push([face[i], face[i+1], face[i+2]])
+			this.faces.push([face[i], face[i+1], face[(i+2)%length]])
 			i += 2
 		}
 

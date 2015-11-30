@@ -1,6 +1,5 @@
 /* global THREE $ */
 import _ from 'lodash'
-import dat from 'dat-gui'
 
 import radians from 'degrees-radians'
 import degrees from 'radians-degrees'
@@ -8,14 +7,32 @@ import Kontrol from './kontrol'
 import Polytope from './polytope'
 import Projector4D from './projector4d'
 import Ticker from './ticker'
+import GUI from './gui'
+window.GUI = GUI
+
+// TODO: resolve web_modules
+import '../web_modules/shaders/CopyShader'
+import '../web_modules/postprocessing/ShaderPass'
+import '../web_modules/postprocessing/MaskPass'
+import '../web_modules/postprocessing/RenderPass'
+import '../web_modules/postprocessing/EffectComposer'
+
+import CompositePass from './post-effects/composite-pass'
+
 
 import '../web_modules/OrbitControls.js'
 
 export default class App {
 
 	constructor() {
+		this.config = {
+			clearColor: 0x112130
+		}
+		// GUI.add('')
+
 		this.initScene()
 		this.initObject()
+		this.initPostprocessing()
 
 		this.changeRotate(.20)
 		
@@ -26,7 +43,8 @@ export default class App {
 	initScene() {
 		this.scene = new THREE.Scene()
 		this.renderer = new THREE.WebGLRenderer({
-			canvas: document.getElementById('main')
+			canvas: document.getElementById('main'),
+			antialias: true
 		})
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 
@@ -54,7 +72,7 @@ export default class App {
 		this.projector4d = new Projector4D()
 
 		let polychoron = new Polytope(
-			'solid-20-hedra',
+			'120-cell',
 			{
 				projector4d: this.projector4d
 			})
@@ -65,6 +83,19 @@ export default class App {
 		// 	this.scene.add(new THREE.GridHelper(100, 2))
 		// 	this.scene.add(new THREE.AxisHelper(20))
 		// }
+	}
+
+	initPostprocessing() {
+		this.composer = new THREE.EffectComposer(this.renderer)
+		this.composer.addPass(new THREE.RenderPass(this.scene, this.camera))
+		{
+			this.compositePass = new CompositePass()
+			this.composer.addPass(this.compositePass)
+		}
+
+		// console.log
+
+		this.composer.passes[this.composer.passes.length - 1].renderToScreen = true
 	}
 
 	changeRotate(value) {
@@ -86,6 +117,10 @@ export default class App {
 	}
 
 	animate(elapsed) {
+		this.renderer.setClearColor(this.config.clearColor)
+
+
+		GUI.stats.begin()
 		// TODO: based on elapsed
 		// TODO: make rotation ease-out
 		this.projector4d.quaternion.multiply(this.rotate4dVelocity)
@@ -94,6 +129,10 @@ export default class App {
 		this.cameraRig.quaternion.multiply(this.rotateViewVelocity)
 
 		this.renderer.render(this.scene, this.camera)
+		// this.composer.render()
+
+		GUI.stats.end()
+
 	}
 
 	onResize() {
