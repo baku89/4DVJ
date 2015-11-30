@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #ifdef CAPTURE
     #include <cstring> //for memcpy
     #include <cstdio> //for fopen, etc
-    #include <png.h>
+    #include "lpng/png.h"
 #endif
 
 #define NUM_STILL_FRAMES 128
@@ -306,116 +306,116 @@ void Projector::_capture_little (char* image)
 
 void Projector::capture (unsigned Nwide, unsigned Nhigh)
 {//captures, currently only grayscale
-    logger.info() << "capturing " << Nwide << " x " << Nhigh << " screens in "
-        << (in_color ? "color" : "grayscale") |0;
-    Logging::IndentBlock block;
+ //    logger.info() << "capturing " << Nwide << " x " << Nhigh << " screens in "
+ //        << (in_color ? "color" : "grayscale") |0;
+ //    Logging::IndentBlock block;
 
-    //check to open file first
-    logger.info() << "opening file: jenn_capture.png" |0;
-    FILE *file = fopen("jenn_capture.png", "wb");
-    if (not file) {
-        logger.warning() << "couldn't open file for writing" |0;
-        return;
-    }
+ //    //check to open file first
+ //    logger.info() << "opening file: jenn_capture.png" |0;
+ //    FILE *file = fopen("jenn_capture.png", "wb");
+ //    if (not file) {
+ //        logger.warning() << "couldn't open file for writing" |0;
+ //        return;
+ //    }
 
-    //allocate little-picture memory
-    logger.debug() << "allocating little picture" |0;
-    size_t color_bytes = in_color ? 3 : 1;
-    char* image = new(std::nothrow) char[(w+4) * (h+4) * color_bytes];
-    if (image == NULL) {
-        logger.warning() << "too little memory for little image" |0;
-        return;
-    }
+ //    //allocate little-picture memory
+ //    logger.debug() << "allocating little picture" |0;
+ //    size_t color_bytes = in_color ? 3 : 1;
+ //    char* image = new(std::nothrow) char[(w+4) * (h+4) * color_bytes];
+ //    if (image == NULL) {
+ //        logger.warning() << "too little memory for little image" |0;
+ //        return;
+ //    }
 
-    //allocate big-picture memory
-    logger.debug() << "allocating big picture" |0;
-    int w_tot = w * Nwide;
-    int h_tot = h * Nhigh;
-    char* image_tot = new(std::nothrow) char[w_tot * h_tot * color_bytes];
-    if (image_tot == NULL) {
-        logger.warning() << "too little memory for bit image" |0;
-        delete[] image;
-        return;
-    }
+ //    //allocate big-picture memory
+ //    logger.debug() << "allocating big picture" |0;
+ //    int w_tot = w * Nwide;
+ //    int h_tot = h * Nhigh;
+ //    char* image_tot = new(std::nothrow) char[w_tot * h_tot * color_bytes];
+ //    if (image_tot == NULL) {
+ //        logger.warning() << "too little memory for bit image" |0;
+ //        delete[] image;
+ //        return;
+ //    }
 
-    //calculate geometry
-    logger.debug() << "geometry: " << w_tot << " x " << h_tot << " pixels" |0;
-    Assert (paused, "must be paused to shoot");
-    float scale_factor = 1.0f / max(Nwide, Nhigh);
-    zoom(scale_factor);
-    float x_center_tot = x_center;
-    float y_center_tot = y_center;
-    float x_offset = 2 * animator->vis_rad * w_factor;
-    float y_offset = 2 * animator->vis_rad * h_factor;
+ //    //calculate geometry
+ //    logger.debug() << "geometry: " << w_tot << " x " << h_tot << " pixels" |0;
+ //    Assert (paused, "must be paused to shoot");
+ //    float scale_factor = 1.0f / max(Nwide, Nhigh);
+ //    zoom(scale_factor);
+ //    float x_center_tot = x_center;
+ //    float y_center_tot = y_center;
+ //    float x_offset = 2 * animator->vis_rad * w_factor;
+ //    float y_offset = 2 * animator->vis_rad * h_factor;
 
-    //capture screens
-    drawing->set_clipping(false); //clipping math fails for tiled images
-    logger.debug() << "capturing screens:" |0;
-    for (unsigned i=0; i<Nwide; ++i) {
-    for (unsigned j=0; j<Nhigh; ++j) {
-        Logging::IndentBlock block;
-        logger.info() << "screen " << i+1 << ", " << j+1 << "..." |0;
-        //draw little image
-        x_center = x_center_tot + x_offset * (i + 0.5f * (1.0f - Nwide));
-        y_center = y_center_tot + y_offset * (j + 0.5f * (1.0f - Nhigh));
-        display(image);
-        glAccum(GL_RETURN, 1.0f);
+ //    //capture screens
+ //    drawing->set_clipping(false); //clipping math fails for tiled images
+ //    logger.debug() << "capturing screens:" |0;
+ //    for (unsigned i=0; i<Nwide; ++i) {
+ //    for (unsigned j=0; j<Nhigh; ++j) {
+ //        Logging::IndentBlock block;
+ //        logger.info() << "screen " << i+1 << ", " << j+1 << "..." |0;
+ //        //draw little image
+ //        x_center = x_center_tot + x_offset * (i + 0.5f * (1.0f - Nwide));
+ //        y_center = y_center_tot + y_offset * (j + 0.5f * (1.0f - Nhigh));
+ //        display(image);
+ //        glAccum(GL_RETURN, 1.0f);
 
-        //copy to big picture
-        char* source=image;
-        int w_raw=color_bytes*w;
-        int w_tot_raw=color_bytes*w_tot;
-        char* dest=image_tot+w_tot_raw*h*j+w_raw*i;
-        for (int y=0; y<h; ++y) {
-            memcpy(dest, source, w_raw);
-            source+=w_raw;
-            dest+=w_tot_raw;
-        }
-    }}
-    drawing->set_clipping(true); //clipping math fails for tiled images
-    delete[] image;
+ //        //copy to big picture
+ //        char* source=image;
+ //        int w_raw=color_bytes*w;
+ //        int w_tot_raw=color_bytes*w_tot;
+ //        char* dest=image_tot+w_tot_raw*h*j+w_raw*i;
+ //        for (int y=0; y<h; ++y) {
+ //            memcpy(dest, source, w_raw);
+ //            source+=w_raw;
+ //            dest+=w_tot_raw;
+ //        }
+ //    }}
+ //    drawing->set_clipping(true); //clipping math fails for tiled images
+ //    delete[] image;
 
-    //clean up geometry
-    logger.debug() << "restoring geometry" |0;
-    x_center = x_center_tot;
-    y_center = y_center_tot;
-    zoom(1.0f/scale_factor);
+ //    //clean up geometry
+ //    logger.debug() << "restoring geometry" |0;
+ //    x_center = x_center_tot;
+ //    y_center = y_center_tot;
+ //    zoom(1.0f/scale_factor);
 
-    //write to png file
-    logger.debug() << "writing png file:" |0;
-    //  set up write structure
-    logger.debug() << "  defining header" |0;
-    png_structp p_writer = png_create_write_struct(PNG_LIBPNG_VER_STRING,
-                                                   NULL, NULL, NULL);
-    png_infop p_info = png_create_info_struct(p_writer);
-	png_init_io(p_writer, file);
-    png_set_IHDR(p_writer, p_info,
-                 w_tot, h_tot,
-	    	     8,                     //bit depth
-                 in_color ? PNG_COLOR_TYPE_RGB
-                          : PNG_COLOR_TYPE_GRAY,
-                 PNG_INTERLACE_NONE,
-		         PNG_COMPRESSION_TYPE_DEFAULT,
-                 PNG_FILTER_TYPE_DEFAULT);
-	png_write_info(p_writer, p_info);
+ //    //write to png file
+ //    logger.debug() << "writing png file:" |0;
+ //    //  set up write structure
+ //    logger.debug() << "  defining header" |0;
+ //    png_structp p_writer = png_create_write_struct(PNG_LIBPNG_VER_STRING,
+ //                                                   NULL, NULL, NULL);
+ //    png_infop p_info = png_create_info_struct(p_writer);
+	// png_init_io(p_writer, file);
+ //    png_set_IHDR(p_writer, p_info,
+ //                 w_tot, h_tot,
+	//     	     8,                     //bit depth
+ //                 in_color ? PNG_COLOR_TYPE_RGB
+ //                          : PNG_COLOR_TYPE_GRAY,
+ //                 PNG_INTERLACE_NONE,
+	// 	         PNG_COMPRESSION_TYPE_DEFAULT,
+ //                 PNG_FILTER_TYPE_DEFAULT);
+	// png_write_info(p_writer, p_info);
 
-    //  write image row-by-row
-    logger.debug() << "  writing data" |0;
-    png_byte** rows = new png_byte*[h_tot];
-    for (int y=0; y<h_tot; ++y) {
-        rows[y] = (png_byte*)(image_tot + color_bytes
-                                        * (w_tot * (h_tot -y -1)));
-    }
-	png_write_image(p_writer, rows);
-    delete[] rows;
-    delete[] image_tot;
+ //    //  write image row-by-row
+ //    logger.debug() << "  writing data" |0;
+ //    png_byte** rows = new png_byte*[h_tot];
+ //    for (int y=0; y<h_tot; ++y) {
+ //        rows[y] = (png_byte*)(image_tot + color_bytes
+ //                                        * (w_tot * (h_tot -y -1)));
+ //    }
+	// png_write_image(p_writer, rows);
+ //    delete[] rows;
+ //    delete[] image_tot;
 
-    //  finish png file
-    logger.debug() << "  finishing file" |0;
-	png_write_end(p_writer, NULL);
-    fclose(file);
+ //    //  finish png file
+ //    logger.debug() << "  finishing file" |0;
+	// png_write_end(p_writer, NULL);
+ //    fclose(file);
 
-    logger.info() << "finished capturing." |0;
+ //    logger.info() << "finished capturing." |0;
 }
 #endif
 int Projector::select (int X, int Y)

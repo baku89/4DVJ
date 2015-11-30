@@ -24,6 +24,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "linalg.h"
 #include <vector>
 
+#include "todd_coxeter.h"
+
 namespace Polytope
 {
 
@@ -44,6 +46,7 @@ void view (const int* coxeter,  //upper triang of cox. matrix
    const Vect& weights);        //vertex weights, for positioning center
 void select (int code, int edges=1111, int faces=111111, int weights=1111);
 
+void exportGraph(std::string path, ToddCoxeter::Graph* graph);
 
 //named polytopes
 const int the_5_cell    = 322323234;

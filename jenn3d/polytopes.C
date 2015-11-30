@@ -21,6 +21,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "drawing.h"
 #include "projection.h"
 #include <cstring>
+#include <ctime>
+#include <sstream>
+
+#include <jansson.h>
+
+using namespace std;
 
 namespace Polytope
 {
@@ -184,9 +190,28 @@ void view (const int* coxeter,
         delete drawing;
     }
 
-    drawing = new Drawings::Drawing(
-              new ToddCoxeter::Graph(coxeter, gens,
-                                     v_cogens, e_gens, f_gens, weights));
+    ToddCoxeter::Graph* graph = new ToddCoxeter::Graph(coxeter, gens,
+                                 v_cogens, e_gens, f_gens, weights);
+
+
+    // --------------------------------------------------
+    // export graph
+
+    stringstream ss;
+    time_t t = time(0);
+    struct tm * now = localtime( & t );
+    ss << "../data/0 - JSON/"
+        << (now->tm_year + 1900) << '-' 
+        << (now->tm_mon + 1) << '-'
+        << now->tm_mday << '-'
+        << now->tm_hour << '-'
+        << now->tm_min << '-'
+        << now->tm_sec
+        << ".json";
+
+    exportGraph(ss.str(), graph);
+
+    drawing = new Drawings::Drawing(graph);
 
     if (polytope_exists) {
         drawing->set_params(params);
@@ -194,6 +219,41 @@ void view (const int* coxeter,
     }
 
     polytope_exists = true;
+}
+
+void exportGraph(std::string path, ToddCoxeter::Graph* graph) {
+
+    json_t *model = json_object();
+    json_t *verticesJson = json_array();
+    json_t *facesJson = json_array();
+
+    std::vector<Vect> points = graph->points;
+    for (int i = 0; i < points.size(); i++) {
+        Vect pt = points[i];
+        json_t *vertexJson = json_array(); 
+        for (int j = 0; j < 4; j++) {
+            json_array_append(vertexJson, json_real(pt[j]));
+        }
+        json_array_append(verticesJson, vertexJson);
+    }
+    json_object_set_new(model, "vertices", verticesJson);
+
+    std::vector<ToddCoxeter::Ring> faces = graph->faces;
+    for (int i = 0; i < faces.size(); i++) {
+        ToddCoxeter::Ring face = faces[i];
+        json_t *faceJson = json_array();
+        for (int j = 0; j < face.size(); j++) {
+            json_array_append(faceJson, json_integer(face[j]));
+        }
+        json_array_append(facesJson, faceJson);
+        std::cout << std::endl;
+    }
+    json_object_set_new(model, "faces", facesJson);  
+
+
+    if (json_dump_file(model, path.c_str(), 0) != 0) {
+        std::cout << "cannot write" << std::endl;
+    }
 }
 
 }

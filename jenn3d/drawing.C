@@ -447,8 +447,10 @@ void Drawing::export_stl ()
 {
     if (_update_needed) _update();
 
+    logger.info() << "Unco";
+
     //open file
-    export_file = new STL("jenn_export.stl");
+    export_file = new STL("../jenn_export.stl");
 
     //export
     for (int v = 0; v < ord; ++v) {
