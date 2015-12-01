@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "export NODE_ENV='dev'; electron ./build & webpack --watch --progress --colors --output-source-map-file"
+    "start": "gulp"
   },
   "author": "Baku Hashimoto",
   "license": "MIT",
