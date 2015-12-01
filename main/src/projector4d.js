@@ -1,12 +1,35 @@
-/* global THREE */
+/* global THREE, Kontrol, GUI */
+
+import {lerp} from 'interpolation'
 
 export default class Projector4D {
 
 	constructor() {
-		this.distance = 1
+		this.distance = new THREE.Vector2(1, 0)
+		this.vibratingDistance = 1
+		this.distanceTarget = 1
+		this.distanceInfluence = 0
+		this.baseDistance = 1
+
 		this.translate = new THREE.Vector4()
 		this.quaternion = new THREE.Quaternion()
 		this.matrix = new THREE.Matrix4()
+
+		Kontrol.on('changeDistance4d', (value) => {
+			this.distanceTarget = value * 3
+		})
+		Kontrol.on('changeDistance4dInfluence', (value) => {
+			this.distanceInfluence = value
+		})
+	}
+
+	update(elapsed) {
+
+		this.vibratingDistance =  lerp(this.vibratingDistance, this.distanceTarget, 0.1)
+		this.distance.x = lerp(this.baseDistance, this.vibratingDistance, this.distanceInfluence)
+		this.updateMatrix()
+
+		// console.log(this.distance.x)
 	}
 
 	updateMatrix() {

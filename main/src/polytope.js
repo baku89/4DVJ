@@ -16,9 +16,9 @@ export default class Polytope extends THREE.Object3D {
 
 		this.uniforms = {
 			matrix4d: {type: 'm4', value: this.projector4d.matrix},
-			distance4d: {type: 'f', value: this.projector4d.distance},
+			distance4d: {type: 'v2', value: this.projector4d.distance},
 			surfaceColor: {type: 'c', value: new THREE.Color(0xff2299)},
-			opacity: {type: 'f', value: 0.5}
+			opacity: {type: 'f', value: 0.8}
 		}
 
 		this.geometry = new THREE.BufferGeometry()
