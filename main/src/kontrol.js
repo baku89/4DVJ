@@ -6,6 +6,28 @@ import $ from 'jquery'
 import osc from 'node-osc'
 import Config from './config'
 
+let KEY_MAP = {
+	'A': {keydown: 'makeTurbulance', keyup: null},
+	'Z': {keydown: 'changePolytope', keyup: null},
+	'S': {keydown: 'changeRotate', keyup: null},
+	'D': {keydown: 'enableSlitscan', keyup: 'disableSlitscan'},
+	'F': {keydown: 'overlayAttack', keyup: null},
+
+	'\n': {keydown: 'magnifyCamera', keyup: 'unmagnifyCamera'},
+
+	// effects
+	'Q': {keydown: 'toggleNone', keyup: null},
+	'W': {keydown: 'toggleRepeat', keyup: null},
+	'E': {keydown: 'toggleMirror', keyup: null},
+
+	// util
+	'M': {keydown: 'toggleGuide', keyup: null},
+}
+
+let DECORATIVE_KEY = {
+	'13': '\n'
+}
+
 class Kontrol extends EventEmitter{
 
 	constructor() {
@@ -21,8 +43,29 @@ class Kontrol extends EventEmitter{
 		// midi
 		navigator.requestMIDIAccess().then(this.onMidiSuccess.bind(this), this.onMidiFailure.bind(this))
 
+
+		this.initDom()
+	}
+
+	initDom() {
+		$('.control').on('mousedown mouseup', () => {
+			return false
+		})
+
+		let self = this
+
+		$('.exclusion-color button').on('click', function() {
+			let color = $(this).css('background-color')
+			self.emit('changeExclusionColor', color)
+		})
+
+
 		// keyboard
 		$(window).on('keydown', this.onKeydown.bind(this))
+		$(window).on('keyup', this.onKeyup.bind(this))
+		$(window).on('mousedown', this.onMousedown.bind(this))
+		$(window).on('mouseup', this.onMouseup.bind(this))
+
 	}
 
 	onMidiSuccess(m) {
@@ -76,23 +119,25 @@ class Kontrol extends EventEmitter{
 	}
 
 	onKeydown(evt) {
-
-		switch (evt.keyCode) {
-			case 65: // 'A'
-				this.emit('makeTurbulance')
-				break
-			case 32: // space
-				this.emit('changePolytope')
-				break
-			case 83: // 'S'
-				this.emit('toggleRepeat')
-				break
-			case 'Q'.charCodeAt():
-				this.emit('changeRotate', _.random(0.5, 1.0, true))
-				break
-			case 'W'.charCodeAt():
-				this.emit('overlayAttack')
+		console.log(evt.keyCode)
+		let key = DECORATIVE_KEY[evt.keyCode] || String.fromCharCode(evt.keyCode)
+		if (KEY_MAP[key] && KEY_MAP[key].keydown) {
+			this.emit(KEY_MAP[key].keydown, 1.0)
 		}
+	}
+
+	onKeyup(evt) {
+		let key = DECORATIVE_KEY[evt.keyCode] || String.fromCharCode(evt.keyCode)
+		if (KEY_MAP[key] && KEY_MAP[key].keyup) {
+			this.emit(KEY_MAP[key].keyup, 1.0)
+		}
+	}
+
+	onMousedown() {
+		// this.emit('magnifyCamera')
+	}
+	onMouseup() {
+		// this.emit('unmagnifyCamera')
 	}
 
 

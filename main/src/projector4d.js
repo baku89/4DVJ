@@ -1,6 +1,8 @@
 /* global THREE, Kontrol, GUI */
 
 import {lerp} from 'interpolation'
+import _ from 'lodash'
+import radians from 'degrees-radians'
 
 export default class Projector4D {
 
@@ -21,6 +23,20 @@ export default class Projector4D {
 		Kontrol.on('changeDistance4dInfluence', (value) => {
 			this.distanceInfluence = value
 		})
+
+		this.rotateAxis = new THREE.Vector3(1, 0, 0)
+		this.rotateBase = new THREE.Quaternion()
+		this.rotate = new THREE.Quaternion()
+		Kontrol.on('changeRotate', this.changeRotate.bind(this))
+	}
+
+	changeRotate(value) {
+		let axis = new THREE.Vector3(_.random(-1, 1, true), _.random(-1, 1, true), _.random(-1, 1, true))
+		let angle = lerp(0.7, 1.3, Math.random()) * Math.PI
+		this.rotateAxis.applyAxisAngle(axis, angle)
+		this.rotateAxis.normalize()
+		this.rotate.setFromAxisAngle(this.rotateAxis, radians(8))
+		this.rotateBase.setFromAxisAngle(this.rotateAxis, radians(1))
 	}
 
 	update(elapsed) {
@@ -28,6 +44,11 @@ export default class Projector4D {
 		this.vibratingDistance =  lerp(this.vibratingDistance, this.distanceTarget, 0.1)
 		this.distance.x = lerp(this.baseDistance, this.vibratingDistance, this.distanceInfluence)
 		this.updateMatrix()
+
+		// TODO: based on elapsed
+		// TODO: make rotation ease-out
+		this.quaternion.multiply(this.rotate)
+		this.rotate.slerp(this.rotateBase, 0.1)
 
 		// console.log(this.distance.x)
 	}

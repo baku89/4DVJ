@@ -1,10 +1,12 @@
 #pragma glslify: chromaticAberration = require(./chromatic-aberration)
-
-#pragma glslify: fxaa = require(glsl-fxaa) 
+#pragma glslify: blendExclusion = require(./exclusion)
+// #pragma glslify: fxaa = require(glsl-fxaa) 
 
 
 uniform vec2 resolution;
 uniform sampler2D tDiffuse;
+uniform float exposure;
+uniform vec3 exclusionColor;
 // uniform sampler2D tNoise;
 // uniform vec2 noiseSize;
 // uniform vec2 noiseOffset;
@@ -23,10 +25,16 @@ void main() {
   // chromatic aberration
   // TODO: aspect correction
   vec4 color = chromaticAberration(tDiffuse, vUv);
+
+
+
+  // exclusion color
+  color = vec4(blendExclusion(color.rgb, exclusionColor), 1.0);
+
+  // vec4 color = texture2D(tDiffuse, vUv);
   
   // fxaa
   // vec4 color = fxaa(tDiffuse, fragCoord, resolution);
-
 
 
   // vignette

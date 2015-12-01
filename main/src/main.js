@@ -4,17 +4,21 @@ import 'jquery.transit'
 import _ from 'lodash'
 import TWEEN from 'tween.js'
 import {smoothstep, lerp} from 'interpolation' 
-
 import radians from 'degrees-radians'
 import degrees from 'radians-degrees'
-import Kontrol from './kontrol'
-import PolytopeManager from './polytope-manager'
-import Projector4D from './projector4d'
-import Ticker from './ticker'
+
 import GUI from './gui'
 import Config from './config'
 window.GUI = GUI
 window.Kontrol = Kontrol
+
+import Kontrol from './kontrol'
+import Ticker from './ticker'
+
+import PolytopeManager from './polytope-manager'
+import Projector4D from './projector4d'
+import OrbitalCamera from './orbital-camera'
+import Dandruff from './dandruff'
 
 // TODO: resolve web_modules
 import '../web_modules/shaders/CopyShader'
@@ -29,7 +33,7 @@ import CompositePass from './post-effects/composite-pass'
 import OverlayPass from './post-effects/overlay-pass'
 
 import '../web_modules/OrbitControls'
-
+import '../web_modules/OBJLoader'
 
 export default class App {
 
@@ -62,25 +66,8 @@ export default class App {
 		// this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 		// this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
 
-		{
-			this.camera = new THREE.PerspectiveCamera(60, Config.RENDER_WIDTH / Config.RENDER_HEIGHT, .1, 1000)
-			this.camera.position.set(0, 0, 3)
-			this.cameraRig = new THREE.Object3D()
-			this.cameraRig.add(this.camera)
-			this.scene.add(this.cameraRig)
-			Kontrol.on('zoomCamera', (value) => {
-				this.camera.fov = lerp(10, 120, value)
-				console.log(this.camera.fov, value)
-				this.camera.updateProjectionMatrix()
-			})
-		}
-
-		// rotate
-		this.rotateViewVelocity = new THREE.Quaternion()
-		this.rotate4dAxis = new THREE.Vector3(1, 0, 0)
-		this.rotate4dBase = new THREE.Quaternion()
-		this.rotate4d = new THREE.Quaternion()
-		Kontrol.on('changeRotate', this.changeRotate.bind(this))
+		this.orbitalCamera = new OrbitalCamera()
+		this.scene.add(this.orbitalCamera)
 
 		window.addEventListener('resize', this.onResize.bind(this))
 		window.addEventListener('click', this.onClick.bind(this))
@@ -92,20 +79,28 @@ export default class App {
 		this.polytopeManager = new PolytopeManager({
 			projector4d: this.projector4d
 		})
-
 		this.scene.add(this.polytopeManager)
 
-		// {
-		// 	// generate helper
-		// 	this.scene.add(new THREE.GridHelper(100, 2))
-		// 	this.scene.add(new THREE.AxisHelper(20))
-		// }
+		this.dandruff = new Dandruff({
+			projector4d: this.projector4d
+		})
+		this.scene.add(this.dandruff)
+
+		{
+			// generate helper
+			this.guide = new THREE.Object3D()
+			this.guide.visible = false
+			this.guide.add(new THREE.GridHelper(100, 2))
+			this.guide.add(new THREE.AxisHelper(20))
+			this.scene.add(this.guide)
+			Kontrol.on('toggleGuide', () => {this.guide.visible = !this.guide.visible})
+		}
 	}
 
 
 	initPostprocessing() {
 		this.composer = new THREE.EffectComposer(this.renderer)
-		this.composer.addPass(new THREE.RenderPass(this.scene, this.camera))
+		this.composer.addPass(new THREE.RenderPass(this.scene, this.orbitalCamera.camera))
 
 		{
 			this.deformPass = new DeformPass()
@@ -119,11 +114,6 @@ export default class App {
 			this.overlayPass = new OverlayPass()
 			this.composer.addPass(this.overlayPass)
 		}
-		// {
-		// 	this.fxaaPass = new THREE.ShaderPass(THREE.FXAAShader)
-		// 	this.fxaaPass.uniforms.tDiffuse.value.set(1/window.innerWidth, 1/window.innerHeight)
-		// 	this.composer.addPass(this.fxaaPass)
-		// }
 		{
 			let toScreen = new THREE.ShaderPass(THREE.CopyShader)
 			this.composer.addPass(toScreen)
@@ -134,37 +124,20 @@ export default class App {
 		this.composer.passes[this.composer.passes.length - 1].renderToScreen = true
 	}
 
-	changeRotate(value) {
-		// 4d
-		let axis = new THREE.Vector3(_.random(-1, 1, true), _.random(-1, 1, true), _.random(-1, 1, true))
-		let angle = lerp(0.7, 1.3, Math.random()) * Math.PI
-		this.rotate4dAxis.applyAxisAngle(axis, angle)
-		this.rotate4dAxis.normalize()
-		this.rotate4d.setFromAxisAngle(this.rotate4dAxis, radians(8))
-		this.rotate4dBase.setFromAxisAngle(this.rotate4dAxis, radians(1))
-
-		// view
-		axis.set(_.random(-1, 1, true), _.random(-1, 1, true), _.random(-1, 1, true))
-		this.rotateViewVelocity.setFromAxisAngle(axis, value * radians(0.5))
-	}
-
 	animate(elapsed, time) {
 		this.renderer.setClearColor(this.config.clearColor)
 		GUI.stats.begin()
 
-		TWEEN.update()
+		// TWEEN.update()
 
-		// TODO: based on elapsed
-		// TODO: make rotation ease-out
-		this.projector4d.quaternion.multiply(this.rotate4d)
-		this.projector4d.update(elapsed)
-		this.rotate4d.slerp(this.rotate4dBase, 0.1)
-
-		this.cameraRig.quaternion.multiply(this.rotateViewVelocity)
+		this.projector4d.update()
+		this.orbitalCamera.update()
+		this.dandruff.update()
 
 		// update posteffects
 		this.deformPass.update(elapsed)
 		this.overlayPass.update(elapsed)
+		this.compositePass.update(elapsed)
 
 		// this.renderer.render(this.scene, this.camera)
 		this.composer.render()
@@ -204,10 +177,32 @@ function loadVideo(id, url) {
 	return d.promise()
 }
 
+function loadObj(id, url) {
+	let d = new $.Deferred()
+	let loader = new THREE.OBJLoader()
+	loader.load(url, (obj) => {
+		window.loader[id] = obj 
+		d.resolve()
+	})
+	return d.promise()
+}
+
+function loadTexture(id, url) {
+	let d = $.Deferred()
+	let loader = new THREE.TextureLoader()
+	loader.load(url, (texture) => {
+		window.loader[id] = texture
+		d.resolve()
+	})
+	return d.promise()
+}
+
 
 $.when(
 	$.getJSON('./data/graphs.json', (data) => {window.loader.graphs = data}),
-	loadVideo('overlay_attack', './texture/overlay_attack.mp4')
+	loadVideo('overlay_attack', './texture/overlay_attack.mp4'),
+	loadObj('dandruff_small_obj', './data/dandruff_small.obj'),
+	loadTexture('dandruff_small_tex', './texture/dandruff_small.png')
 ).then(() => {
 	window.app = new App()
 })
