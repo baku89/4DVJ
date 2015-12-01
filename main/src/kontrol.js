@@ -35,28 +35,32 @@ class Kontrol extends EventEmitter{
 
 	onMidiEvent(evt) {
 		// console.log(evt.data.toString('hex'))
-		let type = evt.data[0]
-		let name = evt.data[1]
-		let value = evt.data[2] / 128.0
+		// let type = evt.data[0]
+		// let name = evt.data[1]
+		// let value = evt.data[2] / 128.0
 
-		if (type == 0x80) {
-			// console.log('Note on', name, value)
-			this.emit(`up.${name}`, value)
-		} else if (type == 0x90) {
-			// console.log('Note off', name, value)
-			this.emit(`down.${name}`, value)
-		} else if (type == 0xb0) {
-			// console.log('Contorl')
-		}
+		// if (type == 0x80) {
+		// 	// console.log('Note on', name, value)
+		// 	this.emit(`up.${name}`, value)
+		// } else if (type == 0x90) {
+		// 	// console.log('Note off', name, value)
+		// 	this.emit(`down.${name}`, value)
+		// } else if (type == 0xb0) {
+		// 	// console.log('Contorl')
+		// }
 	}
 
 	onKeydown(evt) {
 		console.log('Kontrol:keydown', evt.keyCode)
 
 		switch (evt.keyCode) {
+			case 65: // 'A'
+				this.emit('changeRotate', 1.0)
+				break
 			case 32: // space
 				this.emit('changePolytope')
 				break
+
 		}
 	}
 

@@ -3,8 +3,6 @@ export default class Graph {
 
 	constructor(data) {
 
-		console.log(data)
-
 		this.vertices = data.vertices.map((v) => new THREE.Vector4(v[0], v[1], v[2], v[3]))
 		this.faces = []
 

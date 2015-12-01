@@ -21,6 +21,7 @@ import '../web_modules/postprocessing/RenderPass'
 import '../web_modules/postprocessing/EffectComposer'
 
 import CompositePass from './post-effects/composite-pass'
+import DeformPass from './post-effects/deform-pass'
 
 import '../web_modules/OrbitControls'
 
@@ -45,8 +46,8 @@ export default class App {
 	initScene() {
 		this.scene = new THREE.Scene()
 		this.renderer = new THREE.WebGLRenderer({
-			canvas: document.getElementById('main')
-			// antialias: true
+			canvas: document.getElementById('main'),
+			antialias: true
 		})
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 
@@ -64,7 +65,7 @@ export default class App {
 		this.rotateViewVelocity = new THREE.Quaternion()
 		this.rotate4dVelocity = new THREE.Quaternion()
 
-		Kontrol.on('down.36', this.changeRotate.bind(this))
+		Kontrol.on('changeRotate', this.changeRotate.bind(this))
 
 		window.addEventListener('resize', this.onResize.bind(this))
 		window.addEventListener('click', this.onClick.bind(this))
@@ -92,9 +93,17 @@ export default class App {
 		this.composer.addPass(new THREE.RenderPass(this.scene, this.camera))
 
 		{
+			this.deformPass = new DeformPass()
+			this.composer.addPass(this.deformPass)
+		}
+		{
 			this.compositePass = new CompositePass()
 			this.composer.addPass(this.compositePass)
 		}
+		// {
+		// 	this.overlayPass = new OverlayPass()
+		// 	this.composer.addPass(this.overlayPass)
+		// }
 		// {
 		// 	this.fxaaPass = new THREE.ShaderPass(THREE.FXAAShader)
 		// 	this.fxaaPass.uniforms.tDiffuse.value.set(1/window.innerWidth, 1/window.innerHeight)
@@ -139,6 +148,9 @@ export default class App {
 		this.projector4d.updateMatrix()
 
 		this.cameraRig.quaternion.multiply(this.rotateViewVelocity)
+
+		// update posteffects
+		this.deformPass.update(elapsed)
 
 		// this.renderer.render(this.scene, this.camera)
 		this.composer.render()

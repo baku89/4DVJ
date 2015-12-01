@@ -26,6 +26,18 @@ const graphList = [
 		subdivision: 10
 	},
 	{
+		name: 'solid-8-hedra',
+		subdivision: 10
+	},
+	{
+		name: 'solid-20-hedra',
+		subdivision: 10
+	},
+	{
+		name: '600-cell',
+		subdivision: 10
+	},
+	{
 		name: 'duoprisms-12x12',
 		subdivision: 10
 	}
@@ -46,7 +58,7 @@ export default class PolytopeManager extends THREE.Object3D  {
 				loader.graphs[graph.name],
 				{
 					projector4d: this.projector4d,
-					subdivision: 10
+					subdivision: graph.subdivision
 				})
 			polytope.visible = false
 			this.polytopes.push(polytope)
