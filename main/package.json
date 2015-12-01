@@ -25,7 +25,9 @@
     "eslint-loader": "^1.1.1",
     "eventemitter3": "^1.1.1",
     "glsl-fxaa": "^3.0.0",
+    "glsl-map": "^1.0.1",
     "glsl-noise": "0.0.0",
+    "glsl-pi": "^1.0.0",
     "glslify-loader": "^1.0.2",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.0",
@@ -37,6 +39,7 @@
     "gulp-stylus": "^2.1.0",
     "gulp-util": "^3.0.7",
     "gulp-webpack": "^1.5.0",
+    "interpolation": "^1.0.0",
     "jade-loader": "^0.8.0",
     "jquery": "^2.1.4",
     "jquery.transit": "^0.9.12",
@@ -54,6 +57,7 @@
     "stylus-loader": "^1.4.2",
     "three": "^0.73.0",
     "three.js": "^0.73.0",
+    "tween.js": "^16.3.1",
     "webpack-stream": "^2.2.0"
   }
 }
