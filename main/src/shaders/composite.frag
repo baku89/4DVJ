@@ -1,4 +1,7 @@
-// #pragma glslify: chromaticAberration = require(./chromatic-aberration)
+#pragma glslify: chromaticAberration = require(./chromatic-aberration)
+
+#pragma glslify: fxaa = require(glsl-fxaa) 
+
 
 uniform vec2 resolution;
 uniform sampler2D tDiffuse;
@@ -14,7 +17,17 @@ void main() {
   // vec2 fragCoord = vUv * resolution;
 
   // TODO: aspect correction
-  // vec4 color = chromaticAberration(tDiffuse, vUv);
+
+  vec2 fragCoord = vUv * resolution;
+
+  // chromatic aberration
+  // TODO: aspect correction
+  vec4 color = chromaticAberration(tDiffuse, vUv);
+  
+  // fxaa
+  // vec4 color = fxaa(tDiffuse, fragCoord, resolution);
+
+
 
   // vignette
   // color.rgb = vec3(1.);
@@ -30,5 +43,5 @@ void main() {
   //   color.rgb *= vec3(1. - noise.a * 0.6);
   // }
 
-  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+  gl_FragColor = color;//texture2D(tDiffuse, vUv);
 }

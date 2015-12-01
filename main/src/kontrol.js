@@ -1,4 +1,7 @@
+/* global THREE */
+
 import EventEmitter from 'eventemitter3'
+import $ from 'jquery'
 
 class Kontrol extends EventEmitter{
 
@@ -9,6 +12,8 @@ class Kontrol extends EventEmitter{
 		this.inputs = []
 
 		navigator.requestMIDIAccess().then(this.onMidiSuccess.bind(this), this.onMidiFailure.bind(this))
+
+		$(window).on('keydown', this.onKeydown.bind(this))
 	}
 
 	onMidiSuccess(m) {
@@ -44,6 +49,18 @@ class Kontrol extends EventEmitter{
 			// console.log('Contorl')
 		}
 	}
+
+	onKeydown(evt) {
+		console.log('Kontrol:keydown', evt.keyCode)
+
+		switch (evt.keyCode) {
+			case 32: // space
+				this.emit('changePolytope')
+				break
+		}
+	}
+
+
 }
 
 

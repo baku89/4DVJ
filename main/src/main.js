@@ -1,17 +1,20 @@
-/* global THREE $ */
+/* global THREE */
+import $ from 'jquery'
 import _ from 'lodash'
 
 import radians from 'degrees-radians'
 import degrees from 'radians-degrees'
 import Kontrol from './kontrol'
-import Polytope from './polytope'
+import PolytopeManager from './polytope-manager'
 import Projector4D from './projector4d'
 import Ticker from './ticker'
 import GUI from './gui'
 window.GUI = GUI
+window.Kontrol = Kontrol
 
 // TODO: resolve web_modules
 import '../web_modules/shaders/CopyShader'
+import '../web_modules/shaders/FXAAShader'
 import '../web_modules/postprocessing/ShaderPass'
 import '../web_modules/postprocessing/MaskPass'
 import '../web_modules/postprocessing/RenderPass'
@@ -19,8 +22,7 @@ import '../web_modules/postprocessing/EffectComposer'
 
 import CompositePass from './post-effects/composite-pass'
 
-
-import '../web_modules/OrbitControls.js'
+import '../web_modules/OrbitControls'
 
 export default class App {
 
@@ -43,8 +45,8 @@ export default class App {
 	initScene() {
 		this.scene = new THREE.Scene()
 		this.renderer = new THREE.WebGLRenderer({
-			canvas: document.getElementById('main'),
-			antialias: true
+			canvas: document.getElementById('main')
+			// antialias: true
 		})
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 
@@ -71,12 +73,11 @@ export default class App {
 	initObject() {
 		this.projector4d = new Projector4D()
 
-		let polychoron = new Polytope(
-			'120-cell',
-			{
-				projector4d: this.projector4d
-			})
-		this.scene.add(polychoron)
+		this.polytopeManager = new PolytopeManager({
+			projector4d: this.projector4d
+		})
+
+		this.scene.add(this.polytopeManager)
 
 		// {
 		// 	// generate helper
@@ -85,12 +86,23 @@ export default class App {
 		// }
 	}
 
+
 	initPostprocessing() {
 		this.composer = new THREE.EffectComposer(this.renderer)
 		this.composer.addPass(new THREE.RenderPass(this.scene, this.camera))
+
 		{
 			this.compositePass = new CompositePass()
 			this.composer.addPass(this.compositePass)
+		}
+		// {
+		// 	this.fxaaPass = new THREE.ShaderPass(THREE.FXAAShader)
+		// 	this.fxaaPass.uniforms.tDiffuse.value.set(1/window.innerWidth, 1/window.innerHeight)
+		// 	this.composer.addPass(this.fxaaPass)
+		// }
+		{
+			let toScreen = new THREE.ShaderPass(THREE.CopyShader)
+			this.composer.addPass(toScreen)
 		}
 
 		// console.log
@@ -128,8 +140,8 @@ export default class App {
 
 		this.cameraRig.quaternion.multiply(this.rotateViewVelocity)
 
-		this.renderer.render(this.scene, this.camera)
-		// this.composer.render()
+		// this.renderer.render(this.scene, this.camera)
+		this.composer.render()
 
 		GUI.stats.end()
 
@@ -145,4 +157,13 @@ export default class App {
 	}
 }
 
-window.app = new App()
+// load main
+window.loader = {}
+
+$.when(
+	$.getJSON('./data/graphs.json', (data) => {window.loader.graphs = data})
+).then(() => {
+	console.log('Unco')
+	window.app = new App()
+})
+

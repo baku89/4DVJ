@@ -7,11 +7,10 @@ const noise = new Noise(Math.random())
 
 export default class Polytope extends THREE.Object3D {
 
-	constructor(name, parameters) {
+	constructor(graph, parameters) {
 		super()
 
-		this.name = name
-		this.graph = new Graph(this.name)
+		this.graph = new Graph(graph)
 
 		this.projector4d = parameters.projector4d || new Projector4D()
 
@@ -21,9 +20,6 @@ export default class Polytope extends THREE.Object3D {
 			surfaceColor: {type: 'c', value: new THREE.Color(0xff2299)},
 			opacity: {type: 'f', value: 0.5}
 		}
-
-		GUI.add(this.uniforms.opacity, 'value', 0, 1).name('opacity')
-		GUI.addColor(this.uniforms.surfaceColor, 'value')
 
 		this.geometry = new THREE.BufferGeometry()
 		this.material = new THREE.ShaderMaterial({
@@ -47,14 +43,14 @@ export default class Polytope extends THREE.Object3D {
 
 		// calc subdivision amplify
 		let subdivisionCoef = 0
-		this.graph.faces.forEach((face) => {
-			subdivisionCoef += face.length - 2
-		})
+		// this.graph.faces.forEach((face) => {
+		// 	subdivisionCoef += face.length - 2
+		// })
 
-		// console.log(subdivisionCoef)
-		let subdivision = subdivisionCoef
+		// // console.log(subdivisionCoef)
+		// let subdivision = subdivisionCoef
 
-		this.subdivide(5)//#subdivision)
+		this.subdivide(parameters.subdivision || 5)
 
 		let positions = this.geometry.getAttribute('position')
 		console.log('Polyhedron:', name, 'vertex=', positions.count / positions.itemSize)
@@ -67,7 +63,7 @@ export default class Polytope extends THREE.Object3D {
 	}
 
 	generateVertexColor() {
-		let scale = 5
+		let scale = 8
 		this.vertexColors = this.graph.vertices.map((vertex) => {
 			let r = noise.perlin2(vertex.x * scale, vertex.y * scale)
 			let g = noise.perlin2(vertex.z * scale, vertex.w * scale)

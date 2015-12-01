@@ -10,6 +10,6 @@ export default class CompositePass extends THREE.ShaderPass {
 			vertexShader: require('../shaders/basic-transform.vert'),
 			fragmentShader: require('../shaders/composite.frag'),
 		})
-		this.enabled = false
+		this.enabled = true
 	}
 }

@@ -1,9 +1,9 @@
 /* global THREE */
 export default class Graph {
 
-	constructor(name) {
-		let path = `./data/${name}.json`
-		let data = require(path)
+	constructor(data) {
+
+		console.log(data)
 
 		this.vertices = data.vertices.map((v) => new THREE.Vector4(v[0], v[1], v[2], v[3]))
 		this.faces = []
@@ -11,28 +11,6 @@ export default class Graph {
 		// subdivide n-gon to face 3 or 4
 		// this.subdivideNgon(data.faces[0])
 		data.faces.forEach(this.subdivideNgon.bind(this))
-
-		// data.faces.forEach((face, i) => {
-		// 	this.subdivideNgon(face, i == 0)
-		// 	return false
-		// 	// if (face.length == 3 || face.length == 4) {
-		// 	// 	this.faces.push(face)
-
-		// 	// } else if (face.length == 5) {
-		// 	// 	this.faces.push(
-		// 	// 		[face[0], face[1], face[2]],
-		// 	// 		[face[2], face[3], face[4], face[0]])
-
-		// 	// } else if (face.length == 6) {
-		// 	// 	this.faces.push(
-		// 	// 		[face[0], face[1], face[2]],
-		// 	// 		[face[0], face[2], face[3]],
-		// 	// 		[face[0], face[3], face[5]],
-		// 	// 		[face[3], face[4], face[5]])
-		// 	// } else {
-		// 	// 	this.subdivideNgon(face)
-		// 	// }
-		// })
 	}
 
 	subdivideNgon(face) {

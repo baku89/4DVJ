@@ -1,8 +1,3 @@
-uniform sampler2D tDiffuse;
-
-varying vec2 vUv;
-
-
 vec2 barrelDistortion(vec2 coord, float amt) {
   vec2 cc = coord - 0.5;
   float dist = dot(cc, cc);
@@ -31,20 +26,21 @@ vec4 spectrum_offset(float t) {
 }
 
 
-const float max_distort = 2.2;
-const int num_iter = 12;
-const float reci_num_iter_f = 1.0 / float(num_iter);
+vec4 apply(sampler2D tex, vec2 uv) { 
+  const float max_distort = 2.2;
+  const int num_iter = 6;//12;
+  const float reci_num_iter_f = 1.0 / float(num_iter);
 
-void main() { 
   vec4 sumcol = vec4(0.0);
   vec4 sumw = vec4(0.0);  
   for (int i = 0; i < num_iter; i++){
     float t = float(i) * reci_num_iter_f;
     vec4 w = spectrum_offset(t);
     sumw += w;
-    sumcol += w * texture2D(tDiffuse, barrelDistortion(vUv, .04 * max_distort * t));
+    sumcol += w * texture2D(tex, barrelDistortion(uv, .04 * max_distort * t));
   }
     
-  gl_FragColor = sumcol / sumw;
-  // gl_FragColor = texture2D(tDiffuse, uv);
+  return sumcol / sumw;
 }
+
+#pragma glslify: export(apply)

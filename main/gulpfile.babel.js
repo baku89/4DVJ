@@ -13,6 +13,7 @@ let developmentMode = true
 gulp.task('webpack', () => {
   let config = {
     watch: true,
+    watchDelay: 50,
     entry: {
       electron: './src/electron.js',
       main: ['./src/main.js']
@@ -34,12 +35,18 @@ gulp.task('webpack', () => {
     plugins: [
       new webpack.IgnorePlugin(/vertx/)
     ],
-    resolve: {
-      moduleDirectories: ["web_modues", "node_modules"]
-    },
     target: 'atom',
     "node": {
-      __dirname: true
+      console: false,
+      global: true,
+      process: true,
+      Buffer: true,
+      __filename: true,
+      __dirname: true,
+      setImmediate: true
+    },
+    resolve: {
+      modulesDirectories: ["web_modules", "node_modules"]
     },
     "eslint": {
       configFile: './.eslintrc',
