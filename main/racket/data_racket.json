@@ -1,0 +1,60 @@
+{
+	"pattrstorage" : 	{
+		"name" : "fft[1]",
+		"slots" : 		{
+			"1" : 			{
+				"id" : 1,
+				"data" : 				{
+					"address" : [ "audio" ],
+					"boost" : [ 1.0 ],
+					"channel1" : [ "1 Input 1" ],
+					"channel2" : [ "2 Input 2" ],
+					"device" : [ "Core Audio" ],
+					"deviceOn" : [ 1.0 ],
+					"fftType" : [ "blackman92" ],
+					"filterMode" : [ "allpass" ],
+					"filterOn" : [ 0.0 ],
+					"filtergraph" : [ 1, 0, 0, 1, 0, 0, 2000.0, 1.0, 0.5 ],
+					"gate" : [ -90.0 ],
+					"ip" : [ "127.0.0.1" ],
+					"live.button" : [ 0.0 ],
+					"live.button[1]" : [ 0.0 ],
+					"live.button[2]" : [ 0.0 ],
+					"live.button[3]" : [ 1.0 ],
+					"live.button[4]" : [ 0.0 ],
+					"live.gain~" : [ 0.0 ],
+					"live.numbox" : [ 1.0 ],
+					"live.numbox[1]" : [ 0.910721 ],
+					"live.numbox[2]" : [ 1664.920898 ],
+					"live.numbox[3]" : [ -57.947117 ],
+					"live.numbox[4]" : [ 2001.0 ],
+					"live.numbox[5]" : [ 95.0 ],
+					"live.slider" : [ 95.0 ],
+					"live.slider[1]" : [ -57.947117 ],
+					"live.slider[2]" : [ 1664.920898 ],
+					"live.slider[3]" : [ 0.910721 ],
+					"live.slider[4]" : [ 2001.0 ],
+					"live.text" : [ 1.0 ],
+					"live.text[1]" : [ 1.0 ],
+					"normBright" : [ 1.0 ],
+					"normFFT" : [ 1.0 ],
+					"normHz" : [ 1.0 ],
+					"normLoud" : [ 1.0 ],
+					"normPitch" : [ 1.0 ],
+					"port" : [ 9000.0 ],
+					"switchAttack" : [ 1.0 ],
+					"switchBright" : [ 1.0 ],
+					"switchFFT" : [ 1.0 ],
+					"switchHz" : [ 1.0 ],
+					"switchLoud" : [ 1.0 ],
+					"switchNoise" : [ 1.0 ],
+					"switchPitch" : [ 1.0 ]
+				}
+
+			}
+
+		}
+
+	}
+
+}
