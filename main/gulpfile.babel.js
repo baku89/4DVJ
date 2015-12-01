@@ -35,6 +35,7 @@ gulp.task('webpack', () => {
     plugins: [
       new webpack.IgnorePlugin(/vertx/)
     ],
+    amd: {jQuery: true},
     target: 'atom',
     "node": {
       console: false,

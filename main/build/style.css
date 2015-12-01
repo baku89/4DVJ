@@ -94,10 +94,23 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #000;
 }
 #main {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: #000;
   cursor: none;
+  z-index: 99;
+}
+#split {
+  position: absolute;
+  width: 33.333333%;
+  height: 100%;
+  top: 0;
+  left: 33.333333%;
+  border: 1px solid #444;
 }

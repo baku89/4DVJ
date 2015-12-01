@@ -52,8 +52,8 @@ export default class PolytopeManager extends THREE.Object3D  {
 		this.polytopes = []
 
 		graphList.forEach((graph) => {
-			console.log(loader.graphs)
-			console.log(loader.graphs[graph.name])
+			// console.log(loader.graphs)
+			// console.log(loader.graphs[graph.name])
 			let polytope = new Polytope(
 				loader.graphs[graph.name],
 				{

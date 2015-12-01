@@ -53,7 +53,7 @@ export default class Polytope extends THREE.Object3D {
 		this.subdivide(parameters.subdivision || 5)
 
 		let positions = this.geometry.getAttribute('position')
-		console.log('Polyhedron:', name, 'vertex=', positions.count / positions.itemSize)
+		// console.log('Polyhedron:', name, 'vertex=', positions.count / positions.itemSize)
 
 		this.add(this.mesh)
 	}

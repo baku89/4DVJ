@@ -27,8 +27,8 @@ vec4 spectrum_offset(float t) {
 
 
 vec4 apply(sampler2D tex, vec2 uv) { 
-  const float max_distort = 2.2;
-  const int num_iter = 6;//12;
+  const float max_distort = 4.0;
+  const int num_iter = 9;//12;
   const float reci_num_iter_f = 1.0 / float(num_iter);
 
   vec4 sumcol = vec4(0.0);

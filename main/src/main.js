@@ -1,5 +1,6 @@
 /* global THREE */
 import $ from 'jquery'
+import 'jquery.transit'
 import _ from 'lodash'
 
 import radians from 'degrees-radians'
@@ -9,6 +10,7 @@ import PolytopeManager from './polytope-manager'
 import Projector4D from './projector4d'
 import Ticker from './ticker'
 import GUI from './gui'
+import Config from './config'
 window.GUI = GUI
 window.Kontrol = Kontrol
 
@@ -24,6 +26,7 @@ import CompositePass from './post-effects/composite-pass'
 import DeformPass from './post-effects/deform-pass'
 
 import '../web_modules/OrbitControls'
+
 
 export default class App {
 
@@ -49,14 +52,14 @@ export default class App {
 			canvas: document.getElementById('main'),
 			antialias: true
 		})
-		this.renderer.setSize(window.innerWidth, window.innerHeight)
-
+		this.renderer.setSize(Config.RENDER_WIDTH, Config.RENDER_HEIGHT)
+		this.onResize()
 
 		// this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, 1000)
 		// this.camera.position.set(4, 3, 5)
 		// this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 		// this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
-		this.camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, .1, 1000)
+		this.camera = new THREE.PerspectiveCamera(60, Config.RENDER_WIDTH / Config.RENDER_HEIGHT, .1, 1000)
 		this.camera.position.set(0, 0, 3)
 		this.cameraRig = new THREE.Object3D()
 		this.cameraRig.add(this.camera)
@@ -139,8 +142,6 @@ export default class App {
 
 	animate(elapsed) {
 		this.renderer.setClearColor(this.config.clearColor)
-
-
 		GUI.stats.begin()
 		// TODO: based on elapsed
 		// TODO: make rotation ease-out
@@ -160,9 +161,16 @@ export default class App {
 	}
 
 	onResize() {
-		this.camera.aspect = window.innerWidth / window.innerHeight
-		this.camera.updateProjectionMatrix()
-		this.renderer.setSize(window.innerWidth, window.innerHeight)
+		let s = window.innerWidth / Config.RENDER_WIDTH
+		let ty = (window.innerHeight - Config.RENDER_HEIGHT * s) / 2
+
+		$(this.renderer.domElement).css({
+			transformOrigin: 'top left',
+			translate: [0, ty],
+			scale: [s, s]
+		})
+
+		// console.log(`scale3d(${s}, ${s}, 0) translate3d(${tx}px, ${ty}px, 0)`)
 	}
 
 	onClick() {

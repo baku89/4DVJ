@@ -2,6 +2,7 @@
 
 import EventEmitter from 'eventemitter3'
 import $ from 'jquery'
+import osc from 'node-osc'
 
 class Kontrol extends EventEmitter{
 
@@ -60,7 +61,6 @@ class Kontrol extends EventEmitter{
 			case 32: // space
 				this.emit('changePolytope')
 				break
-
 		}
 	}
 
