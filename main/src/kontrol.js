@@ -103,12 +103,26 @@ class Kontrol extends EventEmitter{
 			if (name == 0) {
 				this.emit('changeDistance', value)
 			} else if (name == 1) {
-				this.emit('changeLensRadius', value)
+				this.emit('changePolytopeScale', value)
 			} else if (name == 2) {
 				this.emit('changeDandruffDrawRange', value)
+			} else if (name == 3) {
+				this.emit('changeFibrationCount', value)
+				
 			} else if (name == 16) { // camera zoom
 				this.emit('changeRotateSpeed', value)
+			} else if (name == 17 ) {
+				this.emit('changeLensRadius', value)
+			
+			} else if (name == 65) { // simple polytope
+				this.emit('changePolytopeVariation', 0, evt.data[2] == 127)
+			} else if (name == 49) { // mid polytope
+				this.emit('changePolytopeVariation', 1, evt.data[2] == 127)
+			} else if (name == 33) { // complex polytope
+				this.emit('changePolytopeVariation', 2, evt.data[2] == 127)
 			}
+
+
 			//  else if (name == 45 && value > .5) {
 			// 	this.emit('changePolytope')
 			// }
@@ -121,7 +135,7 @@ class Kontrol extends EventEmitter{
 		// console.log(msg)
 
 		if (msg[0] == '/audio/attack') {
-			console.log('attack')
+			// console.log('attack')
 			this.emit('changeRotate', _.random(0.5, 1.0, true))
 
 		} else if (msg[0] == '/audio/loud') {
@@ -130,17 +144,17 @@ class Kontrol extends EventEmitter{
 	}
 
 	onKeydown(evt) {
-		console.log(evt.keyCode)
+		// console.log(evt.keyCode)
 		let key = DECORATIVE_KEY[evt.keyCode] || String.fromCharCode(evt.keyCode)
 		if (KEY_MAP[key] && KEY_MAP[key].keydown) {
-			this.emit(KEY_MAP[key].keydown, 1.0)
+			this.emit(KEY_MAP[key].keydown)
 		}
 	}
 
 	onKeyup(evt) {
 		let key = DECORATIVE_KEY[evt.keyCode] || String.fromCharCode(evt.keyCode)
 		if (KEY_MAP[key] && KEY_MAP[key].keyup) {
-			this.emit(KEY_MAP[key].keyup, 1.0)
+			this.emit(KEY_MAP[key].keyup)
 		}
 	}
 

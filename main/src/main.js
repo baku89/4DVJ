@@ -2,7 +2,6 @@
 import $ from 'jquery'
 import 'jquery.transit'
 import _ from 'lodash'
-import TWEEN from 'tween.js'
 import {smoothstep, lerp} from 'interpolation' 
 import radians from 'degrees-radians'
 import degrees from 'radians-degrees'
@@ -19,6 +18,7 @@ import PolytopeManager from './polytope-manager'
 import Projector4D from './projector4d'
 import OrbitalCamera from './orbital-camera'
 import Dandruff from './dandruff'
+import FibrationManager from './fibration-manager'
 
 // TODO: resolve web_modules
 import '../web_modules/shaders/CopyShader'
@@ -81,6 +81,11 @@ export default class App {
 		})
 		this.scene.add(this.dandruff)
 
+		this.fibrationManager = new FibrationManager({
+			projector4d: this.projector4d
+		})
+		this.scene.add(this.fibrationManager)
+
 		{
 			// generate helper
 			this.guide = new THREE.Object3D()
@@ -123,11 +128,11 @@ export default class App {
 		this.renderer.setClearColor(this.config.clearColor)
 		GUI.stats.begin()
 
-		// TWEEN.update()
-
+		this.polytopeManager.update(elapsed)
 		this.projector4d.update(elapsed)
 		this.orbitalCamera.update(elapsed)
 		this.dandruff.update(elapsed)
+		this.fibrationManager.update(elapsed)
 
 		// update posteffects
 		this.deformPass.update(elapsed)

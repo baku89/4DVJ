@@ -114,6 +114,18 @@ body {
   left: 33.333333%;
   border: 1px solid #444;
 }
+.current-polytope {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  width: 600px;
+  height: 24px;
+  margin-left: -300px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+}
 .exclusion-color {
   position: absolute;
   height: 34px;
