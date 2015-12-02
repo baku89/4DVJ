@@ -9,7 +9,7 @@ import Config from './config'
 const MAGNIFY_Z = 0.5
 const NORMAL_Z = 3
 
-const NORMAL_FOV = 55
+const NORMAL_FOV = 40//55
 const MAGNIFY_FOV = 90
 
 const DOLLY_FAR_Z = 5
@@ -75,11 +75,15 @@ export default class OrbitalCamera extends THREE.Object3D{
 		Kontrol.on('unmagnifyCamera', () => {
 			this.isMagnify = false
 		})
+
+		Kontrol.on('toggleMagnifyCamera', () => {
+			this.isMagnify = !this.isMagnify
+		})
 	}
 
 	changeRotate() {
 		let axis = new THREE.Vector3(_.random(-1, 1, true), _.random(-1, 1, true), _.random(-1, 1, true))
-		this.rotate.setFromAxisAngle(axis, _.random(.5, 1, true) * radians(1))
+		this.rotate.setFromAxisAngle(axis, _.random(.5, 1, true) * radians(2))
 	}
 
 	update() {

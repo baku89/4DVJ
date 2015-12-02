@@ -39,7 +39,8 @@ export default class App {
 
 	constructor() {
 		this.config = {
-			clearColor: 0x112130
+			// clearColor: 0x112130
+			clearColor: 0x000000
 		}
 		// GUI.add('')
 
@@ -148,7 +149,7 @@ export default class App {
 
 	onResize() {
 		let s = window.innerWidth / Config.RENDER_WIDTH
-		let ty = (window.innerHeight - Config.RENDER_HEIGHT * s) / 2
+		let ty = ((window.innerWidth/16*9) - Config.RENDER_HEIGHT * s) / 2
 
 		$(this.renderer.domElement).css({
 			transformOrigin: 'top left',

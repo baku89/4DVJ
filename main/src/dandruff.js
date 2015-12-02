@@ -105,12 +105,15 @@ export default class Dandruff extends THREE.Object3D {
 			let geometry = window.loader.dandruff_large_obj.children[0].geometry
 			let material = new THREE.ShaderMaterial({
 				uniforms: {
+					time: {type: 'f', value: 0},
+					wiggleAmp: {type: 'f', value: 0.7},
+					wiggleIntensity: {type: 'f', value: 0},
 					texture: {type: 't', value: null}
 				},
 				side: THREE.DoubleSide,
 				blendEquation: THREE.MaxEquation,
 				// wireframe: true,
-				vertexShader: require('./shaders/basic-transform.vert'),
+				vertexShader: require('./shaders/dandruff-large.vert'),
 				fragmentShader: require('./shaders/dandruff.frag')
 			})
 
@@ -155,6 +158,8 @@ export default class Dandruff extends THREE.Object3D {
 	update(elapsed) {
 		this.small.material.uniforms.wiggleIntensity.value = this.wiggleEnabled ? 1 : 0
 		this.small.material.uniforms.time.value += elapsed
+		this.large.material.uniforms.wiggleIntensity.value = this.wiggleEnabled ? 1 : 0
+		this.large.material.uniforms.time.value += elapsed
 	}
 
 }

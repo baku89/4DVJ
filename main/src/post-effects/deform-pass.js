@@ -57,6 +57,10 @@ export default class DeformPass extends THREE.ShaderPass {
 			this.isMagnify = false
 		})
 
+		Kontrol.on('toggleMagnifyCamera', () => {
+			this.isMagnify = !this.isMagnify
+		})
+
 		// effects
 		Kontrol.on('toggleNone', () => {
 			this.uniforms.effectKind.value = EFFECT.none

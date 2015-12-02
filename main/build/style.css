@@ -119,11 +119,11 @@ body {
   bottom: 20px;
   left: 50%;
   width: 600px;
-  height: 24px;
+  height: 36px;
   margin-left: -300px;
   color: #fff;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: 36px;
+  line-height: 36px;
   text-align: center;
 }
 .exclusion-color {

@@ -21,7 +21,8 @@ const KEY_MAP = {
 	'V': {keydown: 'enableDandruffWiggle', keyup: null},
 	'B': {keydown: 'toggleDandruffTexture', keyup: 'toggleDandruffTexture'},
 
-	'\n': {keydown: 'magnifyCamera', keyup: 'unmagnifyCamera'},
+	// '\n': {keydown: 'magnifyCamera', keyup: 'unmagnifyCamera'},
+	'1': {keydown: 'toggleMagnifyCamera', keyup: null},
 
 	// 
 	' ': {keydown: 'changePolytope', keyup: null},

@@ -7,12 +7,28 @@ uniform vec2 resolution;
 uniform sampler2D tDiffuse;
 uniform float exposure;
 uniform vec3 exclusionColor;
-// uniform sampler2D tNoise;
-// uniform vec2 noiseSize;
-// uniform vec2 noiseOffset;
-// uniform int noiseEnabled;
+uniform vec3 hsvAjust;
 
 varying vec2 vUv;
+
+
+vec3 rgb2hsv(vec3 c)
+{
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+    float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
+    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
+vec3 hsv2rgb(vec3 c)
+{
+    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
 
 
 void main() {
@@ -26,30 +42,15 @@ void main() {
   // TODO: aspect correction
   vec4 color = chromaticAberration(tDiffuse, vUv);
 
-
-
   // exclusion color
   color = vec4(blendExclusion(color.rgb, exclusionColor), 1.0);
 
-  // vec4 color = texture2D(tDiffuse, vUv);
-  
-  // fxaa
-  // vec4 color = fxaa(tDiffuse, fragCoord, resolution);
-
-
-  // vignette
-  // color.rgb = vec3(1.);
-  // const float darkness = 1.0;
-  // const float offset = 1.0;
-  // const vec2 aspectCorrection = vec2(1., 9. / 16.);
-  // vec2 uv = (vUv - vec2(0.5)) * aspectCorrection;// * vec2(offset);
-  // color = vec4(mix(color.rgb, vec3(1.0 - darkness), dot(uv, uv)), color.a);
-
-  // noise
-  // if (noiseEnabled > 0) {
-  //   vec4 noise = texture2D(tNoise, vUv * resolution / noiseSize + noiseOffset);
-  //   color.rgb *= vec3(1. - noise.a * 0.6);
-  // }
+  // ajsut
+  vec3 hsv = rgb2hsv(color.rgb);
+  hsv.x += hsvAjust.x;
+  hsv.y *= hsvAjust.y;
+  hsv.z *= hsvAjust.z;
+  color = vec4(hsv2rgb(hsv), 1.0);
 
   gl_FragColor = color;//texture2D(tDiffuse, vUv);
 }

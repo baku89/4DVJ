@@ -62,8 +62,8 @@ export default class Projector4D {
 		let angle = lerp(0.7, 1.3, Math.random()) * Math.PI
 		this.rotateAxis.applyAxisAngle(axis, angle)
 		this.rotateAxis.normalize()
-		this.rotate.setFromAxisAngle(this.rotateAxis, radians(1))
-		this.rotateBase.setFromAxisAngle(this.rotateAxis, radians(2))
+		this.rotate.setFromAxisAngle(this.rotateAxis, radians(2))
+		this.rotateBase.setFromAxisAngle(this.rotateAxis, radians(3))
 	}
 
 	update(elapsed) {

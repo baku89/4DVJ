@@ -25,6 +25,7 @@
     "eslint-loader": "^1.1.1",
     "eventemitter3": "^1.1.1",
     "glsl-fxaa": "^3.0.0",
+    "glsl-gamma": "^2.0.0",
     "glsl-map": "^1.0.1",
     "glsl-noise": "0.0.0",
     "glsl-pi": "^1.0.0",

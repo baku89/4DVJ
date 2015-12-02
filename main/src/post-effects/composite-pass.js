@@ -1,4 +1,4 @@
-/* global THREE, Kontrol */
+/* global THREE, Kontrol, GUI */
 
 import {smoothstep} from 'interpolation'
 import Config from '../config'
@@ -11,6 +11,7 @@ export default class CompositePass extends THREE.ShaderPass {
 			uniforms: {
 				resolution: {type: 'v2', value: new THREE.Vector2(Config.RENDER_WIDTH, Config.RENDER_HEIGHT)},
 				exclusionColor: {type: 'c', value: new THREE.Color(0x000000)},
+				hsvAjust: {type: 'v3', value: new THREE.Vector3(0, 1, 1)},
 				tDiffuse: {type: 't', value: null}
 			},
 			vertexShader: require('../shaders/basic-transform.vert'),
@@ -31,6 +32,11 @@ export default class CompositePass extends THREE.ShaderPass {
 			this.targetExclusionColor.set(value)
 			this.transitionTime = TRANSITION_DURATION
 		})
+
+		// ajust
+		GUI.add(this.uniforms.hsvAjust.value, 'x', -1, 1).name('hue')
+		GUI.add(this.uniforms.hsvAjust.value, 'y', 0, 2).name('saturation')
+		GUI.add(this.uniforms.hsvAjust.value, 'z', 0, 2).name('brightness')
 
 	}
 
