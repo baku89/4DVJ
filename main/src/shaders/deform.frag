@@ -16,6 +16,7 @@ uniform int effectKind;
 #define EFFECT_REPEAT 1
 #define EFFECT_MIRROR_RIGHT 2
 #define EFFECT_MIRROR_LEFT  3
+#define EFFECT_POLAR  4
 
 varying vec2 vUv;
 
@@ -59,6 +60,9 @@ void main() {
     float x = fragCoord.x / resolution.x;
     x = 0.5 - abs((1.0 - x) - 0.5);
     fragCoord.x = x * resolution.x;
+  
+  } else if (effectKind == EFFECT_POLAR) {
+    
   }
 
 

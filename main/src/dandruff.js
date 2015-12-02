@@ -1,4 +1,4 @@
-/* global THREE, Kontrol */
+/* global THREE, Kontrol, GUI */
 
 import _ from 'lodash'
 import {Noise} from 'noisejs'
@@ -72,10 +72,8 @@ export default class Dandruff extends THREE.Object3D {
 				for (let i = 0; i < uv.count; i++) {
 					uv.array[i*2 + 1] *= -1
 				}
-				console.log(uv)
 				uv.needsUpdate = true
 
-				console.log(geometry)
 				geometry.addAttribute('positionW', new THREE.BufferAttribute(positionWBuffer, 1))
 			}
 
@@ -84,22 +82,79 @@ export default class Dandruff extends THREE.Object3D {
 				uniforms: {
 					matrix4d: {type: 'm4', value: this.projector4d.matrix},
 					distance4d: {type: 'v2', value: this.projector4d.distance},
-					// texture: {type: 't', value: window.loader.dandruff_small_tex}
+					time: {type: 'f', value: 0},
+					wiggleAmp: {type: 'f', value: 0.7},
+					wiggleIntensity: {type: 'f', value: 0},
+					texture: {type: 't', value: null}
 				},
 				side: THREE.DoubleSide,
 				blendEquation: THREE.MaxEquation,
-				vertexShader: require('./shaders/dandruff.vert'),
+				// wireframe: true,
+				vertexShader: require('./shaders/dandruff-small.vert'),
 				fragmentShader: require('./shaders/dandruff.frag')
 			})
+
+			GUI.add(material.uniforms.wiggleAmp, 'value', 0, 2).name('dandruff wiggle')
 
 			this.small = new THREE.Mesh(geometry, material)
 			this.small.scale.set(3, 3, 3)
 			this.add(this.small)
 		}
+
+		{
+			let geometry = window.loader.dandruff_large_obj.children[0].geometry
+			let material = new THREE.ShaderMaterial({
+				uniforms: {
+					texture: {type: 't', value: null}
+				},
+				side: THREE.DoubleSide,
+				blendEquation: THREE.MaxEquation,
+				// wireframe: true,
+				vertexShader: require('./shaders/basic-transform.vert'),
+				fragmentShader: require('./shaders/dandruff.frag')
+			})
+
+			let uv = geometry.attributes.uv
+			for (let i = 0; i < uv.count; i++) {
+				uv.array[i*2 + 1] *= -1
+			}
+			uv.needsUpdate = true
+
+			this.large = new THREE.Mesh(geometry, material)
+			this.large.scale.set(0.5, 0.5, 0.5)
+			this.add(this.large)
+		}
+
+		// console.log('!', this.large.geometry.drawRange)
+
+		// this.small.geometry.drawRange.count = 1000
+		// this.small.geometry.setDrawRange(0, 100)
+		console.log(this.small.geometry)
+
+		Kontrol.on('changeDandruffDrawRange', (value) => {
+			this.small.geometry.drawRange.count = Math.floor(value * this.small.geometry.attributes.position.count * 3)
+			this.large.geometry.drawRange.count = Math.floor(value * this.large.geometry.attributes.position.count * 3)
+		})
+
+		
+
+		this.wiggleEnabled = false
+		Kontrol.on('enableDandruffWiggle', () => {
+			this.wiggleEnabled = !this.wiggleEnabled
+		})
+
+		this.smallTexture = window.loader.dandruff_small_tex
+		Kontrol.on('toggleDandruffTexture', () => {
+			// console.log('toggle')
+			let textureEnabled = this.small.material.uniforms.texture.value != null
+			this.small.material.uniforms.texture.value = textureEnabled ? null : this.smallTexture
+			this.large.material.uniforms.texture.value = textureEnabled ? null : this.smallTexture
+		})
 	}
 
 	update(elapsed) {
-
+		this.small.material.uniforms.wiggleIntensity.value = this.wiggleEnabled ? 1 : 0
+		this.small.material.uniforms.time.value += elapsed
 	}
 
 }

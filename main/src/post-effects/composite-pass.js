@@ -1,6 +1,7 @@
 /* global THREE, Kontrol */
 
 import {smoothstep} from 'interpolation'
+import Config from '../config'
 
 const TRANSITION_DURATION = 1500
 
@@ -8,7 +9,7 @@ export default class CompositePass extends THREE.ShaderPass {
 	constructor() {
 		super({
 			uniforms: {
-				resolution: {type: 'v2', value: new THREE.Vector2(window.innerWidth, window.innerHeight)},
+				resolution: {type: 'v2', value: new THREE.Vector2(Config.RENDER_WIDTH, Config.RENDER_HEIGHT)},
 				exclusionColor: {type: 'c', value: new THREE.Color(0x000000)},
 				tDiffuse: {type: 't', value: null}
 			},

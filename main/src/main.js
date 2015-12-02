@@ -61,11 +61,6 @@ export default class App {
 		this.renderer.setSize(Config.RENDER_WIDTH, Config.RENDER_HEIGHT)
 		this.onResize()
 
-		// this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, 1000)
-		// this.camera.position.set(4, 3, 5)
-		// this.camera.lookAt(new THREE.Vector3(0, 0, 0))
-		// this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
-
 		this.orbitalCamera = new OrbitalCamera()
 		this.scene.add(this.orbitalCamera)
 
@@ -130,9 +125,9 @@ export default class App {
 
 		// TWEEN.update()
 
-		this.projector4d.update()
-		this.orbitalCamera.update()
-		this.dandruff.update()
+		this.projector4d.update(elapsed)
+		this.orbitalCamera.update(elapsed)
+		this.dandruff.update(elapsed)
 
 		// update posteffects
 		this.deformPass.update(elapsed)
@@ -201,7 +196,9 @@ function loadTexture(id, url) {
 $.when(
 	$.getJSON('./data/graphs.json', (data) => {window.loader.graphs = data}),
 	loadVideo('overlay_attack', './texture/overlay_attack.mp4'),
+	loadVideo('overlay_zfighting', './texture/overlay_zfighting.mp4'),
 	loadObj('dandruff_small_obj', './data/dandruff_small.obj'),
+	loadObj('dandruff_large_obj', './data/dandruff_large.obj'),
 	loadTexture('dandruff_small_tex', './texture/dandruff_small.png')
 ).then(() => {
 	window.app = new App()

@@ -6,14 +6,26 @@ import $ from 'jquery'
 import osc from 'node-osc'
 import Config from './config'
 
-let KEY_MAP = {
+const DECORATIVE_KEY = {
+	'13': '\n',
+	'32': ' ',
+	'16': 'shift'
+}
+
+const KEY_MAP = {
 	'A': {keydown: 'makeTurbulance', keyup: null},
-	'Z': {keydown: 'changePolytope', keyup: null},
 	'S': {keydown: 'changeRotate', keyup: null},
 	'D': {keydown: 'enableSlitscan', keyup: 'disableSlitscan'},
 	'F': {keydown: 'overlayAttack', keyup: null},
+	'G': {keydown: 'toggleZfighting', keyup: null},
+	'V': {keydown: 'enableDandruffWiggle', keyup: null},
+	'B': {keydown: 'toggleDandruffTexture', keyup: 'toggleDandruffTexture'},
 
 	'\n': {keydown: 'magnifyCamera', keyup: 'unmagnifyCamera'},
+
+	// 
+	' ': {keydown: 'changePolytope', keyup: null},
+	'shift': {keydown: 'forceDollyOut', keyup: 'forceDollyIn'},
 
 	// effects
 	'Q': {keydown: 'toggleNone', keyup: null},
@@ -22,10 +34,6 @@ let KEY_MAP = {
 
 	// util
 	'M': {keydown: 'toggleGuide', keyup: null},
-}
-
-let DECORATIVE_KEY = {
-	'13': '\n'
 }
 
 class Kontrol extends EventEmitter{
@@ -59,7 +67,6 @@ class Kontrol extends EventEmitter{
 			self.emit('changeExclusionColor', color)
 		})
 
-
 		// keyboard
 		$(window).on('keydown', this.onKeydown.bind(this))
 		$(window).on('keyup', this.onKeyup.bind(this))
@@ -92,11 +99,15 @@ class Kontrol extends EventEmitter{
 		let name = evt.data[1]
 		let value = evt.data[2] / 127.0
 
-		if (type == 0xb0) {
+		if (type == 176) {
 			if (name == 0) {
-				this.emit('changeDistance4dInfluence', value)
+				this.emit('changeDistance', value)
+			} else if (name == 1) {
+				this.emit('changeLensRadius', value)
+			} else if (name == 2) {
+				this.emit('changeDandruffDrawRange', value)
 			} else if (name == 16) { // camera zoom
-				this.emit('zoomCamera', value)
+				this.emit('changeRotateSpeed', value)
 			}
 			//  else if (name == 45 && value > .5) {
 			// 	this.emit('changePolytope')

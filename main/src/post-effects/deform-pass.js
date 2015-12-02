@@ -45,6 +45,10 @@ export default class DeformPass extends THREE.ShaderPass {
 		})
 
 		// lens
+		this.lensRadius = 400
+		Kontrol.on('changeLensRadius', (value) => {
+			this.lensRadius = lerp(200, 800, value)
+		})
 		Kontrol.on('magnifyCamera', () => {
 			this.isMagnify = true
 		})
@@ -85,7 +89,7 @@ export default class DeformPass extends THREE.ShaderPass {
 		let target = this.isMagnify ? 1.0 : 0.0
 		this.uniforms.lensIntensity.value = lerp(this.uniforms.lensIntensity.value, target, 0.2)
 
-		let lensRadius = this.isMagnify ? 800 : 250
+		let lensRadius = this.isMagnify ? this.lensRadius : this.lensRadius / 2.5
 		this.uniforms.lensRadius.value = lerp(this.uniforms.lensRadius.value, lensRadius, 0.2)
 	}
 }
