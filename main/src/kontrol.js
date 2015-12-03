@@ -95,7 +95,7 @@ class Kontrol extends EventEmitter{
 	}
 
 	onMidiEvent(evt) {
-		console.log(evt.data)
+		// console.log(evt.data)
 		let type = evt.data[0]
 		let name = evt.data[1]
 		let value = evt.data[2] / 127.0
@@ -121,7 +121,15 @@ class Kontrol extends EventEmitter{
 				this.emit('changePolytopeVariation', 1, evt.data[2] == 127)
 			} else if (name == 33) { // complex polytope
 				this.emit('changePolytopeVariation', 2, evt.data[2] == 127)
+			
+			} else if (name == 21) {
+				this.emit('fadeHue', value)
+			} else if (name == 22) {
+				this.emit('fadeSaturation', value)
+			} else if (name == 23) {
+				this.emit('fadeBrightness', value)
 			}
+
 
 
 			//  else if (name == 45 && value > .5) {

@@ -20,7 +20,7 @@ class GUI {
 
 		let color = obj[property]
 		let colorObject = {
-			color: `#${color.getHexString()}`
+			color
 		}
 
 		let controller = this.gui.addColor(colorObject, 'color')

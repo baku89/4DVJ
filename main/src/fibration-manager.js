@@ -26,14 +26,6 @@ export default class FibrationManager extends THREE.Object3D {
 
 			this.add(fibration)
 			this.fibrations.push(fibration)
-
-			// this.add(new Fibration({
-			// 	projector4d: this.projector4d,
-			// 	color: 0x0000ff,
-			// 	localEuler4d: new THREE.Euler(angle, 0, 0),
-			// 	translate4d: new THREE.Vector4(0.8, 0, 0, 0),
-			// 	ringEuler4d: new THREE.Euler(0, -Math.PI / 5, 0)
-			// }))
 		}
 
 		this.changeFibrationCount(0)

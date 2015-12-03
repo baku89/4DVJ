@@ -42,7 +42,9 @@ export default class App {
 			// clearColor: 0x112130
 			clearColor: 0x000000
 		}
-		// GUI.add('')
+		// console.log(this.config['clearColor'].getHexString())
+		// console.log(this.config.clearColor.getHexString())
+		GUI.gui.addColor(this.config, 'clearColor')//.name('clearolor')
 
 		this.initScene()
 		this.initObject()
