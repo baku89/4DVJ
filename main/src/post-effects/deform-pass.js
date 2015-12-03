@@ -43,6 +43,9 @@ export default class DeformPass extends THREE.ShaderPass {
 		Kontrol.on('disableSlitscan', () => {
 			this.slitscanEnabled = false
 		})
+		Kontrol.on('toggleSlitscan', () => {
+			this.slitscanEnabled = !this.slitscanEnabled
+		})
 
 		// lens
 		this.lensRadius = 400

@@ -13,7 +13,7 @@ const DECORATIVE_KEY = {
 const KEY_MAP = {
 	'A': {keydown: 'makeTurbulance', keyup: null},
 	'S': {keydown: 'changeRotate', keyup: null},
-	'D': {keydown: 'enableSlitscan', keyup: 'disableSlitscan'},
+	'D': {keydown: 'toggleSlitscan', keyup: null},
 	'F': {keydown: 'overlayAttack', keyup: null},
 	'G': {keydown: 'toggleZfighting', keyup: null},
 	'V': {keydown: 'enableDandruffWiggle', keyup: null},

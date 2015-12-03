@@ -13,15 +13,33 @@ export function loadJSON(id, url) {
 	return d.promise()
 }
 
+// export function loadVideo(id, url) {
+// 	let d = new $.Deferred()
+// 	let video = document.createElement('video')
+// 	video.src = `${url}?.jpg`
+// 	video.addEventListener('loadeddata', () => {
+// 		window.assets[id] = video
+// 		console.log('loaded', id)
+// 		d.resolve()
+// 	})
+// 	return d.promise()
+// }
+
 export function loadVideo(id, url) {
 	let d = new $.Deferred()
 	let video = document.createElement('video')
 	video.src = `${url}?.jpg`
-	video.addEventListener('loadeddata', () => {
-		window.assets[id] = video
-		console.log('loaded', id)
-		d.resolve()
-	})
+
+	function checkLoad() {
+		if (video.readyState == 4) {
+			window.assets[id] = video
+			console.log('loaded', id)
+			d.resolve()
+		} else {
+			setTimeout(checkLoad, 100)
+		}
+	}
+	setTimeout(checkLoad, 100)
 	return d.promise()
 }
 
