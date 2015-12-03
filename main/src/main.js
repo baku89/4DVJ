@@ -1,13 +1,11 @@
 /* global THREE */
 import $ from 'jquery'
 import 'jquery.transit'
-import _ from 'lodash'
-import {smoothstep, lerp} from 'interpolation' 
-import radians from 'degrees-radians'
-import degrees from 'radians-degrees'
+// import _ from 'lodash'
 
 import GUI from './gui'
 import Config from './config'
+import * as loader from './loader'
 window.GUI = GUI
 window.Kontrol = Kontrol
 
@@ -19,6 +17,7 @@ import Projector4D from './projector4d'
 import OrbitalCamera from './orbital-camera'
 import Dandruff from './dandruff'
 import FibrationManager from './fibration-manager'
+
 
 // TODO: resolve web_modules
 import '../web_modules/shaders/CopyShader'
@@ -39,12 +38,9 @@ export default class App {
 
 	constructor() {
 		this.config = {
-			// clearColor: 0x112130
-			clearColor: 0x000000
+			clearColor: 0x112130
 		}
-		// console.log(this.config['clearColor'].getHexString())
-		// console.log(this.config.clearColor.getHexString())
-		GUI.gui.addColor(this.config, 'clearColor')//.name('clearolor')
+		GUI.gui.addColor(this.config, 'clearColor')
 
 		this.initScene()
 		this.initObject()
@@ -127,7 +123,7 @@ export default class App {
 		this.composer.passes[this.composer.passes.length - 1].renderToScreen = true
 	}
 
-	animate(elapsed, time) {
+	animate(elapsed) {
 		this.renderer.setClearColor(this.config.clearColor)
 		GUI.stats.begin()
 
@@ -150,16 +146,16 @@ export default class App {
 	}
 
 	onResize() {
+		// console.log('test')
+
 		let s = window.innerWidth / Config.RENDER_WIDTH
-		let ty = ((window.innerWidth/16*9) - Config.RENDER_HEIGHT * s) / 2
+		let ty = (window.innerHeight - Config.RENDER_HEIGHT * s) / 2
 
 		$(this.renderer.domElement).css({
 			transformOrigin: 'top left',
 			translate: [0, ty],
 			scale: [s, s]
 		})
-
-		// console.log(`scale3d(${s}, ${s}, 0) translate3d(${tx}px, ${ty}px, 0)`)
 	}
 
 	onClick() {
@@ -167,48 +163,20 @@ export default class App {
 }
 
 // load main
-window.loader = {}
 
-function loadVideo(id, url) {
-	let d = new $.Deferred()
-	let video = document.createElement('video')
-	video.src = url
-	video.addEventListener('loadeddata', () => {
-		window.loader[id] = video
-		d.resolve()
-	})
-	return d.promise()
-}
+// window.app = new App()
 
-function loadObj(id, url) {
-	let d = new $.Deferred()
-	let loader = new THREE.OBJLoader()
-	loader.load(url, (obj) => {
-		window.loader[id] = obj 
-		d.resolve()
-	})
-	return d.promise()
-}
-
-function loadTexture(id, url) {
-	let d = $.Deferred()
-	let loader = new THREE.TextureLoader()
-	loader.load(url, (texture) => {
-		window.loader[id] = texture
-		d.resolve()
-	})
-	return d.promise()
-}
 
 
 $.when(
-	$.getJSON('./data/graphs.json', (data) => {window.loader.graphs = data}),
-	loadVideo('overlay_attack', './texture/overlay_attack.mp4'),
-	loadVideo('overlay_zfighting', './texture/overlay_zfighting.mp4'),
-	loadObj('dandruff_small_obj', './data/dandruff_small.obj'),
-	loadObj('dandruff_large_obj', './data/dandruff_large.obj'),
-	loadTexture('dandruff_small_tex', './texture/dandruff_small.png')
+	loader.loadJSON('graphs', './data/graphs.json'),
+	loader.loadVideo('overlay_attack', './texture/overlay_attack.mp4'),
+	loader.loadVideo('overlay_zfighting', './texture/overlay_zfighting.mp4'),
+	loader.loadObj('dandruff_small_obj', './data/dandruff_small.obj'),
+	loader.loadObj('dandruff_large_obj', './data/dandruff_large.obj'),
+	loader.loadTexture('dandruff_small_tex', './texture/dandruff_small.png')
 ).then(() => {
+	console.log('aaaaasdjkfasdlkfjas;')
 	window.app = new App()
 })
 

@@ -24,7 +24,7 @@ export default class Graph {
 		let i = 0
 		let length = face.length
 		while (i <= length - 2) {
-			this.faces.push([face[i], face[i+1], face[(i+2)%length]])
+			this.faces.push([face[i], face[i + 1], face[(i + 2) % length]])
 			i += 2
 		}
 

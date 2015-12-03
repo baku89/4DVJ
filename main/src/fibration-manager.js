@@ -1,4 +1,4 @@
-/* global THREE, GUI, Kontrol */
+/* global THREE, Kontrol */
 
 import Fibration from './fibration'
 
@@ -41,8 +41,7 @@ export default class FibrationManager extends THREE.Object3D {
 		})
 	}
 
-	update(elapsed) {
-
+	update() {
 	}
 
 

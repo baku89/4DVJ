@@ -20,7 +20,7 @@ export default class OverlayPass extends THREE.ShaderPass {
 		this.enabled = true
 
 		{
-			this.attackVideo = window.loader.overlay_attack
+			this.attackVideo = window.assets.overlay_attack
 			this.attackVideo.width = this.attackVideo.videoWidth
 			this.attackVideo.height = this.attackVideo.videoHeight
 			// this.attackVideo.defaultPlaybackRate = 0.5
@@ -37,7 +37,7 @@ export default class OverlayPass extends THREE.ShaderPass {
 		}
 
 		{
-			this.zfightingVideo = window.loader.overlay_zfighting
+			this.zfightingVideo = window.assets.overlay_zfighting
 			this.zfightingVideo.width = this.zfightingVideo.videoWidth
 			this.zfightingVideo.height = this.zfightingVideo.videoHeight
 			this.zfightingVideo.loop = true
@@ -77,7 +77,7 @@ export default class OverlayPass extends THREE.ShaderPass {
 
 
 
-	update(elapsed) {
+	update() {
 		if (this.attackRequestId != null) {
 			this.attackTexture.needsUpdate = true
 		}

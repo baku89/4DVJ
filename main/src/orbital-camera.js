@@ -14,7 +14,7 @@ const MAGNIFY_FOV = 90
 
 const DOLLY_FAR_Z = 5
 
-export default class OrbitalCamera extends THREE.Object3D{
+export default class OrbitalCamera extends THREE.Object3D {
 
 	constructor() {
 		super()
@@ -51,20 +51,14 @@ export default class OrbitalCamera extends THREE.Object3D{
 			this.dollyLerp = Config.DOLLY_SLIDER_LERP
 		})
 
-		Kontrol.on('forceDollyOut', (value) => {
+		Kontrol.on('forceDollyOut', () => {
 			this.targetDollyZ = 3
 			this.dollyLerp = Config.DOLLY_OUT_LERP
 		})
 
-		Kontrol.on('forceDollyIn', (value) => {
+		Kontrol.on('forceDollyIn', () => {
 			this.targetDollyZ = 0
 			this.dollyLerp = Config.DOLLY_IN_LERP
-		})
-
-		Kontrol.on('zoomCamera', (value) => {
-			// this.camera.fov = lerp(10, 120, value)
-			// console.log(this.camera.fov, value)
-			// this.camera.updateProjectionMatrix()
 		})
 
 		// magnify

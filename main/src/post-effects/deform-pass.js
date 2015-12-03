@@ -1,6 +1,6 @@
 /* global THREE, Kontrol */
 
-import {lerp, smoothstep} from 'interpolation'
+import {lerp} from 'interpolation'
 import Config from '../config'
 
 const EFFECT = {

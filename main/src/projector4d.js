@@ -1,6 +1,6 @@
-/* global THREE, Kontrol, GUI */
+/* global THREE, Kontrol */
 
-import {lerp, smoothstep} from 'interpolation'
+import {lerp} from 'interpolation'
 import _ from 'lodash'
 import radians from 'degrees-radians'
 import Config from './config'
@@ -22,17 +22,17 @@ export default class Projector4D {
 		this.distanceLerp = Config.DOLLY_SLIDER_LERP
 
 		Kontrol.on('changeDistance', (value) => {
-			this.targetDistance = lerp(1.0, MAX_DISTNACE, value*value*value)
+			this.targetDistance = lerp(1.0, MAX_DISTNACE, value * value * value)
 			// console.error(this.targetDistance)
 		})
 
-		Kontrol.on('forceDollyOut', (value) => {
+		Kontrol.on('forceDollyOut', () => {
 			// console.log('aaaaa')
 			this.targetDistance = 1.1
 			this.distanceLerp = Config.DOLLY_OUT_LERP
 		})
 
-		Kontrol.on('forceDollyIn', (value) => {
+		Kontrol.on('forceDollyIn', () => {
 			// console.log('oooo')
 			this.targetDistance = 1.0
 			this.distanceLerp = Config.DOLLY_IN_LERP
@@ -57,7 +57,7 @@ export default class Projector4D {
 		})
 	}
 
-	changeRotate(value) {
+	changeRotate() {
 		let axis = new THREE.Vector3(_.random(-1, 1, true), _.random(-1, 1, true), _.random(-1, 1, true))
 		let angle = lerp(0.7, 1.3, Math.random()) * Math.PI
 		this.rotateAxis.applyAxisAngle(axis, angle)
@@ -66,7 +66,7 @@ export default class Projector4D {
 		this.rotateBase.setFromAxisAngle(this.rotateAxis, radians(2))
 	}
 
-	update(elapsed) {
+	update() {
 
 		// console.log(this.distanceLerp)
 		this.distance.x = lerp(this.distance.x, this.targetDistance, this.distanceLerp)

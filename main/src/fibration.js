@@ -1,4 +1,4 @@
-/* global THREE, GUI, Kontrol */
+/* global THREE */
 
 export default class Fibration extends THREE.Line {
 
@@ -18,9 +18,9 @@ export default class Fibration extends THREE.Line {
 
 		let positionBuffer = new Float32Array(vertices.length * 3)
 		vertices.forEach((vertex, i) => {
-			positionBuffer[i*3] = vertex.x
-			positionBuffer[i*3 + 1] = vertex.y
-			positionBuffer[i*3 + 2] = vertex.z
+			positionBuffer[i * 3] = vertex.x
+			positionBuffer[i * 3 + 1] = vertex.y
+			positionBuffer[i * 3 + 2] = vertex.z
 		})
 
 		geometry.addAttribute('position', new THREE.BufferAttribute(positionBuffer, 3))
@@ -96,7 +96,7 @@ export default class Fibration extends THREE.Line {
 		return matrix4d
 	}
 
-	update(elapsed) {
+	update() {
 
 	}
 }

@@ -1,9 +1,8 @@
-/* global THREE, loader, GUI, Kontrol */
+/* global THREE, Kontrol */
 
 import $ from 'jquery'
 import _ from 'lodash'
 import Polytope from './polytope'
-import Projector4D from './projector4d'
 import {lerp} from 'interpolation'
 
 let graphList = [
@@ -52,7 +51,7 @@ export default class PolytopeManager extends THREE.Object3D  {
 			// console.log(loader.graphs[graph.name])
 			console.log(graph.name)
 			let polytope = new Polytope(
-				loader.graphs[graph.name],
+				window.assets.graphs[graph.name],
 				{
 					projector4d: this.projector4d,
 					subdivision: graph.subdivision
@@ -103,7 +102,7 @@ export default class PolytopeManager extends THREE.Object3D  {
 		if (index) {
 			this.currentIndex = index
 		} else {
-			this.currentIndex = this.variationList[_.random(this.variationList.length-1)]
+			this.currentIndex = this.variationList[_.random(this.variationList.length - 1)]
 
 			// in order
 			// this.currentIndex = (this.currentIndex + 1) % this.polytopes.length
@@ -142,7 +141,7 @@ export default class PolytopeManager extends THREE.Object3D  {
 	}
 
 
-	update(elapsed) {
+	update() {
 		this.currrentPolytopeScale = lerp(this.currrentPolytopeScale, this.targetPolytopeScale, 0.1)
 		this.scale.set(this.currrentPolytopeScale, this.currrentPolytopeScale, this.currrentPolytopeScale)
 	}

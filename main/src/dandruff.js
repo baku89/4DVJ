@@ -1,6 +1,6 @@
 /* global THREE, Kontrol, GUI */
 
-import _ from 'lodash'
+// import _ from 'lodash'
 import {Noise} from 'noisejs'
 const noise = new Noise(Math.random())
 
@@ -17,7 +17,7 @@ export default class Dandruff extends THREE.Object3D {
 		}
 
 		{
-			let geometry = window.loader.dandruff_small_obj.children[0].geometry
+			let geometry = window.assets.dandruff_small_obj.children[0].geometry
 
 			// generate 4D
 
@@ -38,16 +38,16 @@ export default class Dandruff extends THREE.Object3D {
 				let position = geometry.attributes.position.array
 
 				for (let i = 0; i < positionWBuffer.length; i++) {
-					let x = position[i*3]
-					let y = position[i*3 + 1]
-					let z = position[i*3 + 2]
+					let x = position[i * 3]
+					let y = position[i * 3 + 1]
+					let z = position[i * 3 + 2]
 					let w = noise.perlin3(x * scale, y * scale, z * scale)
 					w = w * 70
 
 					let nx = x + noise.perlin3(x * waveScale, y * waveScale, z * waveScale) * waveAmp
 					let ny = y + noise.perlin3(x * waveScale, y * waveScale, z * waveScale) * waveAmp
 					let nz = z + noise.perlin3(x * waveScale, y * waveScale, z * waveScale) * waveAmp
-					let nw = w + noise.perlin3(z * waveScale, y * waveScale, (w+1000) * waveScale) * waveAmp
+					let nw = w + noise.perlin3(z * waveScale, y * waveScale, (w + 1000) * waveScale) * waveAmp
 
 					// xmin = Math.min(nx, xmin)
 					// xmax = Math.max(ny, xmax)
@@ -58,9 +58,9 @@ export default class Dandruff extends THREE.Object3D {
 					// wmin = Math.min(nw, wmin)
 					// wmax = Math.max(nw, wmax)
 
-					position[i*3] 	   = nx
-					position[i*3 + 1]  = ny
-					position[i*3 + 2]  = nz
+					position[i * 3] 	   = nx
+					position[i * 3 + 1]  = ny
+					position[i * 3 + 2]  = nz
 					positionWBuffer[i] = nw
 				}
 				// console.log(xmin, xmax)
@@ -70,7 +70,7 @@ export default class Dandruff extends THREE.Object3D {
 
 				let uv = geometry.attributes.uv
 				for (let i = 0; i < uv.count; i++) {
-					uv.array[i*2 + 1] *= -1
+					uv.array[i * 2 + 1] *= -1
 				}
 				uv.needsUpdate = true
 
@@ -102,7 +102,7 @@ export default class Dandruff extends THREE.Object3D {
 		}
 
 		{
-			let geometry = window.loader.dandruff_large_obj.children[0].geometry
+			let geometry = window.assets.dandruff_large_obj.children[0].geometry
 			let material = new THREE.ShaderMaterial({
 				uniforms: {
 					time: {type: 'f', value: 0},
@@ -119,7 +119,7 @@ export default class Dandruff extends THREE.Object3D {
 
 			let uv = geometry.attributes.uv
 			for (let i = 0; i < uv.count; i++) {
-				uv.array[i*2 + 1] *= -1
+				uv.array[i * 2 + 1] *= -1
 			}
 			uv.needsUpdate = true
 
@@ -127,12 +127,6 @@ export default class Dandruff extends THREE.Object3D {
 			this.large.scale.set(0.5, 0.5, 0.5)
 			this.add(this.large)
 		}
-
-		// console.log('!', this.large.geometry.drawRange)
-
-		// this.small.geometry.drawRange.count = 1000
-		// this.small.geometry.setDrawRange(0, 100)
-		console.log(this.small.geometry)
 
 		Kontrol.on('changeDandruffDrawRange', (value) => {
 			this.small.geometry.drawRange.count = Math.floor(value * this.small.geometry.attributes.position.count * 3)
@@ -146,7 +140,7 @@ export default class Dandruff extends THREE.Object3D {
 			this.wiggleEnabled = !this.wiggleEnabled
 		})
 
-		this.smallTexture = window.loader.dandruff_small_tex
+		this.smallTexture = window.assets.dandruff_small_tex
 		Kontrol.on('toggleDandruffTexture', () => {
 			// console.log('toggle')
 			let textureEnabled = this.small.material.uniforms.texture.value != null

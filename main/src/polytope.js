@@ -1,4 +1,4 @@
-/* global THREE GUI */
+/* global THREE */
 import Graph from './graph.js'
 import Projector4D from './projector4d.js'
 import {Noise} from 'noisejs'
@@ -40,20 +40,7 @@ export default class Polytope extends THREE.Object3D {
 		// generate custom attribute
 		this.generateVertexColor()
 
-
-		// calc subdivision amplify
-		let subdivisionCoef = 0
-		// this.graph.faces.forEach((face) => {
-		// 	subdivisionCoef += face.length - 2
-		// })
-
-		// // console.log(subdivisionCoef)
-		// let subdivision = subdivisionCoef
-
 		this.subdivide(parameters.subdivision || 5)
-
-		let positions = this.geometry.getAttribute('position')
-		// console.log('Polyhedron:', name, 'vertex=', positions.count / positions.itemSize)
 
 		this.add(this.mesh)
 	}
@@ -69,9 +56,9 @@ export default class Polytope extends THREE.Object3D {
 			let g = noise.perlin2(vertex.z * scale, vertex.w * scale)
 			let b = noise.perlin2(vertex.y * scale, vertex.x * scale)
 
-			r = Math.sin(r * Math.PI/2)
-			g = Math.sin(g * Math.PI/2)
-			b = Math.sin(b * Math.PI/2)
+			r = Math.sin(r * Math.PI / 2)
+			g = Math.sin(g * Math.PI / 2)
+			b = Math.sin(b * Math.PI / 2)
 
 			r = r / 2 + 0.5
 			g = g / 2 + 0.5
@@ -91,7 +78,7 @@ export default class Polytope extends THREE.Object3D {
 		this.subdivision = subdivision
 
 		let vertices = []	// array of THREE.Vector4
-		let vertexColors  =[] // array of THREE.Vector3
+		let vertexColors  = [] // array of THREE.Vector3
 		let faces = []	// array of THREE.Face3
 
 		let v0, v1, v2 = null
@@ -103,7 +90,7 @@ export default class Polytope extends THREE.Object3D {
 
 		//subdivide each faces
 
-		this.graph.faces.forEach((face, i) => {
+		this.graph.faces.forEach((face) => {
 
 			let offset = vertices.length
 			
@@ -159,9 +146,9 @@ export default class Polytope extends THREE.Object3D {
 
 					// add polygon
 					if (j < subdivision) {
-						let fa = offset + j * (j+1) / 2 + u
+						let fa = offset + j * (j + 1) / 2 + u
 						let fb = fa + 1
-						let fc = offset + (j+1) * (j+2) / 2 + u
+						let fc = offset + (j + 1) * (j + 2) / 2 + u
 						let fd = fc + 1
 
 						// type '△'
@@ -178,7 +165,7 @@ export default class Polytope extends THREE.Object3D {
 
 		let positionArray = []
 		let positionWArray = []
-		vertices.forEach((vertex, i) => {
+		vertices.forEach((vertex) => {
 			positionArray.push(vertex.x, vertex.y, vertex.z)
 			positionWArray.push(vertex.w)
 		})
@@ -190,13 +177,13 @@ export default class Polytope extends THREE.Object3D {
 		})
 
 		let indexArray = []
-		faces.forEach((face, i) => {
+		faces.forEach((face) => {
 			indexArray.push(face.a, face.b, face.c)
 		})
 
 		let positionBuffer = new Float32Array(positionArray)
 		let positionWBuffer = new Float32Array(positionWArray)
-		let colorBuffer  =new Float32Array(colorArray)
+		let colorBuffer  = new Float32Array(colorArray)
 		let indexBuffer 	 = new Uint32Array(indexArray)
 
 		this.geometry.addAttribute('position', new THREE.BufferAttribute(positionBuffer, 3))
