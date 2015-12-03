@@ -34,9 +34,24 @@ export default class CompositePass extends THREE.ShaderPass {
 		})
 
 		// ajust
-		GUI.add(this.uniforms.hsvAjust.value, 'x', -1, 1).name('hue')
-		GUI.add(this.uniforms.hsvAjust.value, 'y', 0, 2).name('saturation')
-		GUI.add(this.uniforms.hsvAjust.value, 'z', 0, 2).name('brightness')
+		GUI.add(this.uniforms.hsvAjust.value, 'x', 0, 1).name('hue').listen()
+		GUI.add(this.uniforms.hsvAjust.value, 'y', 0, 1.5).name('saturation').listen()
+		GUI.add(this.uniforms.hsvAjust.value, 'z', 0, 2).name('brightness').listen()
+
+
+		Kontrol.on('fadeHue', (value) => {
+			this.uniforms.hsvAjust.value.x = value
+		})
+
+
+		Kontrol.on('fadeSaturation', (value) => {
+			this.uniforms.hsvAjust.value.y = value * 1.5
+		})
+
+
+		Kontrol.on('fadeBrightness', (value) => {
+			this.uniforms.hsvAjust.value.z = value * 2
+		})
 
 	}
 
