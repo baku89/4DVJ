@@ -96,36 +96,42 @@ body {
   overflow: hidden;
   background: #000;
 }
-#main {
+.loading {
+  width: 100%;
+  z-index: 999;
+}
+.loading__bar {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  border-top: 1px solid #fff;
+  -webkit-transform-origin: top left;
+  -ms-transform-origin: top left;
+  transform-origin: top left;
+  -webkit-transform: scaleX(0);
+  -ms-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: -webkit-transform 1s ease;
+  transition: -webkit-transform 1s ease;
+  transition: transform 1s ease;
+  transition: transform 1s ease, -webkit-transform 1s ease;
+  z-index: 9999;
+}
+.display-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  padding-top: 42.5%;
+  background: #000;
+  z-index: 99;
+}
+.display {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #000;
-  cursor: none;
-  z-index: 99;
-}
-.current-polytope {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  width: 600px;
-  height: 36px;
-  margin-left: -300px;
-  color: #fff;
-  font-size: 36px;
-  line-height: 36px;
-  text-align: center;
-}
-.exclusion-color {
-  position: absolute;
-  height: 34px;
-  bottom: 10px;
-  left: 10px;
-  padding: 6px;
-  background-color: #444;
-}
-.exclusion-color button {
-  margin: 0 6px;
 }

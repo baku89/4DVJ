@@ -11,7 +11,8 @@ gulp.task('webpack', () => {
   let config = {
     watch: developmentMode,
     entry: {
-      main: ['./src/main.js']
+      bootstrap: './src/bootstrap.js',
+      app: './src/app.js'
     },
     output: {
       filename: '[name].js'

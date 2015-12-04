@@ -1,7 +1,6 @@
-/* global THREE, Kontrol */
+/* global THREE, Kontrol, app */
 
 import {lerp} from 'interpolation'
-import Config from '../config'
 
 const EFFECT = {
 	none: 0,
@@ -14,7 +13,7 @@ export default class DeformPass extends THREE.ShaderPass {
 	constructor() {
 		super({
 			uniforms: {
-				resolution: {type: 'v2', value: new THREE.Vector2(Config.RENDER_WIDTH, Config.RENDER_HEIGHT)},
+				resolution: {type: 'v2', value: new THREE.Vector2()},
 				intensity: {type: 'f', value: 1.0},
 				time: {type: 'f', value: 0.0},
 				turbulanceAmp: {type: 'f', value: 0},
@@ -80,8 +79,14 @@ export default class DeformPass extends THREE.ShaderPass {
 				this.uniforms.effectKind.value = Math.random() > .5 ? EFFECT.mirrorRight : EFFECT.mirrorLeft
 			}
 		})
+
+		app.on('resize', this.onResize.bind(this))
 	}
 
+	onResize(width, height) {
+		console.log('resize deform')
+		this.uniforms.resolution.value.set(width, height)
+	}
 
 	update(elapsed) {
 		this.uniforms.time.value += elapsed * 10

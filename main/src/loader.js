@@ -1,29 +1,36 @@
-/* global THREE */
+/* global THREE, LoadingBar */
 import $ from 'jquery'
 
 window.assets = {}
 
-export function loadJSON(id, ur
+let totalWeight = 0
+let loadedWeight = 0
 
-	l) {
+let loaderPercentage = 0.2
+
+export function loadJSON(id, url) {
+	totalWeight += 1
 	let d = new $.Deferred()
 	$.getJSON(url, (data) => {
 		window.assets[id] = data
-		console.log('loaded', id)
+		loadedWeight += 1
+		LoadingBar.update((loadedWeight / totalWeight) * loaderPercentage)
 		d.resolve()
 	})
 	return d.promise()
 }
 
 export function loadVideo(id, url) {
+	totalWeight += 1
 	let d = new $.Deferred()
 	let video = document.createElement('video')
 	video.src = `${url}?.jpg`
 
-	function checkLoad() {
+	let checkLoad = () => {
 		if (video.readyState == 4) {
 			window.assets[id] = video
-			console.log('loaded', id)
+			loadedWeight += 1
+			LoadingBar.update((loadedWeight / totalWeight) * loaderPercentage)
 			d.resolve()
 		} else {
 			setTimeout(checkLoad, 100)
@@ -34,22 +41,26 @@ export function loadVideo(id, url) {
 }
 
 export function loadObj(id, url) {
+	totalWeight += 1
 	let d = new $.Deferred()
 	let loader = new THREE.OBJLoader()
 	loader.load(url, (obj) => {
 		window.assets[id] = obj 
-		console.log('loaded', id)
+		loadedWeight += 1
+		LoadingBar.update((loadedWeight / totalWeight) * loaderPercentage)
 		d.resolve()
 	})
 	return d.promise()
 }
 
 export function loadTexture(id, url) {
+	totalWeight += 1
 	let d = $.Deferred()
 	let loader = new THREE.TextureLoader()
 	loader.load(url, (texture) => {
 		window.assets[id] = texture
-		console.log('loaded', id)
+		loadedWeight += 1
+		LoadingBar.update((loadedWeight / totalWeight) * loaderPercentage)
 		d.resolve()
 	})
 	return d.promise()

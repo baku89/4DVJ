@@ -1,4 +1,4 @@
-/* global THREE, Kontrol */
+/* global THREE, Kontrol, LoadingBar */
 
 import $ from 'jquery'
 import _ from 'lodash'
@@ -34,22 +34,56 @@ let graphList = [
 	{name: '600-cell',        	subdivision: 10}
 ]
 
+let loaderPercentage = 0.2
+
 export default class PolytopeManager extends THREE.Object3D  {
 
 	constructor(parameters) {
 		super()
 
+
 		this.projector4d = parameters.projector4d
-		this.polytopes = []
 
 		this.$currentPolytope = $('.current-polytope')
 
-		console.time('generate polytope')
+		// set range
+		this.variationMap = [
+			_.range(0, 9),
+			_.range(9, 19),
+			_.range(9, graphList.length)
+		]
 
-		graphList.forEach((graph) => {
-			// console.log(loader.graphs)
-			// console.log(loader.graphs[graph.name])
-			console.log(graph.name)
+		this.variationStatus = [true, false, false]
+		this.variationList = this.variationMap[0].concat([])
+
+		// bind
+		Kontrol.on('changePolytope', this.changePolytope.bind(this))
+		Kontrol.on('undoPolytope', this.undoPolytope.bind(this))
+		Kontrol.on('changePolytopeVariation', this.changePolytopeVariation.bind(this))
+
+		// scale
+		this.targetPolytopeScale = 1
+		this.currrentPolytopeScale = 1
+		Kontrol.on('changePolytopeScale', (value) => {
+			this.targetPolytopeScale = value
+		}) 
+
+		// generate polytopes
+		this.polytopes = []
+
+		// console.log('start!!!')
+
+		let generatePolytope = (i) => {
+
+			if (i == graphList.length) {
+				// console.log('End')
+				this.changePolytope(2)// 16-cell
+				return
+			}
+
+			let graph = graphList[i]
+
+			// console.log(graph.name)
 			let polytope = new Polytope(
 				window.assets.graphs[graph.name],
 				{
@@ -59,34 +93,14 @@ export default class PolytopeManager extends THREE.Object3D  {
 			polytope.name = graph.name
 			this.polytopes.push(polytope)
 			this.add(polytope)
-		})
 
-		console.timeEnd('generate polytope')
+			LoadingBar.update(loaderPercentage + ((i + 1) / graphList.length) * (1 - loaderPercentage))
 
-		// set range
-		this.variationMap = [
-			_.range(0, 9),
-			_.range(9, 19),
-			_.range(9, this.polytopes.length)
-		]
+			setTimeout(() => generatePolytope(i + 1), 1)
+		}
 
-		this.variationStatus = [true, false, false]
-		this.variationList = this.variationMap[0].concat([])
+		setTimeout(() => generatePolytope(0), 1)
 
-		this.changePolytope(2)// 16-cell
-
-		// bind
-		Kontrol.on('changePolytope', this.changePolytope.bind(this))
-		Kontrol.on('undoPolytope', this.undoPolytope.bind(this))
-		Kontrol.on('changePolytopeVariation', this.changePolytopeVariation.bind(this))
-
-
-		// scale
-		this.targetPolytopeScale = 1
-		this.currrentPolytopeScale = 1
-		Kontrol.on('changePolytopeScale', (value) => {
-			this.targetPolytopeScale = value
-		}) 
 	}
 
 	undoPolytope() {

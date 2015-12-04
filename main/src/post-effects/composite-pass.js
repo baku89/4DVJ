@@ -1,4 +1,4 @@
-/* global THREE, Kontrol, GUI */
+/* global THREE, Kontrol, GUI, app */
 
 import {smoothstep} from 'interpolation'
 import Config from '../config'
@@ -9,7 +9,7 @@ export default class CompositePass extends THREE.ShaderPass {
 	constructor() {
 		super({
 			uniforms: {
-				resolution: {type: 'v2', value: new THREE.Vector2(Config.RENDER_WIDTH, Config.RENDER_HEIGHT)},
+				resolution: {type: 'v2', value: new THREE.Vector2()},
 				exclusionColor: {type: 'c', value: new THREE.Color(0x000000)},
 				hsvAjust: {type: 'v3', value: new THREE.Vector3(0, 1, 1)},
 				tDiffuse: {type: 't', value: null}
@@ -33,6 +33,8 @@ export default class CompositePass extends THREE.ShaderPass {
 			this.transitionTime = TRANSITION_DURATION
 		})
 
+		app.on('resize', this.onResize.bind(this))
+
 		// ajust
 		GUI.add(this.uniforms.hsvAjust.value, 'x', 0, 1).name('hue').listen()
 		GUI.add(this.uniforms.hsvAjust.value, 'y', 0, 1.5).name('saturation').listen()
@@ -52,7 +54,10 @@ export default class CompositePass extends THREE.ShaderPass {
 		Kontrol.on('fadeBrightness', (value) => {
 			this.uniforms.hsvAjust.value.z = value * 2
 		})
+	}
 
+	onResize(width, height) {
+		this.uniforms.resolution.value.set(width, height)
 	}
 
 	update(elapsed) {

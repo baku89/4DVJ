@@ -1,14 +1,13 @@
-/* global THREE, Kontrol */
+/* global THREE, Kontrol, app */
 
 import _ from 'lodash'
-import Config from '../config'
 
 export default class OverlayPass extends THREE.ShaderPass {
 
 	constructor() {
 		super({
 			uniforms: {
-				resolution: {type: 'v2', value: new THREE.Vector2(Config.RENDER_WIDTH, Config.RENDER_HEIGHT)},
+				resolution: {type: 'v2', value: new THREE.Vector2()},
 				attack: {type: 't', value: null},
 				zfighting: {type: 't', value: null},
 				zfightingEnabled: {type: 'f', value: 0},
@@ -60,6 +59,13 @@ export default class OverlayPass extends THREE.ShaderPass {
 				}
 			})
 		}
+
+		app.on('resize', this.onResize.bind(this))
+	}
+
+	onResize(width, height) { 
+		console.log('overlay resize')
+		this.uniforms.resolution.value.set(width, height)
 	}
 
 	overlayAttack() {

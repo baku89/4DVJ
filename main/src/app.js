@@ -1,11 +1,11 @@
-/* global THREE */
+/* global THREE, LoadingBar */
 import $ from 'jquery'
 import 'jquery.transit'
+import EventEmitter from 'eventemitter3'
 // import _ from 'lodash'
 
 import GUI from './gui'
 import Config from './config'
-import * as loader from './loader'
 window.GUI = GUI
 window.Kontrol = Kontrol
 
@@ -31,34 +31,37 @@ import DeformPass from './post-effects/deform-pass'
 import CompositePass from './post-effects/composite-pass'
 import OverlayPass from './post-effects/overlay-pass'
 
-import 'OrbitControls'
-import 'OBJLoader'
 
-export default class App {
+export default class App extends EventEmitter {
 
 	constructor() {
+		super()
+
 		this.config = {
 			clearColor: 0x112130
 		}
-		GUI.gui.addColor(this.config, 'clearColor')
+		// GUI.gui.addColor(this.config, 'clearColor')
+
+		console.log('constrocaksdjfas;djfasio;dfja')
+
+		this.$displayWrapper = $('.display-wrapper')
 
 		this.initScene()
 		this.initObject()
 		this.initPostprocessing()
 
-		
-		Ticker.on('update', this.animate.bind(this))
-		Ticker.start()
+		console.log('after pp')
+
+		this.onResize()
+		LoadingBar.on('complete', this.onCompleteLoadingBar.bind(this))
 	}
 
 	initScene() {
 		this.scene = new THREE.Scene()
 		this.renderer = new THREE.WebGLRenderer({
-			canvas: document.getElementById('main'),
+			canvas: $('.display')[0],
 			antialias: true
 		})
-		this.renderer.setSize(Config.RENDER_WIDTH, Config.RENDER_HEIGHT)
-		this.onResize()
 
 		this.orbitalCamera = new OrbitalCamera()
 		this.scene.add(this.orbitalCamera)
@@ -70,9 +73,11 @@ export default class App {
 	initObject() {
 		this.projector4d = new Projector4D()
 
+		console.log('aaaslkdjas')
 		this.polytopeManager = new PolytopeManager({
 			projector4d: this.projector4d
 		})
+		console.log('aaaslkdjasa 22222')
 		this.scene.add(this.polytopeManager)
 
 		this.dandruff = new Dandruff({
@@ -123,6 +128,12 @@ export default class App {
 		this.composer.passes[this.composer.passes.length - 1].renderToScreen = true
 	}
 
+	onCompleteLoadingBar() {
+		console.log('complete!!!!! and start!!!!')
+		Ticker.on('update', this.animate.bind(this))
+		Ticker.start()
+	}
+
 	animate(elapsed) {
 		this.renderer.setClearColor(this.config.clearColor)
 		GUI.stats.begin()
@@ -142,39 +153,33 @@ export default class App {
 		this.composer.render()
 
 		GUI.stats.end()
-
 	}
 
 	onResize() {
 		// console.log('test')
 
-		let s = window.innerWidth / Config.RENDER_WIDTH
-		let ty = (window.innerHeight - Config.RENDER_HEIGHT * s) / 2
+		console.log(this.$displayWrapper.outerHeight(), 'height')
 
-		$(this.renderer.domElement).css({
-			transformOrigin: 'top left',
-			translate: [0, ty],
-			scale: [s, s]
-		})
+		let width = this.$displayWrapper.width()
+		let height = this.$displayWrapper.outerHeight()
+
+		this.renderer.setSize(width, height)
+
+		this.emit('resize', width, height)
+
+
+		// let s = window.innerWidth / Config.RENDER_WIDTH
+		// let ty = (window.innerHeight - Config.RENDER_HEIGHT * s) / 2
+
+		// this.$displayWrapper.css({
+		// 	transformOrigin: 'top left',
+		// 	translate: [0, ty],
+		// 	scale: [s, s]
+		// })
 	}
 
 	onClick() {
 	}
 }
 
-// load main
-
-// window.app = new App()
-
-$.when(
-	loader.loadJSON('graphs', './data/graphs.json'),
-	loader.loadVideo('overlay_attack', './texture/overlay_attack.mp4'),
-	loader.loadVideo('overlay_zfighting', './texture/overlay_zfighting.mp4'),
-	loader.loadObj('dandruff_small_obj', './data/dandruff_small.obj'),
-	loader.loadObj('dandruff_large_obj', './data/dandruff_large.obj'),
-	loader.loadTexture('dandruff_small_tex', './texture/dandruff_small.png')
-).then(() => {
-	console.log('aaaaasdjkfasdlkfjas;')
-	window.app = new App()
-})
-
+window.app = new App()

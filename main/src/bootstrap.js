@@ -1,18 +1,11 @@
 import $ from 'jquery'
-
-import App from './app'
+import * as loader from './loader'
 import LoadingBar from './loading-bar'
-import loader from './loader'
+window.LoadingBar = LoadingBar
 
-if (!Detector.canvas || !Detector.webgl || !Detector.workers || !Detector.fileapi
-  || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-  // No supported devices
-  location.href = 'sp'
-}
+import 'OBJLoader'
 
-loader.on('progress', (value) => {
-	LoadingBar.update()
-})
+console.time('load assets')
 
 $.when(
 	loader.loadJSON('graphs', './data/graphs.json'),
@@ -22,5 +15,6 @@ $.when(
 	loader.loadObj('dandruff_large_obj', './data/dandruff_large.obj'),
 	loader.loadTexture('dandruff_small_tex', './texture/dandruff_small.png')
 ).then(() => {
-	window.app = new App()
+	console.timeEnd('load assets')
+	$.getScript('./app.js')
 })

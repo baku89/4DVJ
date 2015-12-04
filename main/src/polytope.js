@@ -113,12 +113,6 @@ export default class Polytope extends THREE.Object3D {
 			ceu.subVectors(c2, c0)
 			ceu.divideScalar(subdivision)
 
-			// if ( needGenerateUv ) {
-			// 	uv0.set( 0.5, 0 )
-			// 	uvV = (new THREE.Vector2( -0.5, 1 )).divideScalar( subdivision )
-			// 	uvU = (new THREE.Vector2(  0.5, 1 )).divideScalar( subdivision )
-			// }
-
 			// j = sum of eu, uv
 			for (let j = 0; j <= subdivision; j++) {
 				for (let v = j; v >= 0; v--) {
@@ -134,15 +128,6 @@ export default class Polytope extends THREE.Object3D {
 					nc.add(cev.clone().multiplyScalar(v))
 					nc.add(ceu.clone().multiplyScalar(u))
 					vertexColors.push(nc)
-
-					// TODO: add new uv
-					// if ( needGenerateUv ) {
-					// 	// add new vertex uv
-					// 	nuv = new THREE.Vector2();
-					// 	nuv.add( uvV.clone().multiplyScalar( v ) );
-					// 	nuv.add( uvU.clone().multiplyScalar( u ) );
-					// 	scope.uvs.push( nuv );
-					// }
 
 					// add polygon
 					if (j < subdivision) {

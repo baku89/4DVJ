@@ -1,5 +1,3 @@
-
-
 doctype html
 head.no-js
 	base(href='./')
@@ -13,24 +11,82 @@ head.no-js
 
 	title #{title}
 
-	include ./includes/og.jade
+	//- OG
+	meta(property="og:title", content="#{title}")
+	meta(property="og:type", content="website")
+	meta(property="og:description", content="#{description}")
+	meta(property="og:url", content="#{social.url}")
+	meta(property="og:image", content="#{social.url}ogimage.jpg")
+	meta(property="og:image:width", content="630")
+	meta(property="og:image:height", content="630")
+	meta(property="og:site_name", content="#{title}")
+	meta(property="og:locale", content="ja_JP")
+
+	//- Twitter type:summary-large-image
+	meta(name="twitter:card", content="summary_large_image")
+	meta(name="twitter:site", content="#{social.twitter_user}")
+	meta(name="twitter:creator", content="#{social.twitter_user}")
+	meta(name="twitter:title", content="#{title}")
+	meta(name="twitter:description", content="#{description}")
+	meta(name="twitter:image:src", content="#{social.url}ogimage.jpg")
+
+mixin slider(name)
+	.slider
+		.slider__name #{name}
+		.slider__left
+		.slider__right
+		.slider__target
+		.slider__value
 
 body
 	.loading
 		.loading__bar
 
+	.display-wrapper
+		canvas.display
 
-	canvas#main
+	header.header
+		h1.header__title
+		button.header__about
 
-	.current-polytope.control Test
+	.control
+		.slider-wrapper
+			+slider('Polytope Size')
+			+slider('Prizm Num')
+			+slider('Fibration Num')
+		.keyboard
+		.slider-wrapper
+			+slider('4D Distance')
+			+slider('Rotation Vel')
+			+slider('Wormhole Size')
 
-	.exclusion-color.control
-		button.pure-button(style='background-color:#000000;color:white') black
-		button.pure-button(style='background-color:#C7ECCF') white
+	.about
+		:marked
+			This demo visualizes [stereographic projection](https://en.wikipedia.org/wiki/Stereographic_projection) of 4D geometries,  
+			and was performed as VJ set at [CHANNEL #13](https://www.super-deluxe.com/room/4021/)
+
+			Used [three.js](http://threejs.org/), [jenn3d](http://www.jenn3d.org)
+
+			Inspired by [Dimensions](http://www.dimensions-math.org/Dim_E.htm), [MPY](http://www.michaelpaulyoung.com/)
+
+			Made by [Baku Hashimoto](http://baku89.com)
+
+		a.about__github(href='https://github.com/baku89/Channel-13' taget='_blank')
+
+
+
+
+	//- .current-polytope.control Test
+
+	//- .exclusion-color.control
+	//- 	button.pure-button(style='background-color:#000000;color:white') black
+	//- 	button.pure-button(style='background-color:#C7ECCF') white
 		//- button.pure-button(style='background-color:#DAAC1C') yellow
 		//- button.pure-button(style='background-color:#C5434E') magenda
 		//- button.pure-button(style='background-color:#3CD290') cyan
 
+	script(src='lib/jquery.min.js')
+	script(src='lib/three.min.js')
 	script(src='bootstrap.js')
 
 	//- script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js')

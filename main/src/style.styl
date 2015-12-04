@@ -8,35 +8,64 @@ html, body
 	overflow hidden
 	background: black
 
-#main
+//------------------------
+// loading
+
+.loading
+	width 100%
+	z-index: 999
+
+.loading__bar
+	position absolute
+	width 100%
+	top 50%
+	left: 0
+	border-top 1px solid white
+	transform-origin top left
+	transform scaleX(0)
+	transition transform 1s ease
+	z-index 9999
+
+//------------------------
+// loading
+
+.display-wrapper
 	position: absolute
 	top: 0
 	left: 0
 	width 100%
-	height 100%
+	height 0
+	padding-top (816/1920*100)%
 	background black
-	cursor none
 	z-index: 99
 
-.current-polytope
-	position: absolute
-	bottom: 20px
-	left: 50%
-	width: 600px
-	height: 36px
-	margin-left: -300px
-	color: white
-	font-size: 36px
-	line-height: 36px
-	text-align center	
+.display
+	position absolute
+	top 0
+	left 0
+	width: 100%
+	height: 100%
 
-.exclusion-color
-	position: absolute
-	height: 34px
-	bottom: 10px
-	left: 10px
-	padding: 6px
-	background-color: #444444
+// .current-polytope
+// 	position: absolute
+// 	bottom: 20px
+// 	left: 50%
+// 	width: 600px
+// 	height: 36px
+// 	margin-left: -300px
+// 	color: white
+// 	font-size: 36px
+// 	line-height: 36px
+// 	text-align center	
+
+// .exclusion-color
+// 	position: absolute
+// 	height: 34px
+// 	bottom: 10px
+// 	left: 10px
+// 	padding: 6px
+// 	background-color: #444444
 	
-	button
-		margin: 0 6px
+// 	button
+// 		margin: 0 6px
+

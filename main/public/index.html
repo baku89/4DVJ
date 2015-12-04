@@ -28,11 +28,69 @@
   <div class="loading">
     <div class="loading__bar"></div>
   </div>
-  <canvas id="main"></canvas>
-  <div class="current-polytope control">Test</div>
-  <div class="exclusion-color control">
-    <button style="background-color:#000000;color:white" class="pure-button">black</button>
-    <button style="background-color:#C7ECCF" class="pure-button">white</button>
+  <div class="display-wrapper">
+    <canvas class="display"></canvas>
   </div>
+  <header class="header">
+    <h1 class="header__title"></h1>
+    <button class="header__about"></button>
+  </header>
+  <div class="control">
+    <div class="slider-wrapper">
+      <div class="slider">
+        <div class="slider__name">Polytope Size</div>
+        <div class="slider__left"></div>
+        <div class="slider__right"></div>
+        <div class="slider__target"></div>
+        <div class="slider__value"></div>
+      </div>
+      <div class="slider">
+        <div class="slider__name">Prizm Num</div>
+        <div class="slider__left"></div>
+        <div class="slider__right"></div>
+        <div class="slider__target"></div>
+        <div class="slider__value"></div>
+      </div>
+      <div class="slider">
+        <div class="slider__name">Fibration Num</div>
+        <div class="slider__left"></div>
+        <div class="slider__right"></div>
+        <div class="slider__target"></div>
+        <div class="slider__value"></div>
+      </div>
+    </div>
+    <div class="keyboard"></div>
+    <div class="slider-wrapper">
+      <div class="slider">
+        <div class="slider__name">4D Distance</div>
+        <div class="slider__left"></div>
+        <div class="slider__right"></div>
+        <div class="slider__target"></div>
+        <div class="slider__value"></div>
+      </div>
+      <div class="slider">
+        <div class="slider__name">Rotation Vel</div>
+        <div class="slider__left"></div>
+        <div class="slider__right"></div>
+        <div class="slider__target"></div>
+        <div class="slider__value"></div>
+      </div>
+      <div class="slider">
+        <div class="slider__name">Wormhole Size</div>
+        <div class="slider__left"></div>
+        <div class="slider__right"></div>
+        <div class="slider__target"></div>
+        <div class="slider__value"></div>
+      </div>
+    </div>
+  </div>
+  <div class="about"><p>This demo visualizes <a href="https://en.wikipedia.org/wiki/Stereographic_projection">stereographic projection</a> of 4D geometries,<br>and was performed as VJ set at <a href="https://www.super-deluxe.com/room/4021/">CHANNEL #13</a></p>
+<p>Used <a href="http://threejs.org/">three.js</a>, <a href="http://www.jenn3d.org">jenn3d</a></p>
+<p>Inspired by <a href="http://www.dimensions-math.org/Dim_E.htm">Dimensions</a>, <a href="http://www.michaelpaulyoung.com/">MPY</a></p>
+<p>Made by <a href="http://baku89.com">Baku Hashimoto</a></p>
+<a href="https://github.com/baku89/Channel-13" taget="_blank" class="about__github"></a>
+  </div>
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/three.min.js"></script>
   <script src="bootstrap.js"></script>
 </body>
