@@ -1,8 +1,25 @@
+
+
 doctype html
-head
+head.no-js
+	base(href='./')
+	meta(charset='utf-8')
+	meta(http-equiv='x-ua-compatible', content='ie=edge')
+	meta(name='description', content='#{description}')
+	meta(name='viewport', content='width=device-width, initial-scale=1')
+
 	link(rel="stylesheet" type="text/css" href="./pure-min.css")
 	link(rel="stylesheet" type="text/css" href="./style.css")
+
+	title #{title}
+
+	include ./includes/og.jade
+
 body
+	.loading
+		.loading__bar
+
+
 	canvas#main
 
 	.current-polytope.control Test
@@ -14,7 +31,9 @@ body
 		//- button.pure-button(style='background-color:#C5434E') magenda
 		//- button.pure-button(style='background-color:#3CD290') cyan
 
-	script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js')
-	script(src='./lib/three.min.js')
-	script(src='./lib/preloadjs-0.6.1.min.js')
-	script(src='main.js')
+	script(src='bootstrap.js')
+
+	//- script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js')
+	//- script(src='./lib/three.min.js')
+	//- script(src='./lib/preloadjs-0.6.1.min.js')
+	//- script(src='main.js')

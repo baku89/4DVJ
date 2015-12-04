@@ -20,19 +20,19 @@ import FibrationManager from './fibration-manager'
 
 
 // TODO: resolve web_modules
-import '../web_modules/shaders/CopyShader'
-import '../web_modules/shaders/FXAAShader'
-import '../web_modules/postprocessing/ShaderPass'
-import '../web_modules/postprocessing/MaskPass'
-import '../web_modules/postprocessing/RenderPass'
-import '../web_modules/postprocessing/EffectComposer'
+import 'shaders/CopyShader'
+import 'shaders/FXAAShader'
+import 'postprocessing/ShaderPass'
+import 'postprocessing/MaskPass'
+import 'postprocessing/RenderPass'
+import 'postprocessing/EffectComposer'
 
 import DeformPass from './post-effects/deform-pass'
 import CompositePass from './post-effects/composite-pass'
 import OverlayPass from './post-effects/overlay-pass'
 
-import '../web_modules/OrbitControls'
-import '../web_modules/OBJLoader'
+import 'OrbitControls'
+import 'OBJLoader'
 
 export default class App {
 
@@ -165,8 +165,6 @@ export default class App {
 // load main
 
 // window.app = new App()
-
-
 
 $.when(
 	loader.loadJSON('graphs', './data/graphs.json'),

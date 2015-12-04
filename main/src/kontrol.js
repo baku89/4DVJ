@@ -46,7 +46,6 @@ class Kontrol extends EventEmitter {
 		// midi
 		// navigator.requestMIDIAccess().then(this.onMidiSuccess.bind(this), this.onMidiFailure.bind(this))
 
-
 		this.initDom()
 	}
 

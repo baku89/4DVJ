@@ -31,15 +31,6 @@ gulp.task('webpack', () => {
     ],
     amd: {jQuery: true},
     target: 'web',
-    "node": {
-      console: false,
-      global: true,
-      process: true,
-      Buffer: true,
-      __filename: true,
-      __dirname: true,
-      setImmediate: true
-    },
     resolve: {
       modulesDirectories: ["web_modules", "node_modules"]
     },
@@ -69,9 +60,12 @@ gulp.task('webpack', () => {
 //==================================================
 
 gulp.task('jade', () => {
-	return gulp.src('./src/**/*.jade')
+	return gulp.src('./src/*.jade')
     .pipe($.plumber())
-		.pipe($.jade())
+    .pipe($.data(()=> {
+      return require('./src/includes/data.json')
+    }))
+		.pipe($.jade({pretty: developmentMode}))
 		.pipe(gulp.dest('public'))
     .pipe(browserSync.stream())
 })

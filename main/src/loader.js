@@ -3,7 +3,9 @@ import $ from 'jquery'
 
 window.assets = {}
 
-export function loadJSON(id, url) {
+export function loadJSON(id, ur
+
+	l) {
 	let d = new $.Deferred()
 	$.getJSON(url, (data) => {
 		window.assets[id] = data
@@ -12,18 +14,6 @@ export function loadJSON(id, url) {
 	})
 	return d.promise()
 }
-
-// export function loadVideo(id, url) {
-// 	let d = new $.Deferred()
-// 	let video = document.createElement('video')
-// 	video.src = `${url}?.jpg`
-// 	video.addEventListener('loadeddata', () => {
-// 		window.assets[id] = video
-// 		console.log('loaded', id)
-// 		d.resolve()
-// 	})
-// 	return d.promise()
-// }
 
 export function loadVideo(id, url) {
 	let d = new $.Deferred()
