@@ -33,7 +33,7 @@ export default class OrbitalCamera extends THREE.Object3D {
 		})
 
 		// camera settings
-		this.camera = new THREE.PerspectiveCamera(60, Config.RENDER_WIDTH / Config.RENDER_HEIGHT, .1, 1000)
+		this.camera = new THREE.PerspectiveCamera(60, Config.ASPECT, .1, 1000)
 		this.camera.position.set(0, 0, NORMAL_Z)
 		this.isMagnify = false
 

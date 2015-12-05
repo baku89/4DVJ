@@ -27,8 +27,9 @@ class LoadingBar extends EventEmitter {
 
 		if (rate >= 1) {
 			console.log('loadingbar complere')
+			$('.display-wrapper').removeClass('hidden')
+
 			setTimeout(() => {
-				console.log('aakdfjasl;dfjasod;ifjasodifjas;odfijasodifjasodifjasod;fiajs')
 				this.emit('complete')
 			}, 1000)
 		}

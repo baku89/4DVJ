@@ -95,6 +95,8 @@ body {
   height: 100%;
   overflow: hidden;
   background: #000;
+  color: #fff;
+  font-family: "jaf-bernino-sans-condensed", sans-serif;
 }
 .loading {
   width: 100%;
@@ -120,13 +122,48 @@ body {
 }
 .display-wrapper {
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 0;
   width: 100%;
   height: 0;
+  margin-top: -21.25%;
   padding-top: 42.5%;
   background: #000;
   z-index: 99;
+}
+.display-wrapper__top,
+.display-wrapper__bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: #f00;
+  -webkit-transform: scaleY(0);
+  -ms-transform: scaleY(0);
+  transform: scaleY(0);
+  -webkit-transition: -webkit-transform 0.5s ease;
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+  z-index: 10;
+}
+.hidden .display-wrapper__top,
+.hidden .display-wrapper__bottom {
+  -webkit-transform: scaleY(1);
+  -ms-transform: scaleY(1);
+  transform: scaleY(1);
+}
+.display-wrapper__top {
+  top: 0;
+  -webkit-transform-origin: top left;
+  -ms-transform-origin: top left;
+  transform-origin: top left;
+}
+.display-wrapper__bottom {
+  bottom: 0;
+  -webkit-transform-origin: bottom left;
+  -ms-transform-origin: bottom left;
+  transform-origin: bottom left;
 }
 .display {
   position: absolute;

@@ -64,8 +64,9 @@ export default class OverlayPass extends THREE.ShaderPass {
 	}
 
 	onResize(width, height) { 
-		console.log('overlay resize')
+		console.log('overlay.resize')
 		this.uniforms.resolution.value.set(width, height)
+		console.log(width, height, this.uniforms)
 	}
 
 	overlayAttack() {

@@ -30,6 +30,10 @@ head.no-js
 	meta(name="twitter:description", content="#{description}")
 	meta(name="twitter:image:src", content="#{social.url}ogimage.jpg")
 
+	script(src="https://use.typekit.net/nqn2sfg.js")
+	script.
+		try{Typekit.load({ async: true });}catch(e){}
+
 mixin slider(name)
 	.slider
 		.slider__name #{name}
@@ -42,12 +46,14 @@ body
 	.loading
 		.loading__bar
 
-	.display-wrapper
+	.display-wrapper.hidden
+		.display-wrapper__top
+		.display-wrapper__bottom
 		canvas.display
 
 	header.header
-		h1.header__title
-		button.header__about
+		h1.header__title 4DVJ
+		button.header__about ?
 
 	.control
 		.slider-wrapper

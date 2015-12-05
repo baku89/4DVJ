@@ -36,6 +36,9 @@ export default class App extends EventEmitter {
 
 	constructor() {
 		super()
+	}
+
+	init() {
 
 		this.config = {
 			clearColor: 0x112130
@@ -50,9 +53,8 @@ export default class App extends EventEmitter {
 		this.initObject()
 		this.initPostprocessing()
 
-		console.log('after pp')
-
 		this.onResize()
+
 		LoadingBar.on('complete', this.onCompleteLoadingBar.bind(this))
 	}
 
@@ -62,6 +64,7 @@ export default class App extends EventEmitter {
 			canvas: $('.display')[0],
 			antialias: true
 		})
+		// this.renderer.setSize(1920, 814)
 
 		this.orbitalCamera = new OrbitalCamera()
 		this.scene.add(this.orbitalCamera)
@@ -77,7 +80,6 @@ export default class App extends EventEmitter {
 		this.polytopeManager = new PolytopeManager({
 			projector4d: this.projector4d
 		})
-		console.log('aaaslkdjasa 22222')
 		this.scene.add(this.polytopeManager)
 
 		this.dandruff = new Dandruff({
@@ -163,8 +165,12 @@ export default class App extends EventEmitter {
 		let width = this.$displayWrapper.width()
 		let height = this.$displayWrapper.outerHeight()
 
-		this.renderer.setSize(width, height)
 
+		// this.renderer.setSize(1920, 814)
+		this.renderer.setSize(width, height)
+		this.composer.setSize(width, height)
+
+		console.log('app.resize')
 		this.emit('resize', width, height)
 
 
@@ -175,7 +181,7 @@ export default class App extends EventEmitter {
 		// 	transformOrigin: 'top left',
 		// 	translate: [0, ty],
 		// 	scale: [s, s]
-		// })
+		// }) 
 	}
 
 	onClick() {
@@ -183,3 +189,4 @@ export default class App extends EventEmitter {
 }
 
 window.app = new App()
+window.app.init()

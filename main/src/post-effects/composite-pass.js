@@ -33,7 +33,6 @@ export default class CompositePass extends THREE.ShaderPass {
 			this.transitionTime = TRANSITION_DURATION
 		})
 
-		app.on('resize', this.onResize.bind(this))
 
 		// ajust
 		GUI.add(this.uniforms.hsvAjust.value, 'x', 0, 1).name('hue').listen()
@@ -54,9 +53,12 @@ export default class CompositePass extends THREE.ShaderPass {
 		Kontrol.on('fadeBrightness', (value) => {
 			this.uniforms.hsvAjust.value.z = value * 2
 		})
+
+		app.on('resize', this.onResize.bind(this))
 	}
 
 	onResize(width, height) {
+		console.log('composite.resize')
 		this.uniforms.resolution.value.set(width, height)
 	}
 

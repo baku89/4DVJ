@@ -81,10 +81,11 @@ export default class DeformPass extends THREE.ShaderPass {
 		})
 
 		app.on('resize', this.onResize.bind(this))
+
 	}
 
 	onResize(width, height) {
-		console.log('resize deform')
+		console.log('deformpass.resize')
 		this.uniforms.resolution.value.set(width, height)
 	}
 
