@@ -122,6 +122,21 @@ export default class Projector4D {
 
 		this.matrix.multiplyMatrices( Ryw, Rxw )
 		this.matrix.multiplyMatrices( Rzw, this.matrix)
+
+		// normalize
+		// let e = this.matrix.elements
+
+		// for (let i = 0; i < 16; i += 4) {
+		// 	let length = _.reduce([e[i], e[i + 1], e[i + 2], e[i + 3]], (sum, val) => {
+		// 		return val * val
+		// 	})
+		// 	length = Math.sqrt(length)
+		// 	e[i] /= length
+		// 	e[i + 1] /= length
+		// 	e[i + 2] /= length
+		// 	e[i + 3] /= length
+		// }
+
 	}
 
 }

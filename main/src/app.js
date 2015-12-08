@@ -43,9 +43,6 @@ export default class App extends EventEmitter {
 		this.config = {
 			clearColor: 0x112130
 		}
-		// GUI.gui.addColor(this.config, 'clearColor')
-
-		console.log('constrocaksdjfas;djfasio;dfja')
 
 		this.$displayWrapper = $('.display-wrapper')
 
@@ -158,30 +155,20 @@ export default class App extends EventEmitter {
 	}
 
 	onResize() {
-		// console.log('test')
 
 		console.log(this.$displayWrapper.outerHeight(), 'height')
 
-		let width = this.$displayWrapper.width()
-		let height = this.$displayWrapper.outerHeight()
+		// let width = this.$displayWrapper.width()
+		// let height = this.$displayWrapper.outerHeight()
 
+		let width = window.innerWidth
+		let height = (width / 1920) * 814
 
 		// this.renderer.setSize(1920, 814)
 		this.renderer.setSize(width, height)
 		this.composer.setSize(width, height)
 
-		console.log('app.resize')
 		this.emit('resize', width, height)
-
-
-		// let s = window.innerWidth / Config.RENDER_WIDTH
-		// let ty = (window.innerHeight - Config.RENDER_HEIGHT * s) / 2
-
-		// this.$displayWrapper.css({
-		// 	transformOrigin: 'top left',
-		// 	translate: [0, ty],
-		// 	scale: [s, s]
-		// }) 
 	}
 
 	onClick() {
