@@ -2,7 +2,6 @@
 const gulp = require('gulp')
 const $ = require('gulp-load-plugins')()
 const nib = require('nib')
-const svg = require('svg-stylus')
 const webpack = require('webpack')
 const browserSync = require('browser-sync').create()
 
@@ -12,7 +11,6 @@ gulp.task('webpack', () => {
   let config = {
     watch: developmentMode,
     entry: {
-      bootstrap: './src/bootstrap.js',
       app: './src/app.js'
     },
     output: {
@@ -25,9 +23,7 @@ gulp.task('webpack', () => {
       loaders: [
         {test: /\.js$/, exclude: /node_modules|web_modules/, loader: 'babel-loader'},
         {test: /\.json$/, loader: 'json-loader'},
-        {test: /\.jade$/, loader: 'jade-loader'},
-        {test: /\.(vert|frag|glsl)$/, loaders:['raw-loader','glslify-loader']},
-        {test: /\.vue$/, loaders: 'vue'}
+        {test: /\.(vert|frag|glsl)$/, loaders:['raw-loader','glslify-loader']}
       ]
     },
     plugins: [
@@ -66,9 +62,6 @@ gulp.task('webpack', () => {
 gulp.task('jade', () => {
 	return gulp.src('./src/*.jade')
     .pipe($.plumber())
-    .pipe($.data(()=> {
-      return require('./src/includes/data.json')
-    }))
 		.pipe($.jade({pretty: developmentMode}))
 		.pipe(gulp.dest('public'))
     .pipe(browserSync.stream())
@@ -79,7 +72,7 @@ gulp.task('jade', () => {
 gulp.task('stylus', () => {
 	return gulp.src('./src/**/*.styl')
     .pipe($.plumber())
-		.pipe($.stylus({use: [nib(), svg()], compress: !developmentMode}))
+		.pipe($.stylus({use: nib(), compress: !developmentMode}))
     .pipe($.autoprefixer())
 		.pipe(gulp.dest('public'))
     .pipe(browserSync.stream())
@@ -114,4 +107,3 @@ gulp.task('release', () => {
 //==================================================
 
 gulp.task('default', ['jade', 'stylus', 'webpack', 'watch', 'browser-sync'])
-gulp.task('build', ['release', 'jade', 'stylus', 'webpack'])

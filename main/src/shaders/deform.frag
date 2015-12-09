@@ -39,7 +39,7 @@ void main() {
   // slitscan
 
   noisePos = vec3(fragCoord.x/1200.0, fragCoord.y/400.0, time / 12000.0);
-  vec2 slitscanCoord = fragCoord + vec2(snoise3(noisePos+1000.0), snoise3(noisePos+33300.0)) * 20.0;
+  vec2 slitscanCoord = fragCoord;// + vec2(snoise3(noisePos+1000.0), snoise3(noisePos+33300.0)) * 20.0;
   slitscanCoord.x = map(fragCoord.x, 0.0, resolution.x, halfr.x - 3.0, halfr.x + 3.0);
 
   fragCoord = mix(fragCoord, slitscanCoord, slitscanIntensity);

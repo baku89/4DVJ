@@ -1,4 +1,4 @@
-/* global THREE, Kontrol, app */
+/* global THREE, app */
 
 import {lerp} from 'interpolation'
 
@@ -29,48 +29,35 @@ export default class DeformPass extends THREE.ShaderPass {
 
 		this.enabled = true
 
-		Kontrol.on('makeTurbulance', () => {
-			this.uniforms.turbulanceAmp.value = 150.0
+		// turbulance
+		app.ui.turbulance.on('change', (value) => {
+			this.uniforms.turbulanceAmp.value = 150
 		})
 
 		// slitscan
 		this.targetSlitscanIntensity = 0
-
-		Kontrol.on('enableSlitscan', () => {
-			this.slitscanEnabled = true
-		})
-		Kontrol.on('disableSlitscan', () => {
-			this.slitscanEnabled = false
-		})
-		Kontrol.on('toggleSlitscan', () => {
-			this.slitscanEnabled = !this.slitscanEnabled
+		app.ui.slitscan.on('change', (value) => {
+			this.slitscanEnabled = value
 		})
 
 		// lens
-		this.lensRadius = 400
-		Kontrol.on('changeLensRadius', (value) => {
+		this.lensRadius = 0
+		app.ui.lensRadius.on('change', (value) => {
 			this.lensRadius = lerp(200, 800, value)
 		})
-		Kontrol.on('magnifyCamera', () => {
-			this.isMagnify = true
-		})
 
-		Kontrol.on('unmagnifyCamera', () => {
-			this.isMagnify = false
-		})
-
-		Kontrol.on('toggleMagnifyCamera', () => {
-			this.isMagnify = !this.isMagnify
+		app.ui.magnify.on('change', (value) => {
+			this.isMagnify = value
 		})
 
 		// effects
-		Kontrol.on('toggleNone', () => {
+		app.ui.effectReset.on('change', () => {
 			this.uniforms.effectKind.value = EFFECT.none
 		})
-		Kontrol.on('toggleRepeat', () => {
+		app.ui.effectRepeat.on('change', () => {
 			this.uniforms.effectKind.value = (this.uniforms.effectKind.value != EFFECT.repeat) ? EFFECT.repeat : EFFECT.none
 		})
-		Kontrol.on('toggleMirror', () => {
+		app.ui.effectMirror.on('change', () => {
 			if (this.uniforms.effectKind.value == EFFECT.mirrorRight) {
 				this.uniforms.effectKind.value = EFFECT.mirrorLeft
 			} else if (this.uniforms.effectKind.value == EFFECT.mirrorLeft) {

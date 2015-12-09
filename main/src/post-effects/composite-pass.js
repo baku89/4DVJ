@@ -1,7 +1,7 @@
 /* global THREE, Kontrol, GUI, app */
 
 import {smoothstep} from 'interpolation'
-import Config from '../config'
+// import Config from '../config'
 
 const TRANSITION_DURATION = 1500
 

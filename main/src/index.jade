@@ -1,3 +1,11 @@
+mixin slider(name)
+	.slider
+		.slider__name #{name}
+		.slider__left
+		.slider__right
+		.slider__target
+		.slider__value
+
 doctype html
 head.no-js
 	base(href='./')
@@ -34,50 +42,48 @@ head.no-js
 	script.
 		try{Typekit.load({ async: true });}catch(e){}
 
-mixin slider(name)
-	.slider
-		.slider__name #{name}
-		.slider__left
-		.slider__right
-		.slider__target
-		.slider__value
-
 body
 	.loading
 		.loading__bar
 
-	.display-wrapper.hidden
-		.display-wrapper__top
-		.display-wrapper__bottom
-		canvas.display
+	.display(data-mode='hidden')
+		.display__top
+		.display__bottom
+		canvas.display-canvas
 
-	header.header
-		h1.header__title 4DVJ
-		button.header__about ?
+	header.title
+		h1.title__wrapper
+			.title__default 4DVJ
+			.title__custom
+			button.title__about ?
+
 
 	.control
-		.slider-wrapper
-			+slider('Polytope Size')
-			+slider('Prizm Num')
-			+slider('Fibration Num')
-		.keyboard
-		.slider-wrapper
-			+slider('4D Distance')
-			+slider('Rotation Vel')
-			+slider('Wormhole Size')
+		.control__sliders.control__sliders--left
+		.control__keyboard
+			.control__keyboard-row.control__keyboard-row--0
+			.control__keyboard-row.control__keyboard-row--1
+			.control__keyboard-row.control__keyboard-row--2
+		.control__sliders.control__sliders--right
+	//- 		+slider('Polytope Size')
+	//- 		+slider('Prizm Num')
+	//- 		+slider('Fibration Num')
+	//- 		+slider('4D Distance')
+	//- 		+slider('Rotation Vel')
+	//- 		+slider('Wormhole Size')
 
-	.about
-		:marked
-			This demo visualizes [stereographic projection](https://en.wikipedia.org/wiki/Stereographic_projection) of 4D geometries,  
-			and was performed as VJ set at [CHANNEL #13](https://www.super-deluxe.com/room/4021/)
+	//- .about
+	//- 	:marked
+	//- 		This demo visualizes [stereographic projection](https://en.wikipedia.org/wiki/Stereographic_projection) of 4D geometries,  
+	//- 		and was performed as VJ set at [CHANNEL #13](https://www.super-deluxe.com/room/4021/)
 
-			Used [three.js](http://threejs.org/), [jenn3d](http://www.jenn3d.org)
+	//- 		Used [three.js](http://threejs.org/), [jenn3d](http://www.jenn3d.org)
 
-			Inspired by [Dimensions](http://www.dimensions-math.org/Dim_E.htm), [MPY](http://www.michaelpaulyoung.com/)
+	//- 		Inspired by [Dimensions](http://www.dimensions-math.org/Dim_E.htm), [MPY](http://www.michaelpaulyoung.com/)
 
-			Made by [Baku Hashimoto](http://baku89.com)
+	//- 		Made by [Baku Hashimoto](http://baku89.com)
 
-		a.about__github(href='https://github.com/baku89/Channel-13' taget='_blank')
+	//- 	a.about__github(href='https://github.com/baku89/Channel-13' taget='_blank')
 
 
 

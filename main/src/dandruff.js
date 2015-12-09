@@ -1,4 +1,4 @@
-/* global THREE, Kontrol, GUI */
+/* global THREE, Kontrol, app */
 
 // import _ from 'lodash'
 import {Noise} from 'noisejs'
@@ -94,8 +94,6 @@ export default class Dandruff extends THREE.Object3D {
 				fragmentShader: require('./shaders/dandruff.frag')
 			})
 
-			GUI.add(material.uniforms.wiggleAmp, 'value', 0, 2).name('dandruff wiggle')
-
 			this.small = new THREE.Mesh(geometry, material)
 			this.small.scale.set(3, 3, 3)
 			this.add(this.small)
@@ -128,9 +126,9 @@ export default class Dandruff extends THREE.Object3D {
 			this.add(this.large)
 		}
 
-		Kontrol.on('changeDandruffDrawRange', (value) => {
-			this.small.geometry.drawRange.count = Math.floor(value * this.small.geometry.attributes.position.count * 3)
-			this.large.geometry.drawRange.count = Math.floor(value * this.large.geometry.attributes.position.count * 3)
+		app.ui.polygonCount.on('change', (value) => {
+			this.small.geometry.drawRange.count = Math.floor(value * this.small.geometry.attributes.position.count)
+			this.large.geometry.drawRange.count = Math.floor(value * this.large.geometry.attributes.position.count)
 		})
 
 		

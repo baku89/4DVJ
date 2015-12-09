@@ -1,4 +1,4 @@
-/* global THREE, Kontrol */
+/* global THREE, Kontrol, app */
 
 import Fibration from './fibration'
 
@@ -30,7 +30,7 @@ export default class FibrationManager extends THREE.Object3D {
 
 		this.changeFibrationCount(0)
 
-		Kontrol.on('changeFibrationCount', this.changeFibrationCount.bind(this))
+		app.ui.fibrationCount.on('change', this.changeFibrationCount.bind(this))
 	}
 
 	changeFibrationCount(value) {

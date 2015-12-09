@@ -1,8 +1,8 @@
 import EventEmitter from 'eventemitter3'
 // import _ from 'lodash'
 import $ from 'jquery'
-// import Config from './config'
 
+// import Config from './config'
 
 const DECORATIVE_KEY = {
 	'13': '\n',
@@ -50,6 +50,11 @@ class Kontrol extends EventEmitter {
 	}
 
 	initDom() {
+
+		// this.title = new Title()
+		// this.display = new Display()
+
+
 		$('.control').on('mousedown mouseup', () => {
 			return false
 		})
@@ -87,43 +92,43 @@ class Kontrol extends EventEmitter {
 	// 	console.error('Could not init midi devices')
 	// }
 
-	onMidiEvent(evt) {
-		// console.log(evt.data)
-		let type = evt.data[0]
-		let name = evt.data[1]
-		let value = evt.data[2] / 127.0
+	// onMidiEvent(evt) {
+	// 	// console.log(evt.data)
+	// 	let type = evt.data[0]
+	// 	let name = evt.data[1]
+	// 	let value = evt.data[2] / 127.0
 
-		if (type == 176) {
-			if (name == 0) {
-				this.emit('changeDistance', value)
-			} else if (name == 1) {
-				this.emit('changePolytopeScale', value)
-			} else if (name == 2) {
-				this.emit('changeDandruffDrawRange', value)
-			} else if (name == 3) {
-				this.emit('changeFibrationCount', value)
+	// 	if (type == 176) {
+	// 		if (name == 0) {
+	// 			this.emit('changeDistance', value)
+	// 		} else if (name == 1) {
+	// 			this.emit('changePolytopeScale', value)
+	// 		} else if (name == 2) {
+	// 			this.emit('changeDandruffDrawRange', value)
+	// 		} else if (name == 3) {
+	// 			this.emit('changeFibrationCount', value)
 				
-			} else if (name == 16) { // camera zoom
-				this.emit('changeRotateSpeed', value)
-			} else if (name == 17 ) {
-				this.emit('changeLensRadius', value)
+	// 		} else if (name == 16) { // camera zoom
+	// 			this.emit('changeRotateSpeed', value)
+	// 		} else if (name == 17 ) {
+	// 			this.emit('changeLensRadius', value)
 			
-			} else if (name == 65) { // simple polytope
-				this.emit('changePolytopeVariation', 0, evt.data[2] == 127)
-			} else if (name == 49) { // mid polytope
-				this.emit('changePolytopeVariation', 1, evt.data[2] == 127)
-			} else if (name == 33) { // complex polytope
-				this.emit('changePolytopeVariation', 2, evt.data[2] == 127)
+	// 		} else if (name == 65) { // simple polytope
+	// 			this.emit('changePolytopeVariation', 0, evt.data[2] == 127)
+	// 		} else if (name == 49) { // mid polytope
+	// 			this.emit('changePolytopeVariation', 1, evt.data[2] == 127)
+	// 		} else if (name == 33) { // complex polytope
+	// 			this.emit('changePolytopeVariation', 2, evt.data[2] == 127)
 			
-			} else if (name == 21) {
-				this.emit('fadeHue', value)
-			} else if (name == 22) {
-				this.emit('fadeSaturation', value)
-			} else if (name == 23) {
-				this.emit('fadeBrightness', value)
-			}
-		}
-	}
+	// 		} else if (name == 21) {
+	// 			this.emit('fadeHue', value)
+	// 		} else if (name == 22) {
+	// 			this.emit('fadeSaturation', value)
+	// 		} else if (name == 23) {
+	// 			this.emit('fadeBrightness', value)
+	// 		}
+	// 	}
+	// }
 
 	onKeydown(evt) {
 		// console.log(evt.keyCode)
@@ -146,8 +151,6 @@ class Kontrol extends EventEmitter {
 	onMouseup() {
 		// this.emit('unmagnifyCamera')
 	}
-
-
 }
 
 

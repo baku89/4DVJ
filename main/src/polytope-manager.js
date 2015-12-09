@@ -1,4 +1,4 @@
-/* global THREE, Kontrol, LoadingBar */
+/* global THREE, Kontrol, LoadingBar, app */
 
 import $ from 'jquery'
 import _ from 'lodash'
@@ -40,50 +40,29 @@ export default class PolytopeManager extends THREE.Object3D  {
 
 	constructor(parameters) {
 		super()
-
-
+ 
 		this.projector4d = parameters.projector4d
-
-		this.$currentPolytope = $('.current-polytope')
-
-		// set range
-		this.variationMap = [
-			_.range(0, 9),
-			_.range(9, 19),
-			_.range(9, graphList.length)
-		]
-
-		this.variationStatus = [true, false, false]
-		this.variationList = this.variationMap[0].concat([])
 
 		// bind
 		Kontrol.on('changePolytope', this.changePolytope.bind(this))
-		Kontrol.on('undoPolytope', this.undoPolytope.bind(this))
-		Kontrol.on('changePolytopeVariation', this.changePolytopeVariation.bind(this))
 
 		// scale
-		this.targetPolytopeScale = 1
 		this.currrentPolytopeScale = 1
-		Kontrol.on('changePolytopeScale', (value) => {
-			this.targetPolytopeScale = value
+		app.ui.polytopeScale.on('change', (value) => {
+			this.scale.set(value, value, value)
 		}) 
 
 		// generate polytopes
 		this.polytopes = []
 
-		// console.log('start!!!')
-
 		let generatePolytope = (i) => {
 
 			if (i == graphList.length) {
-				// console.log('End')
 				this.changePolytope(2)// 16-cell
 				return
 			}
 
 			let graph = graphList[i]
-
-			// console.log(graph.name)
 			let polytope = new Polytope(
 				window.assets.graphs[graph.name],
 				{
@@ -103,60 +82,28 @@ export default class PolytopeManager extends THREE.Object3D  {
 
 	}
 
-	undoPolytope() {
-
-	}
-
 	// for debug
 	changePolytope(index) {
-		if (this.variationList.length == 0) {
-			return
+
+		if (!index) {
+			index = _.random(this.polytopes.length - 2)
+			if (this.currentIndex <= index) {
+				index += 1
+			}
 		}
 
-		if (index) {
-			this.currentIndex = index
-		} else {
-			this.currentIndex = this.variationList[_.random(this.variationList.length - 1)]
-
-			// in order
-			// this.currentIndex = (this.currentIndex + 1) % this.polytopes.length
-		}
-
+		this.currentIndex = index
 		this.updateStage()
-		this.updateVariationList()
+
+		app.ui.title.value = graphList[this.currentIndex].name
 	}
 
 	updateStage() {
-
 		this.polytopes.forEach((polytope, i) => {
 			polytope.visible = this.currentIndex == i
 		})
-		this.$currentPolytope.html(this.polytopes[this.currentIndex].name)
 	}
-
-	changePolytopeVariation(pass, toggle) {
-		this.variationStatus[pass] = toggle
-		this.updateVariationList()
-	}
-
-	updateVariationList() {
-		this.variationList = []
-		this.variationStatus.forEach((status, i) => {
-			if (status) {
-				this.variationList = this.variationList.concat(this.variationMap[i])
-			}
-		})
-
-		// delete current index from list
-		let indexInList = this.variationList.indexOf(this.currentIndex)
-		if (indexInList != -1) {
-			this.variationList.splice(indexInList, 1)
-		}
-	}
-
 
 	update() {
-		this.currrentPolytopeScale = lerp(this.currrentPolytopeScale, this.targetPolytopeScale, 0.1)
-		this.scale.set(this.currrentPolytopeScale, this.currrentPolytopeScale, this.currrentPolytopeScale)
 	}
 }

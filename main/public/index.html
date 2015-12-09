@@ -33,70 +33,30 @@
   <div class="loading">
     <div class="loading__bar"></div>
   </div>
-  <div class="display-wrapper hidden">
-    <div class="display-wrapper__top"></div>
-    <div class="display-wrapper__bottom"></div>
-    <canvas class="display"></canvas>
+  <div data-mode="hidden" class="display">
+    <div class="display__top"></div>
+    <div class="display__bottom"></div>
+    <canvas class="display-canvas"></canvas>
   </div>
-  <header class="header">
-    <h1 class="header__title">4DVJ</h1>
-    <button class="header__about">?</button>
+  <header class="title">
+    <h1 class="title__wrapper">
+      <div class="title__default">4DVJ</div>
+      <div class="title__custom"></div>
+      <button class="title__about">?</button>
+    </h1>
   </header>
   <div class="control">
-    <div class="slider-wrapper">
-      <div class="slider">
-        <div class="slider__name">Polytope Size</div>
-        <div class="slider__left"></div>
-        <div class="slider__right"></div>
-        <div class="slider__target"></div>
-        <div class="slider__value"></div>
-      </div>
-      <div class="slider">
-        <div class="slider__name">Prizm Num</div>
-        <div class="slider__left"></div>
-        <div class="slider__right"></div>
-        <div class="slider__target"></div>
-        <div class="slider__value"></div>
-      </div>
-      <div class="slider">
-        <div class="slider__name">Fibration Num</div>
-        <div class="slider__left"></div>
-        <div class="slider__right"></div>
-        <div class="slider__target"></div>
-        <div class="slider__value"></div>
-      </div>
+    <div class="control__sliders control__sliders--left"></div>
+    <div class="control__keyboard">
+      <div class="control__keyboard-row control__keyboard-row--0"></div>
+      <div class="control__keyboard-row control__keyboard-row--1"></div>
+      <div class="control__keyboard-row control__keyboard-row--2"></div>
     </div>
-    <div class="keyboard"></div>
-    <div class="slider-wrapper">
-      <div class="slider">
-        <div class="slider__name">4D Distance</div>
-        <div class="slider__left"></div>
-        <div class="slider__right"></div>
-        <div class="slider__target"></div>
-        <div class="slider__value"></div>
-      </div>
-      <div class="slider">
-        <div class="slider__name">Rotation Vel</div>
-        <div class="slider__left"></div>
-        <div class="slider__right"></div>
-        <div class="slider__target"></div>
-        <div class="slider__value"></div>
-      </div>
-      <div class="slider">
-        <div class="slider__name">Wormhole Size</div>
-        <div class="slider__left"></div>
-        <div class="slider__right"></div>
-        <div class="slider__target"></div>
-        <div class="slider__value"></div>
-      </div>
-    </div>
+    <div class="control__sliders control__sliders--right"></div>
   </div>
-  <div class="about"><p>This demo visualizes <a href="https://en.wikipedia.org/wiki/Stereographic_projection">stereographic projection</a> of 4D geometries,<br>and was performed as VJ set at <a href="https://www.super-deluxe.com/room/4021/">CHANNEL #13</a></p>
-<p>Used <a href="http://threejs.org/">three.js</a>, <a href="http://www.jenn3d.org">jenn3d</a></p>
-<p>Inspired by <a href="http://www.dimensions-math.org/Dim_E.htm">Dimensions</a>, <a href="http://www.michaelpaulyoung.com/">MPY</a></p>
-<p>Made by <a href="http://baku89.com">Baku Hashimoto</a></p>
-<a href="https://github.com/baku89/Channel-13" taget="_blank" class="about__github"></a>
-  </div>
+  
+  
+  
   <script src="lib/jquery.min.js"></script>
   <script src="lib/three.min.js"></script>
   <script src="bootstrap.js"></script>

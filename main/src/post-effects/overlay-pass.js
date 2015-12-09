@@ -32,7 +32,7 @@ export default class OverlayPass extends THREE.ShaderPass {
 			this.uniforms.attack.value = this.attackTexture
 
 			this.attackRequestId = null
-			Kontrol.on('overlayAttack', this.overlayAttack.bind(this))
+			app.ui.attack.on('change', this.overlayAttack.bind(this))
 		}
 
 		{
@@ -49,8 +49,8 @@ export default class OverlayPass extends THREE.ShaderPass {
 			this.uniforms.zfighting.value = this.zfightingTexture
 
 			this.zfightingVideoEnabled = false
-			Kontrol.on('toggleZfighting', () => {
-				this.zfightingVideoEnabled = !this.zfightingVideoEnabled
+			app.ui.zfighting.on('change', (value) => {
+				this.zfightingVideoEnabled = value
 				if (this.zfightingVideoEnabled) {
 					this.zfightingVideo.play()
 				} else {

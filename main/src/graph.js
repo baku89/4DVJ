@@ -7,7 +7,6 @@ export default class Graph {
 		this.faces = []
 
 		// subdivide n-gon to face 3 or 4
-		// this.subdivideNgon(data.faces[0])
 		data.faces.forEach(this.subdivideNgon.bind(this))
 	}
 

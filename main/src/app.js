@@ -6,11 +6,11 @@ import EventEmitter from 'eventemitter3'
 
 import GUI from './gui'
 import Config from './config'
-window.GUI = GUI
-window.Kontrol = Kontrol
-
 import Kontrol from './kontrol'
 import Ticker from './ticker'
+
+window.GUI = GUI
+window.Kontrol = Kontrol
 
 import PolytopeManager from './polytope-manager'
 import Projector4D from './projector4d'
@@ -31,7 +31,6 @@ import DeformPass from './post-effects/deform-pass'
 import CompositePass from './post-effects/composite-pass'
 import OverlayPass from './post-effects/overlay-pass'
 
-
 export default class App extends EventEmitter {
 
 	constructor() {
@@ -40,28 +39,29 @@ export default class App extends EventEmitter {
 
 	init() {
 
-		this.config = {
-			clearColor: 0x112130
-		}
 
-		this.$displayWrapper = $('.display-wrapper')
+		LoadingBar.on('complete', this.onCompleteLoadingBar.bind(this))
+
+		this.ui = require('./ui').default
 
 		this.initScene()
 		this.initObject()
 		this.initPostprocessing()
 
+		this.ui.forceUpdate()
+
 		this.onResize()
 
-		LoadingBar.on('complete', this.onCompleteLoadingBar.bind(this))
 	}
 
 	initScene() {
+
 		this.scene = new THREE.Scene()
 		this.renderer = new THREE.WebGLRenderer({
-			canvas: $('.display')[0],
+			canvas: $('.display-canvas')[0],
 			antialias: true
 		})
-		// this.renderer.setSize(1920, 814)
+		this.renderer.setClearColor(Config.CLEAR_COLOR)
 
 		this.orbitalCamera = new OrbitalCamera()
 		this.scene.add(this.orbitalCamera)
@@ -73,7 +73,6 @@ export default class App extends EventEmitter {
 	initObject() {
 		this.projector4d = new Projector4D()
 
-		console.log('aaaslkdjas')
 		this.polytopeManager = new PolytopeManager({
 			projector4d: this.projector4d
 		})
@@ -89,15 +88,15 @@ export default class App extends EventEmitter {
 		})
 		this.scene.add(this.fibrationManager)
 
-		{
-			// generate helper
-			this.guide = new THREE.Object3D()
-			this.guide.visible = false
-			this.guide.add(new THREE.GridHelper(100, 2))
-			this.guide.add(new THREE.AxisHelper(20))
-			this.scene.add(this.guide)
-			Kontrol.on('toggleGuide', () => {this.guide.visible = !this.guide.visible})
-		}
+		// {
+		// 	// generate helper
+		// 	this.guide = new THREE.Object3D()
+		// 	this.guide.visible = false
+		// 	this.guide.add(new THREE.GridHelper(100, 2))
+		// 	this.guide.add(new THREE.AxisHelper(20))
+		// 	this.scene.add(this.guide)
+		// 	Kontrol.on('toggleGuide', () => {this.guide.visible = !this.guide.visible})
+		// }
 	}
 
 
@@ -129,13 +128,17 @@ export default class App extends EventEmitter {
 
 	onCompleteLoadingBar() {
 		console.log('complete!!!!! and start!!!!')
+
+		this.ui.display.mode = 'full'
+
 		Ticker.on('update', this.animate.bind(this))
 		Ticker.start()
 	}
 
 	animate(elapsed) {
-		this.renderer.setClearColor(this.config.clearColor)
 		GUI.stats.begin()
+
+		this.ui.update()
 
 		this.polytopeManager.update(elapsed)
 		this.projector4d.update(elapsed)
@@ -156,13 +159,8 @@ export default class App extends EventEmitter {
 
 	onResize() {
 
-		console.log(this.$displayWrapper.outerHeight(), 'height')
-
-		// let width = this.$displayWrapper.width()
-		// let height = this.$displayWrapper.outerHeight()
-
 		let width = window.innerWidth
-		let height = (width / 1920) * 814
+		let height = width / Config.ASPECT
 
 		// this.renderer.setSize(1920, 814)
 		this.renderer.setSize(width, height)
@@ -174,6 +172,8 @@ export default class App extends EventEmitter {
 	onClick() {
 	}
 }
+
+// console.log('Unco')
 
 window.app = new App()
 window.app.init()

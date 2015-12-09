@@ -5,17 +5,8 @@ class LoadingBar extends EventEmitter {
 
 	constructor() {
 		super()
-		// this.canvas = document.querySelector('canvas.loading')
-		// this.canvas.width = 400
-		// this.canvas.height = 400
-		// this.context = this.canvas.getContext('2d')
 
-		// this.current = 0
-		// this.dest = 0
-
-		// this.animate = this.animate.bind(this)
-		// this.animate()
-
+		this.$root = $('.loading')
 		this.$bar = $('.loading__bar')
 	}
 
@@ -26,11 +17,10 @@ class LoadingBar extends EventEmitter {
 		this.$bar.css('transform', `scaleX(${scale})`)
 
 		if (rate >= 1) {
-			console.log('loadingbar complere')
-			$('.display-wrapper').removeClass('hidden')
 
 			setTimeout(() => {
 				this.emit('complete')
+				this.$root.addClass('hidden')
 			}, 1000)
 		}
 	}

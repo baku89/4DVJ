@@ -2,6 +2,20 @@
 
 global-reset()
 
+aspect = 814/1920
+white = #D8EDE4
+easeOut = cubic-bezier(.02,.68,.33,1)
+
+//------------------------
+// general
+
+*, ::after, ::before
+	box-sizing border-box
+	-webkit-user-select: none
+	-webkit-tap-highlight-color: rgba(62, 138, 203, .8)
+	outline: none
+
+
 html, body
 	width 100%
 	height 100%
@@ -9,6 +23,8 @@ html, body
 	background: black
 	color white
 	font-family "jaf-bernino-sans-condensed", sans-serif
+	// font-weight 100
+	letter-spacing: .15em
 
 //------------------------
 // loading
@@ -16,6 +32,7 @@ html, body
 .loading
 	width 100%
 	z-index: 999
+
 
 .loading__bar
 	position absolute
@@ -28,70 +45,231 @@ html, body
 	transition transform 1s ease
 	z-index 9999
 
+	
 //------------------------
-// loading
+// title
 
-.display-wrapper
+titleHeight = 60px
+
+.title
+	position relative
+	height 90px
+	width: 100%
+
+.title__wrapper
+	position absolute
+	top 50%
+	left 0
+	width 100%
+	height 60px
+	margin-top -(@height / 2)
+
+.title__default,
+.title__custom
+	position absolute
+	top 0
+	left 0
+	width 100%
+	height 100%
+	text-align center
+	line-height titleHeight
+	font-size 34px
+	-webkit-font-smoothing: antialiased
+	
+.title__default
+	visibility visible
+	.visible-custom &
+		visibility hidden
+
+.title__custom
+	visibility hidden
+	.visible-custom &
+		visibility visible
+
+.title__about
+	position absolute
+	right 30px
+	width titleHeight
+	height titleHeight
+	background transparent
+	border 0
+	font-size 24px
+	
+	
+//------------------------
+// display
+
+.display
 	position: absolute
 	top: 50%
 	left: 0
 	width 100%
 	height 0
-	margin-top -(816/1920*100/2)%
-	padding-top (816/1920*100)%
+	margin-top: - aspect * 50%
+	padding-top:  aspect * 100%
 	background black
 	z-index: 99
 
-.display-wrapper__top
-.display-wrapper__bottom
+.display__top
+.display__bottom
 	position absolute
 	left: 0
 	width 100%
-	height 100px
-	background red //black
+	height 50%
+	background black
 	transform scaleY(0)
-	transition transform .5s ease
+	transition transform 1s ease
 	z-index 10
 	
-	.hidden &
+	[data-mode=hidden] &
 		transform scaleY(1)
 
-.display-wrapper__top
+.display__top
 	top 0
 	transform-origin top left
 
-.display-wrapper__bottom
+.display__bottom
 	bottom 0
 	transform-origin bottom left
 
-.display
+.display-canvas
 	position absolute
 	top 0
 	left 0
 	width: 100%
 	height: 100%
-
-
-// .current-polytope
-// 	position: absolute
-// 	bottom: 20px
-// 	left: 50%
-// 	width: 600px
-// 	height: 36px
-// 	margin-left: -300px
-// 	color: white
-// 	font-size: 36px
-// 	line-height: 36px
-// 	text-align center	
-
-// .exclusion-color
-// 	position: absolute
-// 	height: 34px
-// 	bottom: 10px
-// 	left: 10px
-// 	padding: 6px
-// 	background-color: #444444
 	
-// 	button
-// 		margin: 0 6px
+//------------------------
+// control
 
+.control
+	position absolute
+	display flex
+	flex-flow row no-wrap
+	justify-content space-around
+	left 0
+	width 100%
+	height 100px
+	// background rgba(155, 0, 0, 0.2)
+	
+.control__sliders,
+.control__keyboard
+	height 100%
+	padding 0 30px
+
+.control__sliders
+	flex 1
+	max-width 500px
+	// background rgba(0, 255, 0, .3)
+
+.control__keyboard
+	width 414px + 60
+	// background rgba(0, 255, 255, .3)
+
+.control__keyboard-row
+	display flex
+	height 31px
+	padding-top 3px
+
+//------------------------
+// slider
+
+.slider
+	height 31px
+	display flex
+	
+.slider__name
+	width 150px
+	float left
+	padding-right 20px
+	line-height 31px
+	text-align right
+	
+.slider__ui
+	position relative
+	flex 1
+	height 15px
+	margin 8px 0
+	border-left 1px solid white
+	border-right 1px solid white
+	// background rgba(0, 255, 255, .3)
+	
+.slider__ui *
+	position absolute
+
+.slider__left,
+.slider__right
+	top 7px
+	height 1px
+	
+.slider__left
+	left 0
+	width 30%
+	background white
+
+.slider__right
+	right 0
+	width 100%
+	background-image repeating-linear-gradient(to right, white 0%, white, 25%, transparent 25%, transparent 100%)
+	background-position right top
+	background-repeat repeat-x
+	background-size 4px 1px
+
+
+.slider__value
+	top 7px
+	left 10%
+	width 5px
+	height 5px
+	margin -2px 0 0 -2px
+	background-image svgurl('./src/includes/slider_value.svg') svg()
+	background-size 5px 5px
+	background-position center center
+	background-repeat no-repeat
+
+.slider__target
+	top 7px
+	left 10%
+	width 31px
+	height 31px
+	margin -15px 0 0 -15px
+	// background-color rgba(255, 0, 0, 0.2)
+	background-image svgurl('./src/includes/slider_target.svg') svg()
+	background-size 11px 11px
+	background-position center center
+	background-repeat no-repeat
+	cursor pointer
+	transition transform .15s easeOut
+	
+	.slider__ui:hover &
+		transform scale(1.5, 1.5)
+		
+//------------------------
+// keybind
+
+.keybind
+	// position absolute
+	width 56px
+	height 26px
+	border-top 1px solid white
+	border-left 1px solid white
+
+.keybind__label-wrapper
+	margin 7px 6px 0 7px
+	height 14px
+	overflow hidden
+	
+.keybind__label
+	height 28px
+	transition transform .4s easeOut
+	
+	.show-key &
+		transform translateY(-50%)
+
+.keybind__name,
+.keybind__key
+	height 14px
+	line-height 14px
+	font-size 14px
+
+	

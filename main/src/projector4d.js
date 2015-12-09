@@ -1,4 +1,4 @@
-/* global THREE, Kontrol */
+/* global THREE, Kontrol, app */
 
 import {lerp} from 'interpolation'
 import _ from 'lodash'
@@ -18,10 +18,14 @@ export default class Projector4D {
 		// distance
 
 		this.distance = new THREE.Vector2(MAX_DISTNACE, 0)
-		this.targetDistance = this.distance.x
-		this.distanceLerp = Config.DOLLY_SLIDER_LERP
+		// this.targetDistance = this.distance.x
+		// this.distanceLerp = Config.DOLLY_SLIDER_LERP
 
-		Kontrol.on('changeDistance', (value) => {
+		app.ui.distance.on('change', (value) => {
+			this.distance.x = lerp(1.0, MAX_DISTNACE, Math.pow(value, 3))
+		})
+
+		/*Kontrol.on('changeDistance', (value) => {
 			this.targetDistance = lerp(1.0, MAX_DISTNACE, value * value * value)
 			// console.error(this.targetDistance)
 		})
@@ -36,7 +40,7 @@ export default class Projector4D {
 			// console.log('oooo')
 			this.targetDistance = 1.0
 			this.distanceLerp = Config.DOLLY_IN_LERP
-		})
+		})*/
 
 		// rotate
 
@@ -47,14 +51,14 @@ export default class Projector4D {
 		this.rotateZero = new THREE.Quaternion()
 		this.rotateFall = 0.1
 		this.changeRotate(1)
-		Kontrol.on('changeRotate', this.changeRotate.bind(this))
+		// Kontrol.on('changeRotate', this.changeRotate.bind(this))
 
 		this.rotateSpeed = Config.INIT_ROTATE_SPEED
 		this.targetRotateSpeed = Config.INIT_ROTATE_SPEED
-		Kontrol.on('changeRotateSpeed', (value) => {
-			this.targetRotateSpeed = lerp(0.1, 1, value)
-			this.rotateFall = lerp(0.1, 0.02, value)
-		})
+		// Kontrol.on('changeRotateSpeed', (value) => {
+		// 	this.targetRotateSpeed = lerp(0.1, 1, value)
+		// 	this.rotateFall = lerp(0.1, 0.02, value)
+		// })
 	}
 
 	changeRotate() {
@@ -69,7 +73,7 @@ export default class Projector4D {
 	update() {
 
 		// console.log(this.distanceLerp)
-		this.distance.x = lerp(this.distance.x, this.targetDistance, this.distanceLerp)
+		// this.distance.x = lerp(this.distance.x, this.targetDistance, this.distanceLerp)
 		this.updateMatrix()
 
 		// TODO: based on elapsed

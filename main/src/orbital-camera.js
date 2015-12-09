@@ -1,4 +1,4 @@
-/* global THREE, Kontrol */
+/* global THREE, Kontrol, app */
 
 import _ from 'lodash'
 import {lerp} from 'interpolation'
@@ -27,8 +27,8 @@ export default class OrbitalCamera extends THREE.Object3D {
 
 		this.changeRotate()
 		Kontrol.on('changeRotate', this.changeRotate.bind(this))
-
-		Kontrol.on('changeRotateSpeed', (value) => {
+		
+		app.ui.rotateSpeed.on('change', (value) => {
 			this.rotateSpeed = lerp(0.1, 1, value)
 		})
 
@@ -43,23 +43,27 @@ export default class OrbitalCamera extends THREE.Object3D {
 		this.dolly.add(this.camera)
 		this.add(this.dolly)
 
-		this.targetDollyZ = this.dolly.position.z
-		this.dollyLerp = Config.DOLLY_SLIDER_LERP
+		// this.targetDollyZ = this.dolly.position.z
+		// this.dollyLerp = Config.DOLLY_SLIDER_LERP
 
-		Kontrol.on('changeDistance', (value) => {
-			this.targetDollyZ = lerp(0, DOLLY_FAR_Z, value)
-			this.dollyLerp = Config.DOLLY_SLIDER_LERP
+		app.ui.distance.on('change', (value) => {
+			this.dolly.position.z = lerp(0, DOLLY_FAR_Z, value)
 		})
 
-		Kontrol.on('forceDollyOut', () => {
-			this.targetDollyZ = 3
-			this.dollyLerp = Config.DOLLY_OUT_LERP
-		})
+		// Kontrol.on('changeDistance', (value) => {
+		// 	this.targetDollyZ = lerp(0, DOLLY_FAR_Z, value)
+		// 	this.dollyLerp = Config.DOLLY_SLIDER_LERP
+		// })
 
-		Kontrol.on('forceDollyIn', () => {
-			this.targetDollyZ = 0
-			this.dollyLerp = Config.DOLLY_IN_LERP
-		})
+		// Kontrol.on('forceDollyOut', () => {
+		// 	this.targetDollyZ = 3
+		// 	this.dollyLerp = Config.DOLLY_OUT_LERP
+		// })
+
+		// Kontrol.on('forceDollyIn', () => {
+		// 	this.targetDollyZ = 0
+		// 	this.dollyLerp = Config.DOLLY_IN_LERP
+		// })
 
 		// magnify
 		Kontrol.on('magnifyCamera', () => {
@@ -97,7 +101,7 @@ export default class OrbitalCamera extends THREE.Object3D {
 		this.camera.updateProjectionMatrix()
 
 		// doply z
-		this.dolly.position.z = lerp(this.dolly.position.z, this.targetDollyZ, this.dollyLerp)
+		// this.dolly.position.z = lerp(this.dolly.position.z, this.targetDollyZ, this.dollyLerp)
 
 	}
 }
