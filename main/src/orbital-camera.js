@@ -50,33 +50,20 @@ export default class OrbitalCamera extends THREE.Object3D {
 			this.dolly.position.z = lerp(0, DOLLY_FAR_Z, value)
 		})
 
-		// Kontrol.on('changeDistance', (value) => {
-		// 	this.targetDollyZ = lerp(0, DOLLY_FAR_Z, value)
-		// 	this.dollyLerp = Config.DOLLY_SLIDER_LERP
-		// })
-
-		// Kontrol.on('forceDollyOut', () => {
-		// 	this.targetDollyZ = 3
-		// 	this.dollyLerp = Config.DOLLY_OUT_LERP
-		// })
-
-		// Kontrol.on('forceDollyIn', () => {
-		// 	this.targetDollyZ = 0
-		// 	this.dollyLerp = Config.DOLLY_IN_LERP
-		// })
-
-		// magnify
-		Kontrol.on('magnifyCamera', () => {
-			this.isMagnify = true
+		app.ui.zoom.on('change', (value) => {
+			if (value) {
+				this.targetDollyZ = 3
+				this.dollyLerp = Config.DOLLY_OUT_LERP
+			} else {
+				this.targetDollyZ = 0
+				this.dollyLerp = Config.DOLLY_IN_LERP
+			}
 		})
 
-		Kontrol.on('unmagnifyCamera', () => {
-			this.isMagnify = false
+		app.ui.magnify.on('change', (value) => {
+			this.isMagnify = value
 		})
 
-		Kontrol.on('toggleMagnifyCamera', () => {
-			this.isMagnify = !this.isMagnify
-		})
 	}
 
 	changeRotate() {

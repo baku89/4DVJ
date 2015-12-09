@@ -1,7 +1,7 @@
-/* global THREE, Kontrol, GUI, app */
+/* global THREE, GUI, app */
 
 import {smoothstep} from 'interpolation'
-// import Config from '../config'
+import Config from '../config'
 
 const TRANSITION_DURATION = 1500
 
@@ -23,16 +23,15 @@ export default class CompositePass extends THREE.ShaderPass {
 		this.targetExclusionColor = new THREE.Color(0, 0, 0)
 		this.transitionTime = null
 
-		Kontrol.on('changeExclusionColor', (value) => {
+		app.ui.bg.on('change', (value) => {
 			if (this.transitionTime == null) {
 				this.currentExclusionColor.set(this.targetExclusionColor)
 			} else {
 				this.currentExclusionColor.set(this.uniforms.exclusionColor.value)
 			}
-			this.targetExclusionColor.set(value)
+			this.targetExclusionColor.set(value ? Config.CLEAR_LIGHT_COLOR : Config.CLEAR_COLOR)
 			this.transitionTime = TRANSITION_DURATION
 		})
-
 
 		// ajust
 		GUI.add(this.uniforms.hsvAjust.value, 'x', 0, 1).name('hue').listen()
@@ -40,19 +39,15 @@ export default class CompositePass extends THREE.ShaderPass {
 		GUI.add(this.uniforms.hsvAjust.value, 'z', 0, 2).name('brightness').listen()
 
 
-		Kontrol.on('fadeHue', (value) => {
-			this.uniforms.hsvAjust.value.x = value
-		})
-
-
-		Kontrol.on('fadeSaturation', (value) => {
-			this.uniforms.hsvAjust.value.y = value * 1.5
-		})
-
-
-		Kontrol.on('fadeBrightness', (value) => {
-			this.uniforms.hsvAjust.value.z = value * 2
-		})
+		// Kontrol.on('fadeHue', (value) => {
+		// 	this.uniforms.hsvAjust.value.x = value
+		// })
+		// Kontrol.on('fadeSaturation', (value) => {
+		// 	this.uniforms.hsvAjust.value.y = value * 1.5
+		// })
+		// Kontrol.on('fadeBrightness', (value) => {
+		// 	this.uniforms.hsvAjust.value.z = value * 2
+		// })
 
 		app.on('resize', this.onResize.bind(this))
 	}

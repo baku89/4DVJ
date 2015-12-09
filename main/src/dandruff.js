@@ -134,16 +134,18 @@ export default class Dandruff extends THREE.Object3D {
 		
 
 		this.wiggleEnabled = false
-		Kontrol.on('enableDandruffWiggle', () => {
-			this.wiggleEnabled = !this.wiggleEnabled
+		app.ui.wiggle.on('change', (value) => {
+			this.wiggleEnabled = value
 		})
-
 		this.smallTexture = window.assets.dandruff_small_tex
+		app.ui.bg.on('change', (value) => {
+			let texture = value ? null : this.smallTexture
+			this.small.material.uniforms.texture.value = texture
+			this.large.material.uniforms.texture.value = texture
+		})
 		Kontrol.on('toggleDandruffTexture', () => {
 			// console.log('toggle')
-			let textureEnabled = this.small.material.uniforms.texture.value != null
-			this.small.material.uniforms.texture.value = textureEnabled ? null : this.smallTexture
-			this.large.material.uniforms.texture.value = textureEnabled ? null : this.smallTexture
+			
 		})
 	}
 

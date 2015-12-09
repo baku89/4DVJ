@@ -54,8 +54,8 @@ export default class DeformPass extends THREE.ShaderPass {
 		app.ui.effectReset.on('change', () => {
 			this.uniforms.effectKind.value = EFFECT.none
 		})
-		app.ui.effectRepeat.on('change', () => {
-			this.uniforms.effectKind.value = (this.uniforms.effectKind.value != EFFECT.repeat) ? EFFECT.repeat : EFFECT.none
+		app.ui.effectRepeat.on('change', (value) => {
+			this.uniforms.effectKind.value = value ? EFFECT.repeat : EFFECT.none
 		})
 		app.ui.effectMirror.on('change', () => {
 			if (this.uniforms.effectKind.value == EFFECT.mirrorRight) {

@@ -253,18 +253,40 @@ titleHeight = 60px
 	height 26px
 	border-top 1px solid white
 	border-left 1px solid white
+	
+	&.continuous
+		border-left 1px solid transparent
 
 .keybind__label-wrapper
 	margin 7px 6px 0 7px
 	height 14px
 	overflow hidden
+	transition all .1s easeOut
+	
+	.active &
+		background white
+		color black
 	
 .keybind__label
 	height 28px
 	transition transform .4s easeOut
 	
+	delay = .05s
+
 	.show-key &
 		transform translateY(-50%)
+		
+	.keybind:nth-child(2) &
+		transition-delay delay*1
+		
+	.keybind:nth-child(3) &
+		transition-delay delay*2
+		
+	.keybind:nth-child(4) &
+		transition-delay delay*3
+	
+	.keybind:nth-child(5) &
+		transition-delay delay*4
 
 .keybind__name,
 .keybind__key

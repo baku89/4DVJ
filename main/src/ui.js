@@ -27,22 +27,22 @@ const decorativeKey = {
 let keybindData = [
 	[
 		{id: 'effectReset', key: 'Q', name: 'Reset', margin: 32},
-		{id: 'effectRepeat', key: 'W', name: 'Rep'},
-		{id: 'effectMirror', key: 'E', name: 'Sym'},
+		{id: 'effectRepeat', key: 'W', name: 'Rep', toggle: true, continuous: true},
+		{id: 'effectMirror', key: 'E', name: 'Sym', still: true, continuous: true},
 		{id: 'slitscan', key: 'R', name: 'Line', toggle: true},
 		{id: 'magnify', key: 'T', name: 'WH', toggle: true},
 	],
 	[
 		{id: 'turbulance', key: 'A', name: 'Wave', margin: 60},
-		{id: 'changeRotation', key: 'S', name: 'Rot'},
+		{id: 'rotation', key: 'S', name: 'Rot'},
 		{id: 'attack', key: 'D', name: 'Flash'},
 		{id: 'bright', key: 'F', name: 'White', pressing: true}
 	],
 	[
 		{id: 'zoom', key: 'shift', name: 'Zoom', margin: 0, width: 80},
-		{id: 'bg', key: 'Z', name: 'bg'},
-		{id: 'wiggle', key: 'X', name: 'Wig'},
-		{id: 'zfighting', key: 'C', name: 'Flickr'},
+		{id: 'bg', key: 'Z', name: 'bg', toggle: true},
+		{id: 'wiggle', key: 'X', name: 'Wig', toggle: true},
+		{id: 'zfighting', key: 'C', name: 'Flickr', toggle: true},
 		{id: 'polytope', key: 'space', name: 'Polytope', margin: 38, width: 105}
 	]
 ]
@@ -51,7 +51,6 @@ let keybindData = [
 class UI {
 
 	constructor() {
-
 		this.title = new Title()
 		this.display = new Display()
 		this.control = new Control()
@@ -64,12 +63,24 @@ class UI {
 		keybindData.forEach((data, i) => {
 			this.initKeybinds(`.control__keyboard-row--${i}`, data)
 		})
+		this.effectReset.on('change', () => {
+			this.effectMirror.toggleHighlight(false)
+			this.effectRepeat.toggleHighlight(false)
+		})
+		this.effectRepeat.on('change', () => {
+			this.effectMirror.toggleHighlight(false)
+		})
+		this.effectMirror.on('change', () => {
+			this.effectRepeat.toggleHighlight(false)
+		})
 
+		// setup keyboards
 		this.$keyboard = $('.control__keyboard')
 		this.$keyboard.on({
 			mouseenter: () => this.$keyboard.addClass('show-key'),
 			mouseleave: () => this.$keyboard.removeClass('show-key')
 		}) 
+
 		$(window).on({
 			keydown:this.onKeydown.bind(this),
 			keyup:this.onKeyup.bind(this)
@@ -77,7 +88,6 @@ class UI {
 	}
 
 	initSliders(containerQuery, data) {
-
 		let sliders = data.map((d) => {
 			return new Slider(d)
 		})

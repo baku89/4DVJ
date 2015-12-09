@@ -1,4 +1,4 @@
-/* global THREE, Kontrol, LoadingBar, app */
+/* global THREE, LoadingBar, app */
 
 import $ from 'jquery'
 import _ from 'lodash'
@@ -44,7 +44,7 @@ export default class PolytopeManager extends THREE.Object3D  {
 		this.projector4d = parameters.projector4d
 
 		// bind
-		Kontrol.on('changePolytope', this.changePolytope.bind(this))
+		app.ui.polytope.on('change', this.changePolytope.bind(this))
 
 		// scale
 		this.currrentPolytopeScale = 1
@@ -85,7 +85,7 @@ export default class PolytopeManager extends THREE.Object3D  {
 	// for debug
 	changePolytope(index) {
 
-		if (!index) {
+		if (typeof index != 'number') {
 			index = _.random(this.polytopes.length - 2)
 			if (this.currentIndex <= index) {
 				index += 1

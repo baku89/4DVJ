@@ -14,19 +14,24 @@ export default class Keybind extends EventEmitter {
 
 		this.id = parameters.id
 		this.key = parameters.key
-		this.toggle = parameters.toggle
-
+		this.toggle = parameters.toggle || false
+		this.still = parameters.still || false
 		this.value = false
 
+		// setup dom
 		this.$root.css({
 			'margin-left': parameters.margin != undefined ? parameters.margin : 8,
 			'width': parameters.width || 56
 		})
+
+		this.$root.toggleClass('continuous', parameters.continuous || false)
 		this.$name.html(parameters.name)
 		this.$key.html(parameters.keyIcon || parameters.key)
 	}
 
-	forceUpdate() {}
+	forceUpdate() {
+		this.emit('change', this.value)
+	}
 
 	onKeydown() {
 		if (this.toggle) {
@@ -34,9 +39,15 @@ export default class Keybind extends EventEmitter {
 		} else {
 			this.value = true
 		}
+		this.$root.toggleClass('active', this.value)
 		this.emit('change', this.value)
 
-		console.log(this.key, 'down')
+		// console.log(this.key, 'down')
+	}
+
+	toggleHighlight(value) {
+		this.value = value
+		this.$root.toggleClass('active', this.value)
 	}
 
 	onKeyup() {
@@ -44,6 +55,9 @@ export default class Keybind extends EventEmitter {
 			this.value = false
 		}
 
+		if (!this.still) {
+			this.$root.toggleClass('active', this.value)
+		}
 		if (this.pressing) {
 			this.emit('change', this.value)
 		}

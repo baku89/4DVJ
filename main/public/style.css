@@ -406,10 +406,21 @@ body {
   border-left: 1px solid #d8ede4;
 }
 
+.keybind.continuous {
+  border-left: 1px solid transparent;
+}
+
 .keybind__label-wrapper {
   margin: 7px 6px 0 7px;
   height: 14px;
   overflow: hidden;
+  -webkit-transition: all 0.1s cubic-bezier(0.02, 0.68, 0.33, 1);
+  transition: all 0.1s cubic-bezier(0.02, 0.68, 0.33, 1);
+}
+
+.active .keybind__label-wrapper {
+  background: #d8ede4;
+  color: #000;
 }
 
 .keybind__label {
@@ -424,6 +435,26 @@ body {
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+.keybind:nth-child(2) .keybind__label {
+  -webkit-transition-delay: 0.05s;
+  transition-delay: 0.05s;
+}
+
+.keybind:nth-child(3) .keybind__label {
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+}
+
+.keybind:nth-child(4) .keybind__label {
+  -webkit-transition-delay: 0.15s;
+  transition-delay: 0.15s;
+}
+
+.keybind:nth-child(5) .keybind__label {
+  -webkit-transition-delay: 0.2s;
+  transition-delay: 0.2s;
 }
 
 .keybind__name,
