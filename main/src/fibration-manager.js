@@ -1,4 +1,4 @@
-/* global THREE, Kontrol, app */
+/* global THREE, app */
 
 import Fibration from './fibration'
 

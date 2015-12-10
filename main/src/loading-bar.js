@@ -11,8 +11,7 @@ class LoadingBar extends EventEmitter {
 	}
 
 	update(rate) {
-		// this.dest = rate
-		console.log('loadingbar..', rate)
+		// console.log('loadingbar..', rate)
 		let scale = `${rate}`.substr(0, 5)
 		this.$bar.css('transform', `scaleX(${scale})`)
 

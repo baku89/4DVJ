@@ -1,6 +1,5 @@
-/* global THREE, Kontrol, app */
+/* global THREE, app */
 
-// import _ from 'lodash'
 import {Noise} from 'noisejs'
 const noise = new Noise(Math.random())
 
@@ -21,15 +20,6 @@ export default class Dandruff extends THREE.Object3D {
 
 			// generate 4D
 
-			// let xmin = Number.MAX_VALUE
-			// let xmax = Number.MIN_VALUE
-			// let ymin = Number.MAX_VALUE
-			// let ymax = Number.MIN_VALUE
-			// let zmin = Number.MAX_VALUE
-			// let zmax = Number.MIN_VALUE
-			// let wmin = Number.MAX_VALUE
-			// let wmax = Number.MIN_VALUE
-
 			{
 				let positionWBuffer = new Float32Array(geometry.attributes.position.count)
 				let scale = 0.04
@@ -49,24 +39,11 @@ export default class Dandruff extends THREE.Object3D {
 					let nz = z + noise.perlin3(x * waveScale, y * waveScale, z * waveScale) * waveAmp
 					let nw = w + noise.perlin3(z * waveScale, y * waveScale, (w + 1000) * waveScale) * waveAmp
 
-					// xmin = Math.min(nx, xmin)
-					// xmax = Math.max(ny, xmax)
-					// ymin = Math.min(nz, ymin)
-					// ymax = Math.max(nx, ymax)
-					// zmin = Math.min(ny, zmin)
-					// zmax = Math.max(nz, zmax)
-					// wmin = Math.min(nw, wmin)
-					// wmax = Math.max(nw, wmax)
-
 					position[i * 3] 	   = nx
 					position[i * 3 + 1]  = ny
 					position[i * 3 + 2]  = nz
 					positionWBuffer[i] = nw
 				}
-				// console.log(xmin, xmax)
-				// console.log(ymin, ymax)
-				// console.log(zmin, zmax)
-				// console.log(wmin, wmax)
 
 				let uv = geometry.attributes.uv
 				for (let i = 0; i < uv.count; i++) {
@@ -137,16 +114,15 @@ export default class Dandruff extends THREE.Object3D {
 		app.ui.wiggle.on('change', (value) => {
 			this.wiggleEnabled = value
 		})
+
 		this.smallTexture = window.assets.dandruff_small_tex
-		app.ui.bg.on('change', (value) => {
-			let texture = value ? null : this.smallTexture
+		app.ui.white.on('change', (value) => {
+			console.log('on white', value)
+			let texture = value ?  this.smallTexture : null
 			this.small.material.uniforms.texture.value = texture
 			this.large.material.uniforms.texture.value = texture
 		})
-		Kontrol.on('toggleDandruffTexture', () => {
-			// console.log('toggle')
-			
-		})
+
 	}
 
 	update(elapsed) {

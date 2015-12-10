@@ -24,7 +24,8 @@ html, body
 	color white
 	font-family "jaf-bernino-sans-condensed", sans-serif
 	// font-weight 100
-	letter-spacing: .15em
+	letter-spacing .15em
+	cursor pointer
 
 //------------------------
 // loading
@@ -192,6 +193,7 @@ titleHeight = 60px
 	margin 8px 0
 	border-left 1px solid white
 	border-right 1px solid white
+	cursor col-resize
 	// background rgba(0, 255, 255, .3)
 	
 .slider__ui *
@@ -238,7 +240,6 @@ titleHeight = 60px
 	background-size 11px 11px
 	background-position center center
 	background-repeat no-repeat
-	cursor pointer
 	transition transform .15s easeOut
 	
 	.slider__ui:hover &
@@ -248,7 +249,6 @@ titleHeight = 60px
 // keybind
 
 .keybind
-	// position absolute
 	width 56px
 	height 26px
 	border-top 1px solid white
@@ -259,16 +259,16 @@ titleHeight = 60px
 
 .keybind__label-wrapper
 	margin 7px 6px 0 7px
-	height 14px
+	height 15px
 	overflow hidden
-	transition all .1s easeOut
+	transition all .05s easeOut
 	
 	.active &
 		background white
 		color black
 	
 .keybind__label
-	height 28px
+	height 32px
 	transition transform .4s easeOut
 	
 	delay = .05s
@@ -290,8 +290,9 @@ titleHeight = 60px
 
 .keybind__name,
 .keybind__key
-	height 14px
-	line-height 14px
+	height 16px
+	padding 1px
+	line-height 13px
 	font-size 14px
 
 	

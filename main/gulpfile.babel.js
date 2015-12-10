@@ -13,7 +13,7 @@ gulp.task('webpack', () => {
     watch: developmentMode,
     entry: {
       bootstrap: './src/bootstrap.js',
-      app: './src/app.js'
+      app: ['./src/app.js']
     },
     output: {
       filename: '[name].js'

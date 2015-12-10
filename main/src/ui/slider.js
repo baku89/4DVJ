@@ -18,12 +18,11 @@ export default class Slider extends EventEmitter {
 		this.$value = this.$root.find('.slider__value')
 		this.$target = this.$root.find('.slider__target')
 
-		console.log('Uncon', parameters.value)
-
 		this.id = parameters.id
 		this._value = parameters.value != undefined ? parameters.value : 0.5
-		this.target = this._value
+		this._target = this._value
 		this.lerp = parameters.lerp || 0.1
+		this.defaultLerp = parameters.defaultLerp
 
 		this.onMousedown = this.onMousedown.bind(this)
 		this.onMouseup = this.onMouseup.bind(this)
@@ -32,7 +31,7 @@ export default class Slider extends EventEmitter {
 		this.$ui.on('mousedown', this.onMousedown)
 
 		// initiate ui
-		this.$target.css('left', `${this.target * 100}%`)
+		this.$target.css('left', `${this._target * 100}%`)
 		this.$value.css('left', `${this._value * 100}%`)
 		this.$left.css('width', `${this._value * 100}%`)
 	}
@@ -44,26 +43,44 @@ export default class Slider extends EventEmitter {
 	onMousedown(e) {
 		this.onDrag(e)
 		this.$ui.on('mousemove', this.onDrag)
-		this.$ui.on('mouseup', this.onMouseup)
+		this.$ui.on('mouseup mouseleave', this.onMouseup)
 	}
 
 	onMouseup() {
 		// console.log('mouseup!!!')
-		this.$ui.off('mousemove', this.onDrag)
-		this.$ui.off('mouseup', this.onDrag)
+		this.$ui.off('mousemove mouseup', this.onDrag)
 	}
 
 	onDrag(e) {
 		const offset = this.$ui.offset()
-		this.target = (e.pageX - offset.left) / this.$ui.width()
-		this.target = clamp(this.target, 0, 1)
-
-		this.$target.css('left', `${this.target * 100}%`)
+		this._target = (e.pageX - offset.left) / this.$ui.width()
+		this._target = clamp(this._target, 0, 1)
+		this.lerp = this.defaultLerp || this.lerp
+		this.$target.css('left', `${this._target * 100}%`)
 	}
 
-	set value(value) {
-		if (Math.abs(value - this.target) < 0.001) {
-			value = this.target
+	get value() {
+		return this._value
+	}
+
+	set target(value) {
+		this._target = value
+		this.$target.css('left', `${this._target * 100}%`)
+	}
+
+	get target() {
+		return this._target
+	}
+
+	update() {
+		let value = lerp(this._value, this._target, this.lerp)
+
+		// if (this.id == 'distance') {
+		// 	console.log(this._value, this._target, value)
+		// }
+
+		if (Math.abs(value - this._target) < 0.001) {
+			value = this._target
 		}
 		if (value != this._value) {
 			this.emit('change', value)
@@ -71,13 +88,6 @@ export default class Slider extends EventEmitter {
 			this.$left.css('width', `${value * 100}%`)
 		}
 		this._value = value
-	}
 
-	get value() {
-		return this._value
-	}
-
-	update() {
-		this.value = lerp(this._value, this.target, this.lerp)
 	}
 }

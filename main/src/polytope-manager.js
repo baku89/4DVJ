@@ -6,32 +6,30 @@ import Polytope from './polytope'
 import {lerp} from 'interpolation'
 
 let graphList = [
-	{name: '5-cell',          	subdivision: 60}, // basic
-	{name: 'duoprisms-3x3',   	subdivision: 60},
-	{name: '16-cell',         	subdivision: 30},
-	{name: '2-2-7-1-3',       	subdivision: 30},
-	{name: 'torus',							subdivision: 7},
-	{name: 'solid-8-hedra',   	subdivision: 20},
-	{name: '8-cell',          	subdivision: 40},
-	{name: '2-2-7',							subdivision: 12},
-	{name: 'cayley-2-2-9',			subdivision: 12},
-	{name: '3-3-3-3-4',       	subdivision: 40}, // complex
-	{name: 'maze-3-5',					subdivision: 8},
-	{name: '24-cell',         	subdivision: 30},
-	{name: 'truncated-8-cell',	subdivision: 20},
-	{name: '2-3-4',							subdivision: 12},
-	{name: 'edget-8-cell',			subdivision: 10},
-	{name: 'duoprisms-12x12',		subdivision: 10},
-	{name: 'y-y',								subdivision: 10},
-	{name: 'solid-8-prisms',    subdivision: 10},
-	{name: 'maze-3-3-4',   			subdivision: 8},
-	{name: '120-cell',        	subdivision: 8}, // strange
-	{name: 'solid-20-hedra',  	subdivision: 8},
-	{name: 'solid-6-prisms', 		subdivision: 8},
-	{name: 'solid-20-hedra', 		subdivision: 8},
-	{name: 'solid-12-hedra', 		subdivision: 5},
-	{name: 'solid-4-hedra', 		subdivision: 5},
-	{name: '600-cell',        	subdivision: 10}
+	{name: 'Hypercube',          	subdivision: 40},
+	{name: 'Pentatope',         subdivision: 60}, // basic
+	{name: '3x3-Duoprism',   	subdivision: 60},
+	{name: '16-Cell',         	subdivision: 30},
+	{name: 'Flat Torus',							subdivision: 7},
+	{name: '8-Hedra Solid',   	subdivision: 20},
+	{name: '{2,2,7}',							subdivision: 12},
+	{name: '{2,2,9}',			subdivision: 12},
+	{name: '{3,3,3,3,4}',       	subdivision: 40}, // complex
+	{name: '{3,5} Maze',					subdivision: 8},
+	{name: '24-Cell',         	subdivision: 30},
+	{name: 'Truncated Hypercube',	subdivision: 20},
+	{name: '{2,3,4}',							subdivision: 12},
+	{name: 'Edge-Truncated Hypercube',			subdivision: 10},
+	{name: '12x12-Duoprism',		subdivision: 10},
+	{name: 'Y',								subdivision: 10},
+	{name: '8-Prisms Solid',    subdivision: 10},
+	{name: '{3,3,4} Maze',   			subdivision: 8},
+	{name: '120-Cell',        	subdivision: 8}, // strange
+	{name: '20-Hedra Solid',  	subdivision: 8},
+	{name: '6-Prisms Solid', 		subdivision: 8},
+	{name: '20-Hedra Solid', 		subdivision: 8},
+	{name: '4-Hedra Solid', 		subdivision: 5},
+	{name: '600-Cell',        	subdivision: 10}
 ]
 
 let loaderPercentage = 0.2
@@ -58,11 +56,12 @@ export default class PolytopeManager extends THREE.Object3D  {
 		let generatePolytope = (i) => {
 
 			if (i == graphList.length) {
-				this.changePolytope(2)// 16-cell
+				this.changePolytope(0)// 16-cell
 				return
 			}
 
 			let graph = graphList[i]
+			console.log(graph.name)
 			let polytope = new Polytope(
 				window.assets.graphs[graph.name],
 				{
@@ -94,6 +93,8 @@ export default class PolytopeManager extends THREE.Object3D  {
 
 		this.currentIndex = index
 		this.updateStage()
+
+		console.log(this.currentIndex)
 
 		app.ui.title.value = graphList[this.currentIndex].name
 	}

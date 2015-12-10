@@ -2,6 +2,7 @@
 import Graph from './graph.js'
 import Projector4D from './projector4d.js'
 import {Noise} from 'noisejs'
+import {lerp} from 'interpolation'
 const noise = new Noise(Math.random())
 
 
@@ -52,23 +53,25 @@ export default class Polytope extends THREE.Object3D {
 	generateVertexColor() {
 		let scale = 8
 		this.vertexColors = this.graph.vertices.map((vertex) => {
-			let r = noise.perlin2(vertex.x * scale, vertex.y * scale)
-			let g = noise.perlin2(vertex.z * scale, vertex.w * scale)
-			let b = noise.perlin2(vertex.y * scale, vertex.x * scale)
+			let r = lerp(0, 1, Math.random())//noise.perlin3(vertex.x * scale, vertex.y * scale, (vertex.z + vertex.z) * scale)
+			let g = lerp(0, 1, Math.random())//noise.perlin3(vertex.z * scale, vertex.w * scale, (vertex.y + vertex.w) * scale)
+			let b = lerp(0, 1, Math.random())//noise.perlin3(vertex.y * scale, vertex.x * scale, (vertex.w + vertex.x) * scale)
 
-			r = Math.sin(r * Math.PI / 2)
-			g = Math.sin(g * Math.PI / 2)
-			b = Math.sin(b * Math.PI / 2)
+			// r = Math.sin(r * Math.PI / 2)
+			// g = Math.sin(g * Math.PI / 2)
+			// b = Math.sin(b * Math.PI / 2)
 
-			r = r / 2 + 0.5
-			g = g / 2 + 0.5
-			b = b / 2 + 0.5
+			// r = r / 2 + 0.5
+			// g = g / 2 + 0.5
+			// b = b / 2 + 0.5
 
-			r = Math.pow(r, 0.65)
-			// g = Math.pow(g, 0) 
-			b = Math.pow(b, 0.75)
+			r = Math.pow(r, 0.75)
+			g = Math.pow(g, 0.9) 
+			b = Math.pow(b, 0.85)
 
-			// b = mapRange(r, )
+			r = lerp(.25, 1, r)
+			g = lerp(.2, .7, g)
+			b = lerp(.5, .8, b)
 
 			return new THREE.Vector3(r, g, b)
 		})

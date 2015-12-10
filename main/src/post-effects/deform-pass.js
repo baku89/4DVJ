@@ -30,7 +30,7 @@ export default class DeformPass extends THREE.ShaderPass {
 		this.enabled = true
 
 		// turbulance
-		app.ui.turbulance.on('change', (value) => {
+		app.ui.turbulance.on('change', () => {
 			this.uniforms.turbulanceAmp.value = 150
 		})
 

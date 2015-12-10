@@ -127,10 +127,6 @@ export default class App extends EventEmitter {
 	}
 
 	onCompleteLoadingBar() {
-		console.log('complete!!!!! and start!!!!')
-
-		this.ui.display.mode = 'full'
-
 		Ticker.on('update', this.animate.bind(this))
 		Ticker.start()
 	}

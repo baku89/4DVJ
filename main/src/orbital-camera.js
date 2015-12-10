@@ -32,6 +32,13 @@ export default class OrbitalCamera extends THREE.Object3D {
 			this.rotateSpeed = lerp(0.1, 1, value)
 		})
 
+		/*
+		[[position.z]]
+		this: fixed
+			└ dolly: distance
+			  └ camera: magnify
+		*/
+
 		// camera settings
 		this.camera = new THREE.PerspectiveCamera(60, Config.ASPECT, .1, 1000)
 		this.camera.position.set(0, 0, NORMAL_Z)
@@ -47,17 +54,8 @@ export default class OrbitalCamera extends THREE.Object3D {
 		// this.dollyLerp = Config.DOLLY_SLIDER_LERP
 
 		app.ui.distance.on('change', (value) => {
+			console.log('change orbital camer', value)
 			this.dolly.position.z = lerp(0, DOLLY_FAR_Z, value)
-		})
-
-		app.ui.zoom.on('change', (value) => {
-			if (value) {
-				this.targetDollyZ = 3
-				this.dollyLerp = Config.DOLLY_OUT_LERP
-			} else {
-				this.targetDollyZ = 0
-				this.dollyLerp = Config.DOLLY_IN_LERP
-			}
 		})
 
 		app.ui.magnify.on('change', (value) => {

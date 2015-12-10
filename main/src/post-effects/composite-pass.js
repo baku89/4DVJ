@@ -23,7 +23,7 @@ export default class CompositePass extends THREE.ShaderPass {
 		this.targetExclusionColor = new THREE.Color(0, 0, 0)
 		this.transitionTime = null
 
-		app.ui.bg.on('change', (value) => {
+		app.ui.invert.on('change', (value) => {
 			if (this.transitionTime == null) {
 				this.currentExclusionColor.set(this.targetExclusionColor)
 			} else {

@@ -16,6 +16,7 @@ export default class Keybind extends EventEmitter {
 		this.key = parameters.key
 		this.toggle = parameters.toggle || false
 		this.still = parameters.still || false
+		this.pressing = parameters.pressing || false
 		this.value = false
 
 		// setup dom
@@ -30,7 +31,7 @@ export default class Keybind extends EventEmitter {
 	}
 
 	forceUpdate() {
-		this.emit('change', this.value)
+		// this.emit('change', this.value)
 	}
 
 	onKeydown() {
@@ -54,7 +55,6 @@ export default class Keybind extends EventEmitter {
 		if (!this.toggle) {
 			this.value = false
 		}
-
 		if (!this.still) {
 			this.$root.toggleClass('active', this.value)
 		}

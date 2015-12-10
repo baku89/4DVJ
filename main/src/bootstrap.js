@@ -16,5 +16,5 @@ $.when(
 	loader.loadTexture('dandruff_small_tex', './texture/dandruff_small.png')
 ).then(() => {
 	console.timeEnd('load assets')
-	$.getScript('./app.js')
+	require('bundle!./app.js')
 })

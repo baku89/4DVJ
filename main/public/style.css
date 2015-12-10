@@ -113,6 +113,7 @@ body {
   color: #d8ede4;
   font-family: "jaf-bernino-sans-condensed", sans-serif;
   letter-spacing: 0.15em;
+  cursor: pointer;
 }
 
 .loading {
@@ -336,6 +337,7 @@ body {
   margin: 8px 0;
   border-left: 1px solid #d8ede4;
   border-right: 1px solid #d8ede4;
+  cursor: col-resize;
 }
 
 .slider__ui * {
@@ -386,7 +388,6 @@ body {
   background-size: 11px 11px;
   background-position: center center;
   background-repeat: no-repeat;
-  cursor: pointer;
   -webkit-transition: -webkit-transform 0.15s cubic-bezier(0.02, 0.68, 0.33, 1);
   transition: -webkit-transform 0.15s cubic-bezier(0.02, 0.68, 0.33, 1);
   transition: transform 0.15s cubic-bezier(0.02, 0.68, 0.33, 1);
@@ -412,10 +413,10 @@ body {
 
 .keybind__label-wrapper {
   margin: 7px 6px 0 7px;
-  height: 14px;
+  height: 15px;
   overflow: hidden;
-  -webkit-transition: all 0.1s cubic-bezier(0.02, 0.68, 0.33, 1);
-  transition: all 0.1s cubic-bezier(0.02, 0.68, 0.33, 1);
+  -webkit-transition: all 0.05s cubic-bezier(0.02, 0.68, 0.33, 1);
+  transition: all 0.05s cubic-bezier(0.02, 0.68, 0.33, 1);
 }
 
 .active .keybind__label-wrapper {
@@ -424,7 +425,7 @@ body {
 }
 
 .keybind__label {
-  height: 28px;
+  height: 32px;
   -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.02, 0.68, 0.33, 1);
   transition: -webkit-transform 0.4s cubic-bezier(0.02, 0.68, 0.33, 1);
   transition: transform 0.4s cubic-bezier(0.02, 0.68, 0.33, 1);
@@ -459,7 +460,8 @@ body {
 
 .keybind__name,
 .keybind__key {
-  height: 14px;
-  line-height: 14px;
+  height: 16px;
+  padding: 1px;
+  line-height: 13px;
   font-size: 14px;
 }
