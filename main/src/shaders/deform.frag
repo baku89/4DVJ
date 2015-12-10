@@ -18,6 +18,7 @@ uniform int effectKind;
 #define EFFECT_MIRROR_LEFT  3
 #define EFFECT_POLAR  4
 
+
 varying vec2 vUv;
 
 vec2 rotateVec2(vec2 p, float radian) {
@@ -32,8 +33,8 @@ void main() {
 
   // ------------------------------------------------
   // turbulance
-  vec3 noisePos = vec3(fragCoord/500.0, time / 2000.0);
-  fragCoord += vec2(snoise3(noisePos), snoise3(noisePos+300.0)) * turbulanceAmp;
+  vec3 noisePos = vec3(fragCoord/(resolution.x*0.26), time / 2000.0);
+  fragCoord += vec2(snoise3(noisePos), snoise3(noisePos+300.0)) * turbulanceAmp * resolution.x * 0.078125;
 
   // ------------------------------------------------
   // slitscan

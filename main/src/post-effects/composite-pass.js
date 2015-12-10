@@ -29,14 +29,14 @@ export default class CompositePass extends THREE.ShaderPass {
 			} else {
 				this.currentExclusionColor.set(this.uniforms.exclusionColor.value)
 			}
-			this.targetExclusionColor.set(value ? Config.CLEAR_LIGHT_COLOR : Config.CLEAR_COLOR)
+			this.targetExclusionColor.set(value ? Config.INVERT_EXCLUSION_COLOR : 0x0)
 			this.transitionTime = TRANSITION_DURATION
 		})
 
 		// ajust
-		GUI.add(this.uniforms.hsvAjust.value, 'x', 0, 1).name('hue').listen()
-		GUI.add(this.uniforms.hsvAjust.value, 'y', 0, 1.5).name('saturation').listen()
-		GUI.add(this.uniforms.hsvAjust.value, 'z', 0, 2).name('brightness').listen()
+		// GUI.add(this.uniforms.hsvAjust.value, 'x', 0, 1).name('hue').listen()
+		// GUI.add(this.uniforms.hsvAjust.value, 'y', 0, 1.5).name('saturation').listen()
+		// GUI.add(this.uniforms.hsvAjust.value, 'z', 0, 2).name('brightness').listen()
 
 
 		// Kontrol.on('fadeHue', (value) => {

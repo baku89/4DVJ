@@ -1,32 +1,80 @@
-/* global LoadingBar, app */
-import $ from 'jquery'
+/* global LoadingBar, app, $ */
 
 export default class Title {
 
 	constructor() {
 		this.$root = $('.title')
-		this.$default = $('.title__default')
-		this.$custom = $('.title__custom')
+		this.$current = $('.title__textA')
+		this.$next = $('.title__textB')
+		this.$about = $('.title__about')
 
-		LoadingBar.on('complete', () => {
-			this.visibleCustom = true
-		})
+		this.$next.css({top: '100%'})
 
-		app.on('resize', (w, h) => {
-			let height = (window.innerHeight - h) / 2
-			this.$root.height(height)
-		})
+		this.$current.html('4DVJ')
+
+		this.$about.on('click', this.onClickAbout.bind(this))
+
+		app.on('resize', this.onResize.bind(this))
+
+		app.on('changeState', this.onChangeState.bind(this))
 	}
 
-	set visibleCustom(value) {
-		this.$root.toggleClass('visible-custom', value)
+	onResize(w, h) {
+		// let height = (window.innerHeight - h) / 2
+		// this.$root.height(height)
+		let marginHeight = (window.innerHeight - h) / 2
+		let bottom = (marginHeight - this.$root.height()) / 2
+		this.$root.css({y: bottom})
+	}
+
+	onChangeState(state, prevState) {
+		if (this.timerId) {
+			clearTimeout(this.timerId)
+		}
+
+		if (prevState == 'loading' && state == 'vjing') { // on loading
+			this.timerId = setTimeout(() => {
+				this.value = app.polytopeManager.polytopeName
+			}, 3000)
+		} else if (prevState == 'vjing' && state == 'about') {
+			this.value = '4DVJ'
+		} else if (prevState == 'about' && state == 'vjing') {
+			this.value = app.polytopeManager.polytopeName
+		}
+	}
+
+	onClickAbout() {
+		switch (app.state) {
+			case 'vjing':
+				app.ui.rotateSpeed.target = 0
+				app.state = 'about'
+				break
+			case 'about':
+				app.state = 'vjing'
+				break
+		}
 	}
 
 	set value(value) {
-		this.$custom.html(value)
+		if (app.state == 'vjing') {
+			// this.$current.html(value)
+			this.$next
+				.finish()
+				.html(value)
+				.css({top: '100%'})
+				.animate({top: 0}, 500, 'easeOutExpo')
+			this.$current
+				.finish()
+				.css({top: 0})
+				.animate({top: '-100%'}, 500, 'easeOutExpo')
+
+			let $swap = this.$current
+			this.$current = this.$next
+			this.$next = $swap
+		}
 	}
 
 	get value() {
-		return this.$custom.html()
+		return this.current.html()
 	}
 }

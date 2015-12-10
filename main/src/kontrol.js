@@ -1,7 +1,7 @@
+/* global $ */
+
 import EventEmitter from 'eventemitter3'
 // import _ from 'lodash'
-import $ from 'jquery'
-
 // import Config from './config'
 
 const DECORATIVE_KEY = {

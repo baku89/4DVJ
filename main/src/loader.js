@@ -1,5 +1,6 @@
-/* global THREE, LoadingBar */
-import $ from 'jquery'
+/* global THREE, LoadingBar, $ */
+
+import 'OBJLoader'
 
 window.assets = {}
 

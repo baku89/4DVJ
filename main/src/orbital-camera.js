@@ -1,4 +1,4 @@
-/* global THREE, Kontrol, app */
+/* global THREE, app */
 
 import _ from 'lodash'
 import {lerp} from 'interpolation'
@@ -25,12 +25,10 @@ export default class OrbitalCamera extends THREE.Object3D {
 		this.rotateZero = new THREE.Quaternion()
 		this.rotateSpeed = Config.INIT_ROTATE_SPEED
 
-		this.changeRotate()
-		Kontrol.on('changeRotate', this.changeRotate.bind(this))
-		
 		app.ui.rotateSpeed.on('change', (value) => {
 			this.rotateSpeed = lerp(0.1, 1, value)
 		})
+		this.changeRotate()
 
 		/*
 		[[position.z]]
@@ -54,7 +52,7 @@ export default class OrbitalCamera extends THREE.Object3D {
 		// this.dollyLerp = Config.DOLLY_SLIDER_LERP
 
 		app.ui.distance.on('change', (value) => {
-			console.log('change orbital camer', value)
+			// console.log('change orbital camer', value)
 			this.dolly.position.z = lerp(0, DOLLY_FAR_Z, value)
 		})
 

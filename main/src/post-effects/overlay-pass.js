@@ -8,9 +8,9 @@ export default class OverlayPass extends THREE.ShaderPass {
 		super({
 			uniforms: {
 				resolution: {type: 'v2', value: new THREE.Vector2()},
-				attack: {type: 't', value: null},
-				zfighting: {type: 't', value: null},
-				zfightingEnabled: {type: 'f', value: 0},
+				flash: {type: 't', value: null},
+				flicker: {type: 't', value: null},
+				flickerEnabled: {type: 'f', value: 0},
 				tDiffuse: {type: 't', value: null}
 			},
 			vertexShader: require('../shaders/basic-transform.vert'),
@@ -19,43 +19,43 @@ export default class OverlayPass extends THREE.ShaderPass {
 		this.enabled = true
 
 		{
-			this.attackVideo = window.assets.overlay_attack
-			this.attackVideo.width = this.attackVideo.videoWidth
-			this.attackVideo.height = this.attackVideo.videoHeight
-			// this.attackVideo.defaultPlaybackRate = 0.5
-			this.attackVideo.currentTime = this.attackVideo.duration - 0.05
+			this.flashVideo = window.assets.overlay_flash
+			this.flashVideo.width = this.flashVideo.videoWidth
+			this.flashVideo.height = this.flashVideo.videoHeight
+			// this.flashVideo.defaultPlaybackRate = 0.5
+			this.flashVideo.currentTime = this.flashVideo.duration - 0.05
 
-			this.attackTexture = new THREE.VideoTexture(this.attackVideo)
-			this.attackTexture.minFilter = THREE.LinearFilter
-			this.attackTexture.magFilter = THREE.LinearFilter
-			this.attackTexture.format = THREE.RGBFormat
-			this.uniforms.attack.value = this.attackTexture
+			this.flashTexture = new THREE.VideoTexture(this.flashVideo)
+			this.flashTexture.minFilter = THREE.LinearFilter
+			this.flashTexture.magFilter = THREE.LinearFilter
+			this.flashTexture.format = THREE.RGBFormat
+			this.uniforms.flash.value = this.flashTexture
 
-			this.attackRequestId = null
-			app.ui.attack.on('change', this.overlayAttack.bind(this))
+			this.flashRequestId = null
+			app.ui.flash.on('change', this.overlayAttack.bind(this))
 		}
 
 		{
-			this.zfightingVideo = window.assets.overlay_zfighting
-			this.zfightingVideo.width = this.zfightingVideo.videoWidth
-			this.zfightingVideo.height = this.zfightingVideo.videoHeight
-			this.zfightingVideo.loop = true
-			// this.zfightingVideo.play()
+			this.flickerVideo = window.assets.overlay_flicker
+			this.flickerVideo.width = this.flickerVideo.videoWidth
+			this.flickerVideo.height = this.flickerVideo.videoHeight
+			this.flickerVideo.loop = true
+			// this.flickerVideo.play()
 
-			this.zfightingTexture = new THREE.VideoTexture(this.zfightingVideo)
-			this.zfightingTexture.minFilter = THREE.NearestFilter
-			this.zfightingTexture.magFilter = THREE.NearestFilter
-			this.zfightingTexture.format = THREE.RGBFormat
-			this.uniforms.zfighting.value = this.zfightingTexture
+			this.flickerTexture = new THREE.VideoTexture(this.flickerVideo)
+			this.flickerTexture.minFilter = THREE.NearestFilter
+			this.flickerTexture.magFilter = THREE.NearestFilter
+			this.flickerTexture.format = THREE.RGBFormat
+			this.uniforms.flicker.value = this.flickerTexture
 
-			this.zfightingVideoEnabled = false
-			app.ui.zfighting.on('change', (value) => {
-				this.zfightingVideoEnabled = value
-				if (this.zfightingVideoEnabled) {
-					this.zfightingVideo.play()
+			this.flickerVideoEnabled = false
+			app.ui.flicker.on('change', (value) => {
+				this.flickerVideoEnabled = value
+				if (this.flickerVideoEnabled) {
+					this.flickerVideo.play()
 				} else {
-					this.zfightingVideo.pause()
-					this.zfightingVideo.currentTime = 0
+					this.flickerVideo.pause()
+					this.flickerVideo.currentTime = 0
 				}
 			})
 		}
@@ -64,33 +64,32 @@ export default class OverlayPass extends THREE.ShaderPass {
 	}
 
 	onResize(width, height) { 
-		console.log('overlay.resize')
+		// console.log('overlay.resize')
 		this.uniforms.resolution.value.set(width, height)
-		console.log(width, height, this.uniforms)
 	}
 
 	overlayAttack() {
 		let index = _.random(0, 2)
-		this.attackIndex = (this.attackIndex <= index) ? index + 1 : index
-		// console.log('overlayAttack', this.attackIndex)
-		this.attackVideo.currentTime = this.attackIndex * 3.0
-		this.attackVideo.play()
-		clearTimeout(this.attackRequestId)
-		this.attackRequestId = setTimeout(() => {
-			this.attackVideo.pause()
-			this.attackRequestId = null
+		this.flashIndex = (this.flashIndex <= index) ? index + 1 : index
+		// console.log('overlayAttack', this.flashIndex)
+		this.flashVideo.currentTime = this.flashIndex * 3.0
+		this.flashVideo.play()
+		clearTimeout(this.flashRequestId)
+		this.flashRequestId = setTimeout(() => {
+			this.flashVideo.pause()
+			this.flashRequestId = null
 		}, 2850)
 	}
 
 
 
 	update() {
-		if (this.attackRequestId != null) {
-			this.attackTexture.needsUpdate = true
+		if (this.flashRequestId != null) {
+			this.flashTexture.needsUpdate = true
 		}
 
-		if (this.zfightingEnabled) {
-			this.zfightingVideo.needsUpdate = true
+		if (this.flickerEnabled) {
+			this.flickerVideo.needsUpdate = true
 		}
 		
 	}

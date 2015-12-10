@@ -1,16 +1,15 @@
-/* global THREE, LoadingBar */
-import $ from 'jquery'
+/* global THREE, LoadingBar, $ */
+
 import 'jquery.transit'
 import EventEmitter from 'eventemitter3'
 // import _ from 'lodash'
 
 import GUI from './gui'
 import Config from './config'
-import Kontrol from './kontrol'
 import Ticker from './ticker'
 
 window.GUI = GUI
-window.Kontrol = Kontrol
+
 
 import PolytopeManager from './polytope-manager'
 import Projector4D from './projector4d'
@@ -38,20 +37,16 @@ export default class App extends EventEmitter {
 	}
 
 	init() {
-
-
 		LoadingBar.on('complete', this.onCompleteLoadingBar.bind(this))
 
 		this.ui = require('./ui').default
-
 		this.initScene()
 		this.initObject()
 		this.initPostprocessing()
-
 		this.ui.forceUpdate()
-
 		this.onResize()
 
+		this._state = 'loading'
 	}
 
 	initScene() {
@@ -127,12 +122,13 @@ export default class App extends EventEmitter {
 	}
 
 	onCompleteLoadingBar() {
+		this.state = 'vjing'
 		Ticker.on('update', this.animate.bind(this))
 		Ticker.start()
 	}
 
 	animate(elapsed) {
-		GUI.stats.begin()
+		// GUI.stats.begin()
 
 		this.ui.update()
 
@@ -147,16 +143,32 @@ export default class App extends EventEmitter {
 		this.overlayPass.update(elapsed)
 		this.compositePass.update(elapsed)
 
-		// this.renderer.render(this.scene, this.camera)
 		this.composer.render()
 
-		GUI.stats.end()
+		// GUI.stats.end()
+	}
+
+	set state(state) {
+		let prevState = this._state
+		this._state = state
+		this.emit('changeState', this._state, prevState)
+		setTimeout(() => {
+			$('body').attr('data-state', this._state)
+		}, 100)
+		
+	}
+
+	get state() {
+		return this._state
 	}
 
 	onResize() {
 
 		let width = window.innerWidth
 		let height = width / Config.ASPECT
+
+		width += Config.EDGE_WIDTH * 2
+		height += Config.EDGE_WIDTH * 2
 
 		// this.renderer.setSize(1920, 814)
 		this.renderer.setSize(width, height)

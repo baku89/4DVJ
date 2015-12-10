@@ -1,4 +1,5 @@
-import $ from 'jquery'
+/* global $ */
+
 import EventEmitter from 'eventemitter3'
 
 export default class Keybind extends EventEmitter {

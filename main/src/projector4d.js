@@ -35,7 +35,7 @@ export default class Projector4D {
 		// this.rotateSpeed = Config.INIT_ROTATE_SPEED
 		// this.targetRotateSpeed = Config.INIT_ROTATE_SPEED
 		app.ui.rotateSpeed.on('change', (value) => {
-			this.rotateSpeed = value
+			this.rotateSpeed = lerp(0.04, 1, value)
 		})
 	}
 

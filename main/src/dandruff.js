@@ -117,7 +117,7 @@ export default class Dandruff extends THREE.Object3D {
 
 		this.smallTexture = window.assets.dandruff_small_tex
 		app.ui.white.on('change', (value) => {
-			console.log('on white', value)
+			// console.log('on white', value)
 			let texture = value ?  this.smallTexture : null
 			this.small.material.uniforms.texture.value = texture
 			this.large.material.uniforms.texture.value = texture

@@ -14,7 +14,6 @@ head.no-js
 	meta(name='description', content='#{description}')
 	meta(name='viewport', content='width=device-width, initial-scale=1')
 
-	link(rel="stylesheet" type="text/css" href="./pure-min.css")
 	link(rel="stylesheet" type="text/css" href="./style.css")
 
 	title #{title}
@@ -25,10 +24,10 @@ head.no-js
 	meta(property="og:description", content="#{description}")
 	meta(property="og:url", content="#{social.url}")
 	meta(property="og:image", content="#{social.url}ogimage.jpg")
-	meta(property="og:image:width", content="630")
+	meta(property="og:image:width", content="1120")
 	meta(property="og:image:height", content="630")
 	meta(property="og:site_name", content="#{title}")
-	meta(property="og:locale", content="ja_JP")
+	meta(property="og:locale", content="en_US")
 
 	//- Twitter type:summary-large-image
 	meta(name="twitter:card", content="summary_large_image")
@@ -42,66 +41,64 @@ head.no-js
 	script.
 		try{Typekit.load({ async: true });}catch(e){}
 
-body
-	.loading
-		.loading__bar
+body(data-state='loading')
 
-	.display(data-mode='hidden')
-		.display__top
-		.display__bottom
-		canvas.display-canvas
+	#supported
+		.loading
+			.loading__bar
+			.loading__dot
 
-	header.title
-		h1.title__wrapper
-			.title__default 4DVJ
-			.title__custom
-			button.title__about ?
+		.display
+			.display__top
+			.display__bottom
+			canvas.display-canvas
+			.display__about
+				.display__caption.content
+					:marked
+						This demo visualizes [stereographic projection](https://en.wikipedia.org/wiki/Stereographic_projection) of 4D geometries,  
+						and was performed as VJ set at [CHANNEL #13](https://www.super-deluxe.com/room/4021/)
 
+						Used [three.js](http://threejs.org/), [jenn3d](http://www.jenn3d.org)
 
-	.control
-		.control__sliders.control__sliders--left
-		.control__keyboard
-			.control__keyboard-row.control__keyboard-row--0
-			.control__keyboard-row.control__keyboard-row--1
-			.control__keyboard-row.control__keyboard-row--2
-		.control__sliders.control__sliders--right
-	//- 		+slider('Polytope Size')
-	//- 		+slider('Prizm Num')
-	//- 		+slider('Fibration Num')
-	//- 		+slider('4D Distance')
-	//- 		+slider('Rotation Vel')
-	//- 		+slider('Wormhole Size')
+						Inspired by [Dimensions](http://www.dimensions-math.org/Dim_E.htm), [MPY](http://www.michaelpaulyoung.com/)
 
-	//- .about
-	//- 	:marked
-	//- 		This demo visualizes [stereographic projection](https://en.wikipedia.org/wiki/Stereographic_projection) of 4D geometries,  
-	//- 		and was performed as VJ set at [CHANNEL #13](https://www.super-deluxe.com/room/4021/)
+						Made by [Baku Hashimoto](http://baku89.com)
 
-	//- 		Used [three.js](http://threejs.org/), [jenn3d](http://www.jenn3d.org)
-
-	//- 		Inspired by [Dimensions](http://www.dimensions-math.org/Dim_E.htm), [MPY](http://www.michaelpaulyoung.com/)
-
-	//- 		Made by [Baku Hashimoto](http://baku89.com)
-
-	//- 	a.about__github(href='https://github.com/baku89/Channel-13' taget='_blank')
+				a.about__github(href='https://github.com/baku89/Channel-13' taget='_blank') GitHub
 
 
+		header.title
+			h1.title__wrapper
+				.title__textA
+				.title__textB
+				.title__about
+					span ?
 
+		.control
+			.control__sliders.control__sliders--left
+			.control__keyboard.show-key
+				.control__keyboard-row.control__keyboard-row--0
+				.control__keyboard-row.control__keyboard-row--1
+				.control__keyboard-row.control__keyboard-row--2
+			.control__sliders.control__sliders--right
 
-	//- .current-polytope.control Test
+	#unsupported
+		.content
+			:marked
+				# 4DVJ
 
-	//- .exclusion-color.control
-	//- 	button.pure-button(style='background-color:#000000;color:white') black
-	//- 	button.pure-button(style='background-color:#C7ECCF') white
-		//- button.pure-button(style='background-color:#DAAC1C') yellow
-		//- button.pure-button(style='background-color:#C5434E') magenda
-		//- button.pure-button(style='background-color:#3CD290') cyan
+				Please visit from your pc with a WebGL-enabed browser. (especially recommending Google Chrome)
+
+				![](./img/4dvj_0.jpg)
+				![](./img/4dvj_3.jpg)
+				![](./img/4dvj_2.jpg)
+				![](./img/4dvj_5.jpg)
+
+				Made by [Baku Hashimoto](http://baku89.com)
+
 
 	script(src='lib/jquery.min.js')
+	script(src='lib/jquery.transit.js')
+	script(src='lib/jquery.easing.js')
 	script(src='lib/three.min.js')
 	script(src='bootstrap.js')
-
-	//- script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js')
-	//- script(src='./lib/three.min.js')
-	//- script(src='./lib/preloadjs-0.6.1.min.js')
-	//- script(src='main.js')

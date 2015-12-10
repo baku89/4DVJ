@@ -1,4 +1,5 @@
-import $ from 'jquery'
+/* global $ */
+
 import {lerp} from 'interpolation'
 import clamp from 'clamp'
 import EventEmitter from 'eventemitter3'

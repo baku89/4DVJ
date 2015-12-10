@@ -1,8 +1,7 @@
-/* global THREE, GUI */
+/* global THREE, GUI, $ */
 
 import EventEmitter from 'eventemitter3'
 import _ from 'lodash'
-import $ from 'jquery'
 import osc from 'node-osc'
 import Config from './config'
 

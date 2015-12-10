@@ -1,4 +1,4 @@
-import $ from 'jquery'
+/* global $ */
 
 import Config from './config'
 
@@ -9,8 +9,8 @@ import Slider from './ui/slider'
 import Keybind from './ui/keybind'
 
 const leftSliderData = [
-	{id: 'polytopeScale', name: 'Polytope Size', lerp: 0.04, value: 1},
-	{id: 'polygonCount', name: 'Polygon Num', value: 1},
+	{id: 'polytopeScale', name: 'Polytope Size', lerp: 0.04, value: 0.5},
+	{id: 'polygonCount', name: 'Polygon Num', value: 0.4},
 	{id: 'fibrationCount', name: 'Fibration Num', lerp: 0.05, value: 0}
 ]
 
@@ -26,7 +26,12 @@ const decorativeKey = {
 	'16': 'shift'
 }
 
-let keybindData = [
+const keyIcon = {
+	'shift': require('raw!./includes/keybind_shift.svg'),
+	'space': require('raw!./includes/keybind_space.svg')
+}
+
+const keybindData = [
 	[
 		{id: 'effectReset', key: 'Q', name: 'Reset', margin: 32},
 		{id: 'effectRepeat', key: 'W', name: 'Rep', toggle: true, continuous: true},
@@ -37,15 +42,15 @@ let keybindData = [
 	[
 		{id: 'turbulance', key: 'A', name: 'Wave', margin: 60},
 		{id: 'rotation', key: 'S', name: 'Rot'},
-		{id: 'attack', key: 'D', name: 'Flash'},
+		{id: 'flash', key: 'D', name: 'Flash'},
 		{id: 'white', key: 'F', name: 'White', pressing: true}
 	],
 	[
-		{id: 'wide', key: 'shift', name: 'Wide', pressing: true, margin: 0, width: 80},
+		{id: 'wide', key: 'shift', name: 'Wide', pressing: true, margin: 0, width: 80, keyIcon: keyIcon.shift},
 		{id: 'invert', key: 'Z', name: 'Inv', toggle: true},
 		{id: 'wiggle', key: 'X', name: 'Wig', toggle: true},
-		{id: 'zfighting', key: 'C', name: 'Flickr', toggle: true},
-		{id: 'polytope', key: 'space', name: 'Polytope', margin: 38, width: 105}
+		{id: 'flicker', key: 'C', name: 'Flickr', toggle: true},
+		{id: 'polytope', key: 'space', name: 'Polytope', margin: 38, width: 105, keyIcon: keyIcon.space}
 	]
 ]
 
@@ -76,7 +81,6 @@ class UI {
 			this.effectRepeat.toggleHighlight(false)
 		})
 		this.wide.on('change', (value) => {
-			console.log('zoom change', value)
 			this.distance.target = value ? .5 : 0
 			this.distance.lerp = value ? Config.WIDE_LERP : Config.TELE_LERP
 		})

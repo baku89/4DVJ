@@ -6,6 +6,21 @@ aspect = 814/1920
 white = #D8EDE4
 easeOut = cubic-bezier(.02,.68,.33,1)
 
+notext()
+	white-space nowrap
+	text-indent 100%
+	overflow hidden
+
+	stateLoading = 'body[data-state="loading"]'
+	stateVJing = 'body[data-state="vjing"]'
+	stateAbout = "[data-state='about']"
+
+titleHeight = 60px
+aboutTitleHeight = 120px
+
+about-transition(prop)
+	transition prop .5s cubic-bezier(.32,0,.17,1)
+
 //------------------------
 // general
 
@@ -13,49 +28,138 @@ easeOut = cubic-bezier(.02,.68,.33,1)
 	box-sizing border-box
 	-webkit-user-select: none
 	-webkit-tap-highlight-color: rgba(62, 138, 203, .8)
-	outline: none
-
+	// -webkit-font-smoothing: subpixel-antialiased
+	outline: 0
+	
+input, button
+	outline: 0
 
 html, body
 	width 100%
 	height 100%
-	overflow hidden
 	background: black
 	color white
 	font-family "jaf-bernino-sans-condensed", sans-serif
 	// font-weight 100
 	letter-spacing .15em
-	cursor pointer
+	cursor default
+	
+body
+	overflow hidden
+	
+	&[data-state='unsupported']
+		overflow auto
+
+#supported
+	width 100%
+	height 100%
+
+	[data-state='unsupported'] &
+		display none
+
+#unsupported
+	display none
+	padding-bottom 60px
+	text-align center
+
+	[data-state='unsupported'] &
+		display block
+		
+	h1
+		padding 60px 0 20px
+		font-size 34px
+		-webkit-font-smoothing: antialiased
+		text-align center
+	
+
+
+//------------------------
+// content
+
+.content
+	line-height 1.6
+	
+	p
+		// margin-left 10px
+		// margin-right 10px
+		margin-bottom 10px
+		
+	img
+		width 100%
+		height auto
+		margin-bottom 6px
+
+	a
+		display inline-block
+		height 22px
+		// background red
+		vertical-align baseline
+		position relative
+
+		&:after
+			display block
+			position absolute
+			content: "\00a0"
+			height 1px
+			left 0
+			right 0
+			bottom 0
+			background-image repeating-linear-gradient(to right, white 0%, white, 25%, transparent 25%, transparent 100%)
+			background-position right top
+			background-repeat repeat-x
+			background-size 4px 1px
+			
+		&:hover:after
+			background white
+
+	a:link, a:visited, a:active
+		color white !important
+		text-decoration none
 
 //------------------------
 // loading
 
 .loading
+	position absolute
+	top 50%
+	left: 0
 	width 100%
-	z-index: 999
+	height 1px
+	z-index: 100
+	visibility hidden
+	transition visibility 0s linear .1s
+	background-image repeating-linear-gradient(to right, white 0%, white, 12.5%, transparent 12.5%, transparent 100%)
+	background-position right top
+	background-repeat repeat-x
+	background-size 8px 1px
+
+	[data-state='loading'] &
+		visibility visible
 
 
 .loading__bar
 	position absolute
 	width 100%
-	top 50%
-	left: 0
-	border-top 1px solid white
+	height 100%
+	background white
 	transform-origin top left
 	transform scaleX(0)
 	transition transform 1s ease
-	z-index 9999
 
 	
 //------------------------
 // title
 
-titleHeight = 60px
-
 .title
-	position relative
-	height 90px
+	position absolute
+	height 108px
 	width: 100%
+	top 0
+	transition transform 1.2s easeOut 0.6s
+	
+	[data-state='loading'] &
+		transform translateY(-100%) !important
+		
 
 .title__wrapper
 	position absolute
@@ -64,9 +168,10 @@ titleHeight = 60px
 	width 100%
 	height 60px
 	margin-top -(@height / 2)
+	overflow hidden
 
-.title__default,
-.title__custom
+.title__textA,
+.title__textB
 	position absolute
 	top 0
 	left 0
@@ -77,25 +182,71 @@ titleHeight = 60px
 	font-size 34px
 	-webkit-font-smoothing: antialiased
 	
-.title__default
-	visibility visible
-	.visible-custom &
-		visibility hidden
+// .title__default
+// 	visibility visible
+// 	.visible-custom &
+// 		visibility hidden
 
-.title__custom
-	visibility hidden
-	.visible-custom &
-		visibility visible
+// .title__custom
+// 	visibility hidden
+// 	.visible-custom &
+// 		visibility visible
 
 .title__about
+	display block
 	position absolute
 	right 30px
 	width titleHeight
 	height titleHeight
 	background transparent
 	border 0
-	font-size 24px
+	overflow hidden
+	cursor pointer
 	
+	span
+		display block
+		width 100%
+		height 100%
+		font-size 24px
+		line-height titleHeight
+		text-align center
+		transition all .25s ease
+		
+		[data-state='about'] &
+			transform translateY(-100%)
+	
+	&:before, &:after
+		content: "\00a0"
+		left 0
+		display block
+		position absolute
+		width 100%
+		height 1px
+		background-color white
+		transition all .25s easeOut
+		transform scaleX(0)
+		transform-origin 50% 50%
+
+	&:before
+		top 0
+	&:after
+		bottom 0
+		
+	&:hover
+		&:before, &:after
+			transform scaleX(1)
+			
+	[data-state='about'] &
+		&:before, &:after
+			transform scaleX(1)
+		&:before
+			transform translateY(titleHeight/2) rotate(45deg) scaleX(1)
+		&:after
+			transform translateY(titleHeight/-2) rotate(-45deg) scaleX(1)
+		&:hover:before
+			transform translateY(titleHeight/2) rotate(45deg) scaleX(1.2) 
+		&:hover:after
+			transform translateY(titleHeight/-2) rotate(-45deg) scaleX(1.2)
 	
 //------------------------
 // display
@@ -106,40 +257,85 @@ titleHeight = 60px
 	left: 0
 	width 100%
 	height 0
-	margin-top: - aspect * 50%
 	padding-top:  aspect * 100%
 	background black
 	z-index: 99
+	transform translateY(-50%)
+	overflow hidden
 
 .display__top
 .display__bottom
 	position absolute
 	left: 0
 	width 100%
-	height 50%
+	height 100%
 	background black
-	transform scaleY(0)
-	transition transform 1s ease
+	transition transform .8s ease
 	z-index 10
-	
-	[data-mode=hidden] &
-		transform scaleY(1)
 
 .display__top
-	top 0
-	transform-origin top left
+	top -100%
+	transform translateY(0)
 
 .display__bottom
-	bottom 0
-	transform-origin bottom left
+	bottom -100%
+	transform translateY(0)
 
+[data-state='loading']
+	.display__top
+		transform translateY(51%)
+	.display__bottom
+		transform translateY(-51%)
+
+[data-state='about']
+	.display__top
+		transform translateY(16px)
+	.display__bottom
+		transform translateY(-16px)
+		
 .display-canvas
 	position absolute
 	top 0
 	left 0
 	width: 100%
 	height: 100%
+	about-transition all
 	
+	[data-state='about'] &
+		filter blur(6px) brightness(0.85)
+	
+
+.display__about
+	position absolute
+	top 50%
+	left 0
+	width 100%
+	text-align center
+	transform translateY(-50%)
+	about-transition all
+	opacity 0
+	
+	[data-state='about'] &
+		opacity 1
+
+.display__caption
+	margin-bottom 19px
+
+.about__github
+	display block
+	width 40px
+	height 40px
+	margin: 0 auto
+	background-image svgurl('./src/includes/octacat.svg') svg()
+	background-size 100% 100%
+	white-space nowrap
+	text-indent 100%
+	overflow hidden
+	opacity 0.7
+	
+	&:hover
+		opacity 1
+
 //------------------------
 // control
 
@@ -149,9 +345,15 @@ titleHeight = 60px
 	flex-flow row no-wrap
 	justify-content space-around
 	left 0
+	bottom 0
 	width 100%
-	height 100px
+	height 108px
 	// background rgba(155, 0, 0, 0.2)
+	
+	transition transform 1.2s easeOut 0.6s
+	
+	[data-state='loading'] &
+		transform translateY(100%) !important
 	
 .control__sliders,
 .control__keyboard
@@ -164,33 +366,34 @@ titleHeight = 60px
 	// background rgba(0, 255, 0, .3)
 
 .control__keyboard
-	width 414px + 60
+	width 414px
+	box-sizing content-box
 	// background rgba(0, 255, 255, .3)
 
 .control__keyboard-row
 	display flex
-	height 31px
+	height 36px
 	padding-top 3px
 
 //------------------------
 // slider
 
 .slider
-	height 31px
+	height 36px
 	display flex
 	
 .slider__name
-	width 150px
+	width 140px
 	float left
 	padding-right 20px
-	line-height 31px
+	line-height 36px
 	text-align right
 	
 .slider__ui
 	position relative
 	flex 1
 	height 15px
-	margin 8px 0
+	margin 11px 0 10px
 	border-left 1px solid white
 	border-right 1px solid white
 	cursor col-resize
@@ -294,5 +497,9 @@ titleHeight = 60px
 	padding 1px
 	line-height 13px
 	font-size 14px
+	
+.keybind__key svg
+	height 13px
+	margin-top -1px
 
 	

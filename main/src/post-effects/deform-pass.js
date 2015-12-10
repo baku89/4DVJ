@@ -31,7 +31,7 @@ export default class DeformPass extends THREE.ShaderPass {
 
 		// turbulance
 		app.ui.turbulance.on('change', () => {
-			this.uniforms.turbulanceAmp.value = 150
+			this.uniforms.turbulanceAmp.value = 1//150
 		})
 
 		// slitscan

@@ -1,6 +1,5 @@
-/* global THREE, LoadingBar, app */
+/* global THREE, LoadingBar, app, $ */
 
-import $ from 'jquery'
 import _ from 'lodash'
 import Polytope from './polytope'
 import {lerp} from 'interpolation'
@@ -56,12 +55,12 @@ export default class PolytopeManager extends THREE.Object3D  {
 		let generatePolytope = (i) => {
 
 			if (i == graphList.length) {
-				this.changePolytope(0)// 16-cell
+				this.changePolytope(0, true)// 16-cell
 				return
 			}
 
 			let graph = graphList[i]
-			console.log(graph.name)
+			console.log('processing...', graph.name)
 			let polytope = new Polytope(
 				window.assets.graphs[graph.name],
 				{
@@ -82,7 +81,7 @@ export default class PolytopeManager extends THREE.Object3D  {
 	}
 
 	// for debug
-	changePolytope(index) {
+	changePolytope(index, isNotUpdate) {
 
 		if (typeof index != 'number') {
 			index = _.random(this.polytopes.length - 2)
@@ -92,11 +91,12 @@ export default class PolytopeManager extends THREE.Object3D  {
 		}
 
 		this.currentIndex = index
+		this.polytopeName = this.polytopes[this.currentIndex].name
 		this.updateStage()
 
-		console.log(this.currentIndex)
-
-		app.ui.title.value = graphList[this.currentIndex].name
+		if (!isNotUpdate) {
+			app.ui.title.value = this.polytopeName
+		}
 	}
 
 	updateStage() {

@@ -1,23 +1,17 @@
-/* global LoadingBar */
-
-import $ from 'jquery'
+/* global LoadingBar, $, app */
 
 export default class Display {
 
 	constructor() {
 		this.$root = $('.display')
 
-		LoadingBar.on('complete', () => {
-			console.log('UncoUnco')
-			this.mode = 'full'
+		this.$about = this.$root.find('.display__about')
+
+		this.$about.find('a').attr('target', '_blank')
+		this.$about.on('click', () => {
+			if (app.state == 'about') {
+				app.state = 'vjing'
+			}
 		})
-	}
-
-	set mode(value) {
-		this.$root.attr('data-mode', value)
-	}
-
-	get mode() {
-		return this.$root.attr('data-mode')
 	}
 }
