@@ -37,7 +37,9 @@ export default class Title {
 				this.value = app.polytopeManager.polytopeName
 			}, 3000)
 		} else if (prevState == 'vjing' && state == 'about') {
+			this.force = true
 			this.value = '4DVJ'
+			this.force = false
 		} else if (prevState == 'about' && state == 'vjing') {
 			this.value = app.polytopeManager.polytopeName
 		}
@@ -56,7 +58,7 @@ export default class Title {
 	}
 
 	set value(value) {
-		if (app.state == 'vjing') {
+		if (app.state == 'vjing' || this.force) {
 			// this.$current.html(value)
 			this.$next
 				.finish()
