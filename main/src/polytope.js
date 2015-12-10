@@ -1,9 +1,9 @@
 /* global THREE */
 import Graph from './graph.js'
 import Projector4D from './projector4d.js'
-import {Noise} from 'noisejs'
+// import {Noise} from 'noisejs'
 import {lerp} from 'interpolation'
-const noise = new Noise(Math.random())
+// const noise = new Noise(Math.random())
 
 
 export default class Polytope extends THREE.Object3D {
@@ -51,8 +51,8 @@ export default class Polytope extends THREE.Object3D {
 	}
 
 	generateVertexColor() {
-		let scale = 8
-		this.vertexColors = this.graph.vertices.map((vertex) => {
+		// let scale = 8
+		this.vertexColors = this.graph.vertices.map(() => {
 			let r = lerp(0, 1, Math.random())//noise.perlin3(vertex.x * scale, vertex.y * scale, (vertex.z + vertex.z) * scale)
 			let g = lerp(0, 1, Math.random())//noise.perlin3(vertex.z * scale, vertex.w * scale, (vertex.y + vertex.w) * scale)
 			let b = lerp(0, 1, Math.random())//noise.perlin3(vertex.y * scale, vertex.x * scale, (vertex.w + vertex.x) * scale)

@@ -1,4 +1,4 @@
-/* global THREE, GUI, app */
+/* global THREE, app */
 
 import {smoothstep} from 'interpolation'
 import Config from '../config'

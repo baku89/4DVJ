@@ -3,7 +3,7 @@
 import {lerp} from 'interpolation'
 import _ from 'lodash'
 import radians from 'degrees-radians'
-import Config from './config'
+// import Config from './config'
 
 const MAX_DISTNACE = 5
 

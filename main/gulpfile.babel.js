@@ -32,7 +32,7 @@ gulp.task('webpack', () => {
     plugins: [
       new webpack.IgnorePlugin(/vertx/)
     ],
-    amd: {jQuery: true},
+    // amd: {jQuery: true},
     target: 'web',
     resolve: {
       modulesDirectories: ["web_modules", "node_modules"]
@@ -78,8 +78,9 @@ gulp.task('jade', () => {
 gulp.task('stylus', () => {
 	return gulp.src('./src/**/*.styl')
     .pipe($.plumber())
-		.pipe($.stylus({use: [nib(), svg()], compress: !developmentMode}))
+		.pipe($.stylus({use: [nib(), svg()]}))
     .pipe($.autoprefixer())
+    .pipe($.if(!developmentMode, $.minifyCss()))
 		.pipe(gulp.dest('public'))
     .pipe(browserSync.stream())
 })

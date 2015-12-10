@@ -1,8 +1,8 @@
-/* global THREE, LoadingBar, app, $ */
+/* global THREE, LoadingBar, app */
 
 import _ from 'lodash'
 import Polytope from './polytope'
-import {lerp} from 'interpolation'
+// import {lerp} from 'interpolation'
 
 let graphList = [
 	{name: 'Hypercube',          	subdivision: 40},

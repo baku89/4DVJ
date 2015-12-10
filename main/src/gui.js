@@ -1,5 +1,5 @@
-import dat from 'dat-gui'
-import Stats from 'stats-js'
+// import dat from 'dat-gui'
+// import Stats from 'stats-js'
 
 class GUI {
 

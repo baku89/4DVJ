@@ -1,4 +1,4 @@
-/* global LoadingBar, app, $ */
+/* global app, $ */
 
 export default class Title {
 
