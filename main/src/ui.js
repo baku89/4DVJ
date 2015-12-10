@@ -1,5 +1,7 @@
 import $ from 'jquery'
 
+import Config from './config'
+
 import Title from './ui/title'
 import Display from './ui/display'
 import Control from './ui/control'
@@ -14,7 +16,7 @@ const leftSliderData = [
 
 
 const rightSliderData = [
-	{id: 'distance', name: 'Distance', lerp: 0.03, value: 0},
+	{id: 'distance', name: 'Distance', lerp: 0.02, value: 0, defaultLerp: 0.02},
 	{id: 'rotateSpeed', name: 'Rotation Vel.', value: 0.3},
 	{id: 'lensRadius', name: 'Wormhole Size', lerp: 0.15, value: 0.3}
 ]
@@ -36,11 +38,11 @@ let keybindData = [
 		{id: 'turbulance', key: 'A', name: 'Wave', margin: 60},
 		{id: 'rotation', key: 'S', name: 'Rot'},
 		{id: 'attack', key: 'D', name: 'Flash'},
-		{id: 'bright', key: 'F', name: 'White', pressing: true}
+		{id: 'white', key: 'F', name: 'White', pressing: true}
 	],
 	[
-		{id: 'zoom', key: 'shift', name: 'Zoom', margin: 0, width: 80},
-		{id: 'bg', key: 'Z', name: 'bg', toggle: true},
+		{id: 'wide', key: 'shift', name: 'Wide', pressing: true, margin: 0, width: 80},
+		{id: 'invert', key: 'Z', name: 'Inv', toggle: true},
 		{id: 'wiggle', key: 'X', name: 'Wig', toggle: true},
 		{id: 'zfighting', key: 'C', name: 'Flickr', toggle: true},
 		{id: 'polytope', key: 'space', name: 'Polytope', margin: 38, width: 105}
@@ -72,6 +74,11 @@ class UI {
 		})
 		this.effectMirror.on('change', () => {
 			this.effectRepeat.toggleHighlight(false)
+		})
+		this.wide.on('change', (value) => {
+			console.log('zoom change', value)
+			this.distance.target = value ? .5 : 0
+			this.distance.lerp = value ? Config.WIDE_LERP : Config.TELE_LERP
 		})
 
 		// setup keyboards

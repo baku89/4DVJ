@@ -11,7 +11,6 @@ currentDir = os.path.dirname(__file__)
 # make polytope graphs data
 def makeGraph():
 	graphDir = os.path.normpath(os.path.join(currentDir, "../data/0 - JSON"))
-	destFile = os.path.normpath(os.path.join(currentDir, "./build/data/graphs.json"))
 	files = glob.glob(graphDir + "/*.json")
 	data = {}
 
@@ -23,6 +22,12 @@ def makeGraph():
 			graph = json.load(srcFile)
 			data[name] = graph
 
+
+	destFile = os.path.normpath(os.path.join(currentDir, "./build/data/graphs.json"))
+	with open(destFile, 'w') as outFile:
+		json.dump(data, outFile, separators=(',',':'))
+	
+	destFile = os.path.normpath(os.path.join(currentDir, "./public/data/graphs.json"))
 	with open(destFile, 'w') as outFile:
 		json.dump(data, outFile, separators=(',',':'))
 
