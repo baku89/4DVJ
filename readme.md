@@ -17,7 +17,7 @@ Made by [麦 (Baku Hashimoto)](http://baku89.com)
 
 This repository published under MIT License.
 
-Copyright (c) <year> <copyright holders>
+Copyright (c) 2015 Baku Hashimoto
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
