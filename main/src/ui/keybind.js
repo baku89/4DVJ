@@ -7,7 +7,7 @@ export default class Keybind extends EventEmitter {
 	constructor(parameters) {
 		super()
 
-		let html = require('./keybind.jade')()
+		let html = require('./keybind.pug')()
 		this.$root = $(html)
 		this.$label = this.$root.find('.keybind__label')
 		this.$name = this.$root.find('.keybind__name')

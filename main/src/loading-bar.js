@@ -1,6 +1,7 @@
 /* global $ */
 import EventEmitter from 'eventemitter3'
 
+console.log(window.jQuery)
 
 class LoadingBar extends EventEmitter {
 
@@ -29,4 +30,4 @@ class LoadingBar extends EventEmitter {
 	}
 }
 
-export default new LoadingBar()
+export default LoadingBar

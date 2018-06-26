@@ -1,6 +1,7 @@
 /* global THREE, LoadingBar, $ */
 
-import 'jquery.transit'
+import 'imports-loader?this=>window!jquery.transit'
+import 'jquery.easing'
 import EventEmitter from 'eventemitter3'
 // import _ from 'lodash'
 

@@ -1,4 +1,5 @@
 /* global process */
+require('babel-register')
 const gulp = require('gulp')
 const $ = require('gulp-load-plugins')()
 const nib = require('nib')
@@ -19,20 +20,18 @@ gulp.task('webpack', () => {
     },
     module: {
       preLoaders: [
-        {test: /\.js$/, exclude: /node_modules|web_modules/, loader: 'eslint'}
+        {test: /\.js$/, exclude: /node_modules|web_modules/, loader: 'eslint-loader'}
       ],
       loaders: [
         {test: /\.js$/, exclude: /node_modules|web_modules/, loader: 'babel-loader'},
         {test: /\.json$/, loader: 'json-loader'},
-        {test: /\.jade$/, loader: 'jade-loader'},
-        {test: /\.(vert|frag|glsl)$/, loaders:['raw-loader','glslify-loader']},
-        {test: /\.vue$/, loaders: 'vue'}
+        {test: /\.pug$/, loader: 'pug-loader'},
+        {test: /\.(vert|frag|glsl)$/, loaders:['raw-loader','glslify-loader']}
       ]
     },
     plugins: [
       new webpack.IgnorePlugin(/vertx/)
     ],
-    // amd: {jQuery: true},
     target: 'web',
     resolve: {
       modulesDirectories: ["web_modules", "node_modules"]
@@ -62,13 +61,13 @@ gulp.task('webpack', () => {
 
 //==================================================
 
-gulp.task('jade', () => {
-	return gulp.src('./src/*.jade')
+gulp.task('pug', () => {
+	return gulp.src('./src/*.pug')
     .pipe($.plumber())
     .pipe($.data(()=> {
       return require('./src/includes/data.json')
     }))
-		.pipe($.jade({pretty: developmentMode}))
+		.pipe($.pug({pretty: developmentMode}))
 		.pipe(gulp.dest('public'))
     .pipe(browserSync.stream())
 })
@@ -99,7 +98,7 @@ gulp.task('browser-sync', () => {
 //==================================================
 
 gulp.task('watch', () => {
-  gulp.watch('./src/**/*.jade', ['jade'])
+  gulp.watch('./src/**/*.pug', ['pug'])
   gulp.watch('./src/**/*.styl', ['stylus'])
   gulp.watch('./public/**/*.js', browserSync.reload)
 })
@@ -113,5 +112,5 @@ gulp.task('release', () => {
 
 //==================================================
 
-gulp.task('default', ['jade', 'stylus', 'webpack', 'watch', 'browser-sync'])
-gulp.task('build', ['release', 'jade', 'stylus', 'webpack'])
+gulp.task('default', ['pug', 'stylus', 'webpack', 'watch', 'browser-sync'])
+gulp.task('build', ['release', 'pug', 'stylus', 'webpack'])

@@ -1,9 +1,12 @@
-/* global $ */
+import $ from 'jquery'
+window.$ = $
+window.jQuery = $
 
 import * as loader from './loader'
-import LoadingBar from './loading-bar'
+import LoadingBarClass from './loading-bar'
 import Detector from 'Detector'
 
+const LoadingBar = new LoadingBarClass()
 window.LoadingBar = LoadingBar
 
 // Delector
@@ -25,7 +28,7 @@ if (!Detector.canvas || !Detector.webgl
 		loader.loadTexture('dandruff_small_tex', './texture/dandruff_small.png')
 	).then(() => {
 		console.timeEnd('load assets')
-		require('bundle?name=app!./app.js')
+		require('bundle-loader?name=app!./app.js')
 	})
 
 }

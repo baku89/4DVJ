@@ -9,7 +9,7 @@ export default class Slider extends EventEmitter {
 	constructor(parameters) {
 		super()
 
-		let html = require('./slider.jade')()
+		let html = require('./slider.pug')()
 		this.$root = $(html)
 		this.$root.find('.slider__name').html(parameters.name)
 

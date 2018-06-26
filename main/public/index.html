@@ -1,13 +1,80 @@
-<!DOCTYPE html><head class="no-js"><base href="./"><meta charset="utf-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="description" content="Stereographic projection of 4D geometry"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" type="text/css" href="./style.css"><title>4DVJ</title><meta property="og:title" content="4DVJ"><meta property="og:type" content="website"><meta property="og:description" content="Stereographic projection of 4D geometry"><meta property="og:url" content="http://s.baku89.com/4dvj/"><meta property="og:image" content="http://s.baku89.com/4dvj/ogimage.jpg"><meta property="og:image:width" content="1120"><meta property="og:image:height" content="630"><meta property="og:site_name" content="4DVJ"><meta property="og:locale" content="en_US"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@_baku89"><meta name="twitter:creator" content="@_baku89"><meta name="twitter:title" content="4DVJ"><meta name="twitter:description" content="Stereographic projection of 4D geometry"><meta name="twitter:image:src" content="http://s.baku89.com/4dvj/ogimage.jpg"><script src="https://use.typekit.net/nqn2sfg.js"></script><script>try{Typekit.load({ async: true });}catch(e){}
-</script></head><body data-state="loading"><div id="supported"><div class="loading"><div class="loading__bar"></div><div class="loading__dot"></div></div><div class="display"><div class="display__top"></div><div class="display__bottom"></div><canvas class="display-canvas"></canvas><div class="display__about"><div class="display__caption content"><p>This demo visualizes <a href="https://en.wikipedia.org/wiki/Stereographic_projection">stereographic projection</a> of 4D geometries,<br>and was performed as VJ set at <a href="https://www.super-deluxe.com/room/4021/">CHANNEL #13</a></p>
-<p>Used <a href="http://threejs.org/">three.js</a>, <a href="http://www.jenn3d.org">jenn3d</a></p>
+<!DOCTYPE html>
+<head class="no-js">
+  <base href="./">
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="#{description}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="./style.css">
+  <title>4DVJ</title>
+  <meta property="og:title" content="#{title}">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="#{description}">
+  <meta property="og:url" content="#{social.url}">
+  <meta property="og:image" content="#{social.url}ogimage.jpg">
+  <meta property="og:image:width" content="1120">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="#{title}">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="#{social.twitter_user}">
+  <meta name="twitter:creator" content="#{social.twitter_user}">
+  <meta name="twitter:title" content="#{title}">
+  <meta name="twitter:description" content="#{description}">
+  <meta name="twitter:image:src" content="#{social.url}ogimage.jpg">
+  <script src="https://use.typekit.net/nqn2sfg.js"></script>
+  <script>
+    try{Typekit.load({ async: true });}catch(e){}
+    
+  </script>
+</head>
+<body data-state="loading">
+  <div id="supported">
+    <div class="loading">
+      <div class="loading__bar"></div>
+      <div class="loading__dot"></div>
+    </div>
+    <div class="display">
+      <div class="display__top"></div>
+      <div class="display__bottom"></div>
+      <canvas class="display-canvas"></canvas>
+      <div class="display__about">
+        <div class="display__caption content"><p>This demo visualizes <a href="https://en.wikipedia.org/wiki/Stereographic_projection">stereographic projection</a> of 4D geometries,<br>and was performed as a VJ set at <a href="https://www.super-deluxe.com/room/4021/">CHANNEL #13</a></p>
+<p>Using <a href="http://threejs.org/">three.js</a>, <a href="http://www.jenn3d.org">jenn3d</a></p>
 <p>Inspired by <a href="http://www.dimensions-math.org/Dim_E.htm">Dimensions</a>, <a href="http://www.michaelpaulyoung.com/">MPY</a></p>
 <p>Made by <a href="http://baku89.com">Baku Hashimoto</a></p>
-</div><a href="https://github.com/baku89/4DVJ" taget="_blank" class="about__github">GitHub</a></div></div><header class="title"><h1 class="title__wrapper"><div class="title__textA"></div><div class="title__textB"></div><div class="title__about"><span>?</span></div></h1></header><div class="control"><div class="control__sliders control__sliders--left"></div><div class="control__keyboard show-key"><div class="control__keyboard-row control__keyboard-row--0"></div><div class="control__keyboard-row control__keyboard-row--1"></div><div class="control__keyboard-row control__keyboard-row--2"></div></div><div class="control__sliders control__sliders--right"></div></div></div><div id="unsupported"><div class="content"><h1 id="4dvj">4DVJ</h1>
-<p>Please visit from your pc with a WebGL-enabed browser. (especially recommending Google Chrome)</p>
+
+        </div><a class="about__github" href="https://github.com/baku89/4DVJ" taget="_blank">GitHub</a>
+      </div>
+    </div>
+    <header class="title">
+      <h1 class="title__wrapper">
+        <div class="title__textA"></div>
+        <div class="title__textB"></div>
+        <div class="title__about"><span>?</span></div>
+      </h1>
+    </header>
+    <div class="control">
+      <div class="control__sliders control__sliders--left"></div>
+      <div class="control__keyboard show-key">
+        <div class="control__keyboard-row control__keyboard-row--0"></div>
+        <div class="control__keyboard-row control__keyboard-row--1"></div>
+        <div class="control__keyboard-row control__keyboard-row--2"></div>
+      </div>
+      <div class="control__sliders control__sliders--right"></div>
+    </div>
+  </div>
+  <div id="unsupported">
+    <div class="content"><h1 id="4dvj">4DVJ</h1>
+<p>Please visit from your pc with a WebGL-enabed browser. (Google Chrome recommended)</p>
 <p><img src="./img/4dvj_0.jpg" alt="">
 <img src="./img/4dvj_3.jpg" alt="">
 <img src="./img/4dvj_2.jpg" alt="">
 <img src="./img/4dvj_5.jpg" alt=""></p>
 <p>Made by <a href="http://baku89.com">Baku Hashimoto</a></p>
-</div></div><script src="lib/jquery.min.js"></script><script src="lib/jquery.transit.js"></script><script src="lib/jquery.easing.js"></script><script src="lib/three.min.js"></script><script src="bootstrap.js"></script></body>
+
+    </div>
+  </div>
+  <script src="./lib/three.min.js"></script>
+  <script src="bootstrap.js"></script>
+</body>
